@@ -21,7 +21,7 @@
                     <option>Operativo</option>
                 </select>
             </div>
-            <label>Date</label>
+            <label>Fecha de factura</label>
             <div class="form-group">
                 <div class='input-group date' id='datetimepicker8'>
                     <input type='text' class="form-control" />
@@ -34,10 +34,11 @@
             <div class="form-group">
                 <label>Servicios</label>
                 <select class="form-control">
-					<option>Deluxe Activities (GLC)</option>
+					<option>Deluxe Actividades Incluidas</option>
                     <option>Extra Activities</option>
 					<option>Food</option>
 					<option>Alcoholic Beverages</option>
+                    <option>Servicios</option>
                 </select>
             </div>
             

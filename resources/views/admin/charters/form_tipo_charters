@@ -1,0 +1,86 @@
+'<div id=' + id_tipo + '>'+
+'<h2 class="page-header"><span class="titulo_tipo_charter">' + tipo_charter.value + '</span></h2>'+
+'<fieldset>'+
+'	<div class="row">'+
+'		<div class="col-md-4">'+
+'			<div class="form-group">'+
+'				<label>Embarcación</label>'+
+'				<select id="' + id_tipo + '_embarcacion" class="form-control">'+
+'					<option>Nombres de tipo de charter elegido</option>'+
+'				</select>'+
+'			</div>'+
+'		</div>'+
+'		<div class="col-md-2">'+
+'			<label>Cant. de pasajeros</label>'+
+'			<div class="form-group">'+
+'				<input  id="' + id_tipo + '_c_pasajeros" type="number" class="form-control">'+
+'			</div>'+
+'		</div>'+
+'		<div class="col-md-6">'+
+'			<div class="col-md-6">'+
+'				<label>F. Inicio</label>'+
+'			<div class="form-group">'+
+'				<div class="input-group date" id="f_inicio">'+
+'					<input id="' + id_tipo + '_f_inicio" type="text" class="form-control" />'+
+'					<span class="input-group-addon">'+
+'						<span class="fa fa-calendar"></span>'+
+'					</span>'+
+'				</div>'+
+'			</div>'+
+'			</div>'+
+'			<div class="col-md-6">'+
+'				<label>F. Fin</label>'+
+'				<div class="form-group">'+
+'					<div class="input-group date" id="f_fin">'+
+'						<input id="' + id_tipo + '_f_fin" type="text" class="form-control" />'+
+'						<span class="input-group-addon">'+
+'							<span class="fa fa-calendar"></span>'+
+'						</span>'+
+'					</div>'+
+'				</div>'+
+'			</div>'+
+'		</div>'+
+'	</div>'+
+'	<div class="row">'+
+'		<div class="col-md-2">'+
+'			<label>Deluxe</label>'+
+'			<div class="form-group">'+
+'				<label class="toggle">'+
+'					<input id="' + id_tipo + '_deluxe" type="checkbox" checked>'+
+'					<span class="slider round"></span>'+
+'				</label>'+
+'			</div>'+
+'		</div>'+
+'		<div class="col-md-2">'+
+'			<label>Tarifa de contrato</label>'+
+'			<div class="form-group input-group">'+
+'				<span class="input-group-addon">$</span>'+
+'				<input type="number" class="form-control">'+
+'			</div>'+
+'		</div>'+
+'		<div class="col-md-2">'+
+'			<label>Tarifa neta</label>'+
+'			<div class="form-group input-group">'+
+'				<span class="input-group-addon">$</span>'+
+'				<input type="number" class="form-control">'+
+'			</div>'+
+'		</div>'+
+'		<div class="col-md-6">'+
+'			<div class="col-md-6">'+
+'				<label>Comisión intermediario</label>'+
+'				<div class="form-group input-group">'+
+'					<span class="input-group-addon">$</span>'+
+'					<input type="number" class="form-control">'+
+'				</div>'+
+'			</div>'+
+'			<div class="col-md-6">'+
+'				<label>Comisión GLC</label>'+
+'				<div class="form-group input-group">'+
+'					<span class="input-group-addon">$</span>'+
+'					<input type="number" class="form-control">'+
+'				</div>'+
+'			</div>'+
+'		</div>'+
+'	</div>'+
+'</fieldset>'+
+'</div>'
