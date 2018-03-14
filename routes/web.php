@@ -143,6 +143,8 @@ Route::group(['prefix' => 'admin'], function () {
 		Route::get('/charters', 'ChartersController@getCharters')->name('datatable.charters');
 
 		Route::get('/registrar_charter', 'ChartersController@create');
+
+		Route::post('/nuevo_charter', 'ChartersController@store')->name('admin.charters.nuevo_charter');
 		
 		Route::get('/editar_charter', 'ChartersController@edit');
 		

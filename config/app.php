@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         
         Yajra\Datatables\DatatablesServiceProvider::class,
+        Reliese\Coders\CodersServiceProvider::class,
 
     ],
 

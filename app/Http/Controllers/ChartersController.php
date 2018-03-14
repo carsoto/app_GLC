@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Charters;
+use App\Models\Charter;
+use App\Models\Embarcacion;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 
@@ -27,9 +28,14 @@ class ChartersController extends Controller
      */
     public function create()
     {
-        return view('admin.charters.registrar_charter');
+        $embarcacion = Embarcacion::select(['id', 'nombre_embarcacion', 'cant_pasajeros', 'tipo_embarcacion_id']);
+        return view('admin.charters.registrar_charter', ['embarcacion' => $embarcacion]);
     }
 
+    public function store(Request $request)
+    {
+        dd($_POST);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -60,7 +66,7 @@ class ChartersController extends Controller
      */
     public function getCharters()
     {
-        $charters = Charters::select(['codigo', 'yate', 'f_inicio', 'f_fin', 'nro_pax', 'intermediario', 'deluxe', 'tarifa']);
+        $charters = Charter::select(['codigo', 'embarcacion_id', 'intermediarios_id', 'f_inicio', 'f_fin', 'deluxe', 'tarifa_contrato']);
 
         return Datatables::of($charters)->make(true);
     }

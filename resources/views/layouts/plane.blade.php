@@ -15,15 +15,21 @@
 	<link rel="stylesheet" href="{{ asset("assets/stylesheets/styles.css") }}" />
 	<link rel="stylesheet" href="{{ asset("assets/stylesheets/styles_GLC.css") }}" />
 	<link rel="stylesheet" href="{{ asset("assets/stylesheets/bootstrap.min.css") }}" />
+	<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
 	<link rel="stylesheet" href="{{ asset("assets/stylesheets/dataTables.bootstrap.min.css") }}" />
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  
 </head>
 <body>
 	@yield('body')
-
+	
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="{{ asset("assets/scripts/frontend.js") }}" type="text/javascript"></script>
 	<script src="{{ asset("assets/scripts/jquery.dataTables.min.js") }}" type="text/javascript"></script>
 	<script src="{{ asset("assets/scripts/dataTables.bootstrap.min.js") }}" type="text/javascript"></script>
-	
+
+  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 	<script type="text/javascript">
 		$(document).ready(function() {
 		    oTable = $('#table_charters').DataTable({
@@ -35,13 +41,13 @@
 				},
 		        "columns": [
 		            {data: 'codigo', name: 'codigo'},
-		            {data: 'yate', name: 'yate'},
+		            {data: 'embarcacion_id', name: 'yate'},
 		            {data: 'f_inicio', name: 'f_inicio'},
 		            {data: 'f_fin', name: 'f_fin'},
-		            {data: 'nro_pax', name: 'nro_pax'},
-		            {data: 'intermediario', name: 'intermediario'},
+		            {data: null, name: 'nro_pax'},
+		            {data: 'intermediario_id', name: 'intermediario'},
 		            {data: 'deluxe', name: 'deluxe'},
-		            {data: 'tarifa', name: 'tarifa'},
+		            {data: 'tarifa_contrato', name: 'tarifa'},
 		            {data: null, sortable: false, searchable: false, defaultContent: '<a href="{{ url ('admin/charters/apa/ver_apa') }}"><i class="fa fa-money fa-fw" title="APA"></i></a> <a href="{{ url ('admin/charters/ver_charter') }}"><i class="fa fa-eye fa-fw" title="Ver"></i></a> <a href="{{ url ('admin/charters/editar_charter') }}"><i class="fa fa-edit fa-fw" title="Editar"></i></a> <a href="{{ url ('') }}"><i class="fa fa-print fa-fw" title="Imprimir"></i></a> <a href="{{ url ('') }}"><i class="fa fa-file-pdf-o fa-fw" title="Contrato"></i></a>'}
 		        ]
 		    });
@@ -61,12 +67,34 @@
 		        ]
 		    });
 		});
+		
+		function validarTexto(e) {
+			tecla = (document.all) ? e.keyCode : e.which;
+			if (tecla==8) return true;
+			patron =/[A-Za-z\s]/;
+			te = String.fromCharCode(tecla);
+			return patron.test(te);
+		}
+
+		function tipoNumeros(e){
+			var key = window.event ? e.which : e.keyCode
+			return (key >= 48 && key <= 57);
+		}
+
+		function tipoMontos(e){
+			var key = window.event ? e.which : e.keyCode
+			return (key >= 48 && key <= 57 || key == 46 || key == 44); // [46 -> (.)] [44 -> (,)]
+		}
+
+		var array_codigo = [];
 
 		function seleccionar_tipo_charter(){
 			var tipo_charter = event.target;
 			var array_tipo = [];
 			var id_tipo = tipo_charter.value.replace(/\s/g,"_");
-			//console.log(tipo_charter.checked);
+			var id_f_inicio = "#"+id_tipo+"_f_inicio";
+			var id_f_fin = "#"+id_tipo+"_f_fin";
+			////console.log(tipo_charter.checked);
 			
 			if(tipo_charter.checked == true){
 				if($.inArray(tipo_charter.value, array_tipo) == -1){
@@ -86,15 +114,15 @@
 						'		<div class="col-md-2">'+
 						'			<label>Cant. de pasajeros</label>'+
 						'			<div class="form-group">'+
-						'				<input  id="' + id_tipo + '_c_pasajeros" type="number" class="form-control">'+
+						'				<input name="' + id_tipo + '_c_pasajeros" id="' + id_tipo + '_c_pasajeros" type="number" onKeyPress="return tipoNumeros(event)" placeholder="0" class="form-control">'+
 						'			</div>'+
 						'		</div>'+
 						'		<div class="col-md-6">'+
 						'			<div class="col-md-6">'+
-						'				<label>F. Inicio</label>'+
+						'			<label>F. Inicio</label>'+
 						'			<div class="form-group">'+
 						'				<div class="input-group date" id="f_inicio">'+
-						'					<input id="' + id_tipo + '_f_inicio" type="text" class="form-control" />'+
+						'					<input name="' + id_tipo + '_f_inicio" id="' + id_tipo + '_f_inicio" type="text" placeholder="dd/mm/yyyy" class="form-control" />'+
 						'					<span class="input-group-addon">'+
 						'						<span class="fa fa-calendar"></span>'+
 						'					</span>'+
@@ -105,7 +133,7 @@
 						'				<label>F. Fin</label>'+
 						'				<div class="form-group">'+
 						'					<div class="input-group date" id="f_fin">'+
-						'						<input id="' + id_tipo + '_f_fin" type="text" class="form-control" />'+
+						'						<input name="' + id_tipo + '_f_fin" id="' + id_tipo + '_f_fin" type="text" placeholder="dd/mm/yyyy" class="form-control" />'+
 						'						<span class="input-group-addon">'+
 						'							<span class="fa fa-calendar"></span>'+
 						'						</span>'+
@@ -119,7 +147,7 @@
 						'			<label>Deluxe</label>'+
 						'			<div class="form-group">'+
 						'				<label class="toggle">'+
-						'					<input id="' + id_tipo + '_deluxe" type="checkbox" checked>'+
+						'					<input name="' + id_tipo + '_deluxe" id="' + id_tipo + '_deluxe" type="checkbox" checked>'+
 						'					<span class="slider round"></span>'+
 						'				</label>'+
 						'			</div>'+
@@ -128,14 +156,14 @@
 						'			<label>Tarifa de contrato</label>'+
 						'			<div class="form-group input-group">'+
 						'				<span class="input-group-addon">$</span>'+
-						'				<input id="' + id_tipo + '_t_contrato" type="number" class="form-control">'+
+						'				<input name="' + id_tipo + '_t_contrato" id="' + id_tipo + '_t_contrato" type="number" onKeyPress="return tipoMontos(event)" placeholder="000,000.00" class="form-control">'+
 						'			</div>'+
 						'		</div>'+
 						'		<div class="col-md-2">'+
 						'			<label>Tarifa neta</label>'+
 						'			<div class="form-group input-group">'+
 						'				<span class="input-group-addon">$</span>'+
-						'				<input id="' + id_tipo + '_t_neta" type="number" class="form-control">'+
+						'				<input name="' + id_tipo + '_t_neta" id="' + id_tipo + '_t_neta" type="number" onKeyPress="return tipoMontos(event)" placeholder="000,000.00" class="form-control">'+
 						'			</div>'+
 						'		</div>'+
 						'		<div class="col-md-6">'+
@@ -143,14 +171,14 @@
 						'				<label>Comisión intermediario</label>'+
 						'				<div class="form-group input-group">'+
 						'					<span class="input-group-addon">$</span>'+
-						'					<input id="' + id_tipo + '_t_interm" type="number" class="form-control">'+
+						'					<input name="' + id_tipo + '_t_interm" id="' + id_tipo + '_t_interm" type="number" onKeyPress="return tipoMontos(event)" placeholder="000,000.00" class="form-control">'+
 						'				</div>'+
 						'			</div>'+
 						'			<div class="col-md-6">'+
 						'				<label>Comisión GLC</label>'+
 						'				<div class="form-group input-group">'+
 						'					<span class="input-group-addon">$</span>'+
-						'					<input id="' + id_tipo + '_t_glc" type="number" class="form-control">'+
+						'					<input name="' + id_tipo + '_t_glc" id="' + id_tipo + '_t_glc" type="number" onKeyPress="return tipoMontos(event)" placeholder="000,000.00" class="form-control">'+
 						'				</div>'+
 						'			</div>'+
 						'		</div>'+
@@ -159,10 +187,54 @@
 						'</div>'
 					);	
 				}
+
+				$(id_f_inicio).datepicker({
+					dateFormat: "dd/mm/yy",
+					showAnim: "clip",
+					onSelect: function() { 
+						var d = $(this).datepicker('getDate');
+						var dia = d.getDate();
+						var mes = (d.getMonth()+1);
+						var anyo = d.getFullYear();
+
+						if(dia <= 9){ dia = "0"+dia; }
+						if(mes <= 9){ mes = "0"+mes; }
+
+						var date = dia + "" + mes + "" + anyo;
+
+						//array_codigo.push({id_tipo: "CHT-"+date});
+
+						array_codigo[id_tipo] = "CHT-"+date;
+						//console.log(array_codigo);
+						if($("#codigo_charter").text() == "CHT-"){
+							$("#codigo_charter").html("CHT-"+date);	
+						}
+				         
+				    }
+				});
+
+				$(id_f_fin).datepicker({
+					dateFormat: "dd/mm/yy",
+					showAnim: "clip"
+				});
+
 				array_tipo.push(tipo_charter.value);
+				
 			}else{
 				$("#"+id_tipo).remove();
+				delete array_codigo[id_tipo]
+				//console.log(array_codigo);
+
+				if(Object.keys(array_codigo).length > 0){
+					$("#codigo_charter").html(array_codigo[Object.keys(array_codigo)]);
+				}else{
+					$("#codigo_charter").html("CHT-");	
+				}
 			}
+		}
+
+		function registrarCharter(){
+			$("#form_registrar_charter").submit();
 		}
 	</script> 
 </body>
