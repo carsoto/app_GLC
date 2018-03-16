@@ -109,11 +109,10 @@ class ChartersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($codigo)
     {
-        $charter = Charter::where('codigo',  $id)->get();
-        dd($charter);
-        return view('admin.charters.ver_charter', ['charter' => $charter]);
+        $charters = Charter::where('codigo',  $codigo)->get();
+        return view('admin.charters.ver_charter', ['charters' => $charters, 'codigo' => $codigo]);
     }
 
     /**
