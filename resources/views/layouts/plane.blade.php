@@ -41,17 +41,18 @@
 				},
 		        "columns": [
 		            {data: 'codigo', name: 'codigo'},
-		            {data: 'embarcacion_id', name: 'yate'},
+		            {data: 'embarcacion_id', name: 'embarcacion_id'},
 		            {data: 'f_inicio', name: 'f_inicio'},
 		            {data: 'f_fin', name: 'f_fin'},
-		            {data: null, name: 'nro_pax'},
-		            {data: 'intermediario_id', name: 'intermediario'},
+		            {data: 'nro_pax', name: 'nro_pax'},
+		            {data: 'intermediarios_id', name: 'intermediarios_id'},
 		            {data: 'deluxe', name: 'deluxe'},
-		            {data: 'tarifa_contrato', name: 'tarifa'},
-		            {data: null, sortable: false, searchable: false, defaultContent: '<a href="{{ url ('admin/charters/apa/ver_apa') }}"><i class="fa fa-money fa-fw" title="APA"></i></a> <a href="{{ url ('admin/charters/ver_charter') }}"><i class="fa fa-eye fa-fw" title="Ver"></i></a> <a href="{{ url ('admin/charters/editar_charter') }}"><i class="fa fa-edit fa-fw" title="Editar"></i></a> <a href="{{ url ('') }}"><i class="fa fa-print fa-fw" title="Imprimir"></i></a> <a href="{{ url ('') }}"><i class="fa fa-file-pdf-o fa-fw" title="Contrato"></i></a>'}
+		            {data: 'tarifa_contrato', name: 'tarifa_contrato'},
+		            {data: 'action', name: 'action', orderable: false}
+		            /*{data: null, sortable: false, searchable: false, defaultContent: '<a href="{{ url ('admin/charters/apa/ver_apa') }}"><i class="fa fa-money fa-fw" title="APA"></i></a> <a href="{{ url ('admin/charters/ver_charter/') }}'+$(this).id+'"><i class="fa fa-eye fa-fw" title="Ver"></i></a> <a href="{{ url ('admin/charters/editar_charter') }}"><i class="fa fa-edit fa-fw" title="Editar"></i></a> <a href="{{ url ('') }}"><i class="fa fa-file-pdf-o fa-fw" title="Contrato"></i></a>'}*/
 		        ]
 		    });
-
+			
 			oTable2 = $('#table_apas').DataTable({
 		        "processing": true,
 		        "serverSide": true,
@@ -90,12 +91,24 @@
 
 		function seleccionar_tipo_charter(){
 			var tipo_charter = event.target;
+			var id_tipo_embarcacion = tipo_charter.getAttribute('idembarcacion');
 			var array_tipo = [];
 			var id_tipo = tipo_charter.value.replace(/\s/g,"_");
 			var id_f_inicio = "#"+id_tipo+"_f_inicio";
 			var id_f_fin = "#"+id_tipo+"_f_fin";
 			////console.log(tipo_charter.checked);
+			var datos_embarcacion = $('#datos_embarcacion').data('embarcacion');
+            //console.log(datos_embarcacion);
+            //var options_embarcacion = '<option value="0">Elija su embarcación</option>';
+            var options_embarcacion = '';
+            for (i = 0; i < datos_embarcacion.length; i++) {
+            	if(datos_embarcacion[i]['tipo_embarcacion_id'] == id_tipo_embarcacion){
+            		options_embarcacion += '<option value="' + datos_embarcacion[i]['id'] + '">' + datos_embarcacion[i]['nombre_embarcacion'] + '</option>';
+            	}
+			}
 			
+			//$("#tipo_charter_embaraccion").val(array_tipo.join());
+
 			if(tipo_charter.checked == true){
 				if($.inArray(tipo_charter.value, array_tipo) == -1){
 					$("#contenido_tipo_charter").append(
@@ -106,15 +119,15 @@
 						'		<div class="col-md-4">'+
 						'			<div class="form-group">'+
 						'				<label>Embarcación</label>'+
-						'				<select id="' + id_tipo + '_embarcacion" class="form-control">'+
-						'					<option>Nombres de tipo de charter elegido</option>'+
+						'				<select name="' + id_tipo + '_embarcacion" id="' + id_tipo + '_embarcacion" class="form-control">'+
+											options_embarcacion +
 						'				</select>'+
 						'			</div>'+
 						'		</div>'+
 						'		<div class="col-md-2">'+
 						'			<label>Cant. de pasajeros</label>'+
 						'			<div class="form-group">'+
-						'				<input name="' + id_tipo + '_c_pasajeros" id="' + id_tipo + '_c_pasajeros" type="number" onKeyPress="return tipoNumeros(event)" placeholder="0" class="form-control">'+
+						'				<input name="' + id_tipo + '_c_pasajeros" id="' + id_tipo + '_c_pasajeros" type="text" onKeyPress="return tipoNumeros(event)" placeholder="0" class="form-control">'+
 						'			</div>'+
 						'		</div>'+
 						'		<div class="col-md-6">'+
@@ -156,14 +169,14 @@
 						'			<label>Tarifa de contrato</label>'+
 						'			<div class="form-group input-group">'+
 						'				<span class="input-group-addon">$</span>'+
-						'				<input name="' + id_tipo + '_t_contrato" id="' + id_tipo + '_t_contrato" type="number" onKeyPress="return tipoMontos(event)" placeholder="000,000.00" class="form-control">'+
+						'				<input name="' + id_tipo + '_t_contrato" id="' + id_tipo + '_t_contrato" type="text" onKeyPress="return tipoMontos(event)" placeholder="000,000.00" class="form-control">'+
 						'			</div>'+
 						'		</div>'+
 						'		<div class="col-md-2">'+
 						'			<label>Tarifa neta</label>'+
 						'			<div class="form-group input-group">'+
 						'				<span class="input-group-addon">$</span>'+
-						'				<input name="' + id_tipo + '_t_neta" id="' + id_tipo + '_t_neta" type="number" onKeyPress="return tipoMontos(event)" placeholder="000,000.00" class="form-control">'+
+						'				<input name="' + id_tipo + '_t_neta" id="' + id_tipo + '_t_neta" type="text" onKeyPress="return tipoMontos(event)" placeholder="000,000.00" class="form-control">'+
 						'			</div>'+
 						'		</div>'+
 						'		<div class="col-md-6">'+
@@ -171,14 +184,14 @@
 						'				<label>Comisión intermediario</label>'+
 						'				<div class="form-group input-group">'+
 						'					<span class="input-group-addon">$</span>'+
-						'					<input name="' + id_tipo + '_t_interm" id="' + id_tipo + '_t_interm" type="number" onKeyPress="return tipoMontos(event)" placeholder="000,000.00" class="form-control">'+
+						'					<input name="' + id_tipo + '_t_interm" id="' + id_tipo + '_t_interm" type="text" onKeyPress="return tipoMontos(event)" placeholder="000,000.00" class="form-control">'+
 						'				</div>'+
 						'			</div>'+
 						'			<div class="col-md-6">'+
 						'				<label>Comisión GLC</label>'+
 						'				<div class="form-group input-group">'+
 						'					<span class="input-group-addon">$</span>'+
-						'					<input name="' + id_tipo + '_t_glc" id="' + id_tipo + '_t_glc" type="number" onKeyPress="return tipoMontos(event)" placeholder="000,000.00" class="form-control">'+
+						'					<input name="' + id_tipo + '_t_glc" id="' + id_tipo + '_t_glc" type="text" onKeyPress="return tipoMontos(event)" placeholder="000,000.00" class="form-control">'+
 						'				</div>'+
 						'			</div>'+
 						'		</div>'+
@@ -207,9 +220,9 @@
 						array_codigo[id_tipo] = "CHT-"+date;
 						//console.log(array_codigo);
 						if($("#codigo_charter").text() == "CHT-"){
-							$("#codigo_charter").html("CHT-"+date);	
+							$("#codigo_charter").html("CHT-"+date);
+							document.getElementById('id_charter').value = "CHT-"+date;	
 						}
-				         
 				    }
 				});
 
@@ -227,8 +240,10 @@
 
 				if(Object.keys(array_codigo).length > 0){
 					$("#codigo_charter").html(array_codigo[Object.keys(array_codigo)]);
+					document.getElementById('id_charter').value = array_codigo[Object.keys(array_codigo)];
 				}else{
-					$("#codigo_charter").html("CHT-");	
+					$("#codigo_charter").html("CHT-");
+					document.getElementById('id_charter').value = "CHT-";
 				}
 			}
 		}

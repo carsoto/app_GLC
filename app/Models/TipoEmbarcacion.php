@@ -25,12 +25,9 @@ class TipoEmbarcacion extends Eloquent
 {
 	protected $table = 'tipo_embarcacion';
 
-	protected $fillable = [
-		'desc_tipo'
-	];
+	protected $fillable = ['id', 'desc_tipo'];
 
-	public function embarcacions()
-	{
+	public function embarcacions(){
 		return $this->hasMany(\App\Models\Embarcacion::class);
 	}
 }

@@ -142,14 +142,13 @@ Route::group(['prefix' => 'admin'], function () {
  
 		Route::get('/charters', 'ChartersController@getCharters')->name('datatable.charters');
 
-		Route::get('/registrar_charter', 'ChartersController@create');
-
-		Route::post('/nuevo_charter', 'ChartersController@store')->name('admin.charters.nuevo_charter');
+		Route::get('/registrar', 'ChartersController@create');
+		Route::post('/nuevo', 'ChartersController@store')->name('admin.charters.nuevo');
 		
-		Route::get('/editar_charter', 'ChartersController@edit');
+		Route::get('/editar', 'ChartersController@edit');
 		
-		Route::get('/ver_charter', 'ChartersController@show');
-
+		Route::get('/ver/{id}',array('as' => 'admin.charters.ver','uses' => 'ChartersController@show'));
+		
 		Route::group(['prefix' => 'apa'], function () {
 			Route::get('/ver_apa', 'ChartersController@verApa');
 		});

@@ -2,7 +2,7 @@
 @section('page_heading','Charters')
 @section('section')
            
-<a href="{{ url ('admin/charters/registrar_charter') }}" class="btn btn-sm btn-success"><i class="fa fa-plus fa-fw"></i> Nuevo Charter</a>
+<a href="{{ url ('admin/charters/registrar') }}" class="btn btn-sm btn-success"><i class="fa fa-plus fa-fw"></i> Nuevo Charter</a>
 <br><br>
 <div class="row">
     <div class="col-sm-12">

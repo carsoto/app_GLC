@@ -36,6 +36,7 @@ class Embarcacion extends Eloquent
 	];
 
 	protected $fillable = [
+		'id',
 		'nombre_embarcacion',
 		'cant_pasajeros',
 		'tipo_embarcacion_id'

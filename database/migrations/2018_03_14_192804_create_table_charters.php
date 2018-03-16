@@ -21,6 +21,7 @@ class CreateTableCharters extends Migration
             $table->string('cliente', 80);
             $table->integer('intermediarios_id')->unsigned();
             $table->string('contrato', 150);
+            $table->integer('nro_pax');
             $table->date('f_inicio');
             $table->date('f_fin');
             $table->string('deluxe');

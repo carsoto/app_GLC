@@ -35,42 +35,15 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class Charter extends Eloquent
 {
-	protected $casts = [
-		'intermediarios_id' => 'int',
-		'tarifa_contrato' => 'float',
-		'tarifa_neta' => 'float',
-		'comision_intermediario' => 'float',
-		'comision_glc' => 'float',
-		'embarcacion_id' => 'int'
-	];
+	protected $table = 'charters';
 
-	protected $dates = [
-		'f_inicio',
-		'f_fin'
-	];
+	protected $fillable = ['id', 'codigo', 'cliente', 'intermediarios_id', 'contrato', 'nro_pax', 'f_inicio', 'f_fin', 'deluxe', 'tarifa_contrato', 'tarifa_neta', 'comision_intermediario', 'comision_glc', 'embarcacion_id'];
 
-	protected $fillable = [
-		'codigo',
-		'cliente',
-		'intermediarios_id',
-		'contrato',
-		'f_inicio',
-		'f_fin',
-		'deluxe',
-		'tarifa_contrato',
-		'tarifa_neta',
-		'comision_intermediario',
-		'comision_glc',
-		'embarcacion_id'
-	];
-
-	public function embarcacion()
-	{
+	public function embarcacion(){
 		return $this->belongsTo(\App\Models\Embarcacion::class);
 	}
 
-	public function intermediario()
-	{
+	public function intermediario(){
 		return $this->belongsTo(\App\Models\Intermediario::class, 'intermediarios_id');
 	}
 }
