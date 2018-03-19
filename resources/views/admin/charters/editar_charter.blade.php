@@ -57,7 +57,7 @@
 					<div class="col-md-2">
 						<label>Cant. de pasajeros</label>
 						<div class="form-group">
-							<input name="' + id_tipo + '_c_pasajeros" id="' + id_tipo + '_c_pasajeros" type="number" onKeyPress="return tipoNumeros(event)" placeholder="0" class="form-control" value="{{ $charter->nro_pax }}">
+							<input name="' + id_tipo + '_c_pasajeros" id="' + id_tipo + '_c_pasajeros" type="text" onKeyPress="return tipoNumeros(event)" placeholder="0" class="form-control" value="{{ $charter->nro_pax }}">
 						</div>
 					</div>
 				</div>
@@ -78,11 +78,17 @@
 							<tbody>
 								@for ($i = 0; $i < $charter->nro_pax; $i++)
 									<tr>
-										<td>-</td>
-										<td>-</td>
-										<td>-</td>
-										<td>-</td>
-										<td>-</td>
+										<td><input name="cliente" class="form-control" placeholder="Nombre y apellido" onKeyPress="return validarTexto(event)"></td>
+										<td><input name="' + id_tipo + '_c_pasajeros" id="' + id_tipo + '_c_pasajeros" type="text" onKeyPress="return tipoNumeros(event)" placeholder="0" class="form-control"></td>
+										<td><input name="cliente" class="form-control" placeholder="Nombre y apellido" onKeyPress="return validarTexto(event)"></td>
+										<td><input name="' + id_tipo + '_c_pasajeros" id="' + id_tipo + '_c_pasajeros" type="text" onKeyPress="return numeroTelefono(event)" placeholder="0" class="form-control"></td>
+										<td>
+											<select class="form-control">
+												@foreach ($parentescos as $parentesco)
+													<option value="{{ $parentesco }}">{{ $parentesco }}</option>
+												@endforeach
+						                	</select>
+						            	</td>
 										<td>-</td>
 									</tr>
 								@endfor

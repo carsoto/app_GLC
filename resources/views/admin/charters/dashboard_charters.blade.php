@@ -26,3 +26,28 @@
    
 @stop
 
+@section('scripts')
+<script type="text/javascript">
+	$(document).ready(function() {
+	    oTable = $('#table_charters').DataTable({
+	        "processing": true,
+	        "serverSide": true,
+	        "ajax": "{{ route('datatable.charters') }}",
+	        "language": {
+	        	"url": "{{ asset('assets/scripts/es_datatables.json') }}"
+			},
+	        "columns": [
+	            {data: 'codigo', name: 'codigo'},
+	            {data: 'embarcacion_id', name: 'embarcacion_id'},
+	            {data: 'f_inicio', name: 'f_inicio'},
+	            {data: 'f_fin', name: 'f_fin'},
+	            {data: 'nro_pax', name: 'nro_pax'},
+	            {data: 'intermediarios_id', name: 'intermediarios_id'},
+	            {data: 'deluxe', name: 'deluxe'},
+	            {data: 'tarifa_contrato', name: 'tarifa_contrato'},
+	            {data: 'action', name: 'action', orderable: false}
+	        ]
+	    });
+	});
+</script>
+@stop

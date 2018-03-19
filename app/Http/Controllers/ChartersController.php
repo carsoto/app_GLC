@@ -6,6 +6,7 @@ use App\Charter;
 use App\Embarcacion;
 use App\TipoEmbarcacion;
 use App\Intermediario;
+use App\Pasajero;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Input;
@@ -123,7 +124,12 @@ class ChartersController extends Controller
     public function edit($codigo)
     {
         $charters = Charter::where('codigo',  $codigo)->get();
-        return view('admin.charters.editar_charter', ['charters' => $charters, 'codigo' => $codigo]);
+        $parentescos = array('Abuelo/a', 'Bisabuelo/a', 'Cuñado/a', 'Hermano/a', 'Hijo/a', 'Nieto/a', 'Padrastro/Madrastra', 'Padre/Madre', 'Primo/a', 'Sobrino/a', 'Suegro/a', 'Tío/a', 'Yerno/Nuera', 'Otro');
+
+        foreach ($charters as $charter) {
+            $lista_pasajeros[$charter->embarcacion->tipo_embarcacion->desc_tipo] = Pasajero::where('charters_id',  $charter->id)->get();
+        }
+        return view('admin.charters.editar_charter', ['charters' => $charters, 'codigo' => $codigo, 'parentescos' => $parentescos, 'lista_pasajeros' => $lista_pasajeros]);
     }
 
     public function verApa()
