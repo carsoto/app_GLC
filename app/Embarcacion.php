@@ -2,10 +2,10 @@
 
 /**
  * Created by Reliese Model.
- * Date: Wed, 14 Mar 2018 19:57:27 +0000.
+ * Date: Mon, 19 Mar 2018 18:00:35 +0000.
  */
 
-namespace App\Models;
+namespace App;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 
@@ -19,24 +19,21 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
- * @property \App\Models\TipoEmbarcacion $tipo_embarcacion
+ * @property \App\TipoEmbarcacion $tipo_embarcacion
  * @property \Illuminate\Database\Eloquent\Collection $charters
  *
- * @package App\Models
+ * @package App
  */
 class Embarcacion extends Eloquent
 {
 	protected $table = 'embarcacion';
-	public $incrementing = false;
 
 	protected $casts = [
-		'id' => 'int',
 		'cant_pasajeros' => 'int',
 		'tipo_embarcacion_id' => 'int'
 	];
 
 	protected $fillable = [
-		'id',
 		'nombre_embarcacion',
 		'cant_pasajeros',
 		'tipo_embarcacion_id'
@@ -44,11 +41,11 @@ class Embarcacion extends Eloquent
 
 	public function tipo_embarcacion()
 	{
-		return $this->belongsTo(\App\Models\TipoEmbarcacion::class);
+		return $this->belongsTo(\App\TipoEmbarcacion::class);
 	}
 
 	public function charters()
 	{
-		return $this->hasMany(\App\Models\Charter::class);
+		return $this->hasMany(\App\Charter::class);
 	}
 }

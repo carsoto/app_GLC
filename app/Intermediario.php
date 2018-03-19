@@ -2,10 +2,10 @@
 
 /**
  * Created by Reliese Model.
- * Date: Wed, 14 Mar 2018 19:57:27 +0000.
+ * Date: Mon, 19 Mar 2018 18:00:35 +0000.
  */
 
-namespace App\Models;
+namespace App;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 
@@ -20,7 +20,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * 
  * @property \Illuminate\Database\Eloquent\Collection $charters
  *
- * @package App\Models
+ * @package App
  */
 class Intermediario extends Eloquent
 {
@@ -31,6 +31,6 @@ class Intermediario extends Eloquent
 
 	public function charters()
 	{
-		return $this->hasMany(\App\Models\Charter::class, 'intermediarios_id');
+		return $this->hasMany(\App\Charter::class, 'intermediarios_id');
 	}
 }

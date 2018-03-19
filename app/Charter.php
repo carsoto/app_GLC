@@ -2,10 +2,10 @@
 
 /**
  * Created by Reliese Model.
- * Date: Wed, 14 Mar 2018 19:57:27 +0000.
+ * Date: Mon, 19 Mar 2018 18:00:35 +0000.
  */
 
-namespace App\Models;
+namespace App;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 
@@ -27,23 +27,59 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $embarcacion_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property int $nro_pax
  * 
- * @property \App\Models\Embarcacion $embarcacion
- * @property \App\Models\Intermediario $intermediario
+ * @property \App\Embarcacion $embarcacion
+ * @property \App\Intermediario $intermediario
+ * @property \Illuminate\Database\Eloquent\Collection $pasajeros
  *
- * @package App\Models
+ * @package App
  */
 class Charter extends Eloquent
 {
-	protected $table = 'charters';
+	protected $casts = [
+		'intermediarios_id' => 'int',
+		'tarifa_contrato' => 'float',
+		'tarifa_neta' => 'float',
+		'comision_intermediario' => 'float',
+		'comision_glc' => 'float',
+		'embarcacion_id' => 'int',
+		'nro_pax' => 'int'
+	];
 
-	protected $fillable = ['id', 'codigo', 'cliente', 'intermediarios_id', 'contrato', 'nro_pax', 'f_inicio', 'f_fin', 'deluxe', 'tarifa_contrato', 'tarifa_neta', 'comision_intermediario', 'comision_glc', 'embarcacion_id'];
+	protected $dates = [
+		'f_inicio',
+		'f_fin'
+	];
 
-	public function embarcacion(){
-		return $this->belongsTo(\App\Models\Embarcacion::class);
+	protected $fillable = [
+		'codigo',
+		'cliente',
+		'intermediarios_id',
+		'contrato',
+		'f_inicio',
+		'f_fin',
+		'deluxe',
+		'tarifa_contrato',
+		'tarifa_neta',
+		'comision_intermediario',
+		'comision_glc',
+		'embarcacion_id',
+		'nro_pax'
+	];
+
+	public function embarcacion()
+	{
+		return $this->belongsTo(\App\Embarcacion::class);
 	}
 
-	public function intermediario(){
-		return $this->belongsTo(\App\Models\Intermediario::class, 'intermediarios_id');
+	public function intermediario()
+	{
+		return $this->belongsTo(\App\Intermediario::class, 'intermediarios_id');
+	}
+
+	public function pasajeros()
+	{
+		return $this->hasMany(\App\Pasajero::class, 'charters_id');
 	}
 }

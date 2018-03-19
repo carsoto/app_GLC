@@ -2,10 +2,10 @@
 
 /**
  * Created by Reliese Model.
- * Date: Wed, 14 Mar 2018 19:57:27 +0000.
+ * Date: Mon, 19 Mar 2018 18:00:35 +0000.
  */
 
-namespace App\Models;
+namespace App;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 
@@ -19,15 +19,18 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * 
  * @property \Illuminate\Database\Eloquent\Collection $embarcacions
  *
- * @package App\Models
+ * @package App
  */
 class TipoEmbarcacion extends Eloquent
 {
 	protected $table = 'tipo_embarcacion';
 
-	protected $fillable = ['id', 'desc_tipo'];
+	protected $fillable = [
+		'desc_tipo'
+	];
 
-	public function embarcacions(){
-		return $this->hasMany(\App\Models\Embarcacion::class);
+	public function embarcacions()
+	{
+		return $this->hasMany(\App\Embarcacion::class);
 	}
 }

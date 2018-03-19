@@ -32,12 +32,11 @@ class CreateTableCharters extends Migration
             $table->integer('embarcacion_id')->unsigned();
             
             $table->index('intermediarios_id','fk_charters_intermediarios1_idx');
-            $table->index(['embarcacion_id'],'fk_charters_embarcacion1_idx');
-        
             $table->foreign('intermediarios_id')->references('id')->on('intermediarios');
-        
+
+            $table->index(['embarcacion_id'],'fk_charters_embarcacion1_idx');
             $table->foreign('embarcacion_id')->references('id')->on('embarcacion');
-        
+            
             $table->timestamps();
         
         });

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Charter;
-use App\Models\Embarcacion;
-use App\Models\TipoEmbarcacion;
-use App\Models\Intermediario;
+use App\Charter;
+use App\Embarcacion;
+use App\TipoEmbarcacion;
+use App\Intermediario;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Input;
@@ -120,9 +120,10 @@ class ChartersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit($codigo)
     {
-        return view('admin.charters.editar_charter');
+        $charters = Charter::where('codigo',  $codigo)->get();
+        return view('admin.charters.editar_charter', ['charters' => $charters, 'codigo' => $codigo]);
     }
 
     public function verApa()

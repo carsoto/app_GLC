@@ -15,7 +15,7 @@
 			<tbody>
 				<tr>
 					<td style='width: 250px; text-align: right;'>Embarcación:</td>
-					<td>{{ $charter->embarcacion->nombre_embarcacion }}  </td>
+					<td>{{ $charter->embarcacion->tipo_embarcacion->desc_tipo }} - {{ $charter->embarcacion->nombre_embarcacion }}</td>
 				</tr>
 				<tr>
 					<td style='width: 250px; text-align: right;'>Cliente:</td>
