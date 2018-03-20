@@ -10,29 +10,27 @@ namespace App;
 use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
- * Class User
+ * Class TiposFactura
  * 
  * @property int $id
- * @property string $name
- * @property string $email
- * @property string $password
- * @property string $remember_token
+ * @property string $descripcion
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * 
+ * @property \Illuminate\Database\Eloquent\Collection $apas
  *
  * @package App
  */
-class User extends Eloquent
+class TiposFactura extends Eloquent
 {
-	protected $hidden = [
-		'password',
-		'remember_token'
-	];
+	protected $table = 'tipos_factura';
 
 	protected $fillable = [
-		'name',
-		'email',
-		'password',
-		'remember_token'
+		'descripcion'
 	];
+
+	public function apas()
+	{
+		return $this->hasMany(\App\Apa::class);
+	}
 }

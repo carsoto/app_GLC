@@ -174,7 +174,13 @@ class ChartersController extends Controller
             }
         }
 
-        json_encode($charters);
+        if(isset($charters)){
+            json_encode($charters);
+        }
+        
+        else{
+            $charters = array();
+        }
 
         return Datatables::of($charters)
             ->addColumn('action', function ($charters) {

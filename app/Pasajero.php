@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Mon, 19 Mar 2018 20:08:57 +0000.
+ * Date: Tue, 20 Mar 2018 20:51:40 +0000.
  */
 
 namespace App;
@@ -19,6 +19,8 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $condicion_medica
  * @property string $contacto_emergencia
  * @property string $parentesco_contacto
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  * 
  * @property \App\Charter $charter
  *
@@ -26,14 +28,13 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class Pasajero extends Eloquent
 {
-	public $timestamps = false;
-
 	protected $casts = [
 		'charters_id' => 'int',
 		'edad' => 'int'
 	];
 
 	protected $fillable = [
+		'charters_id',
 		'nombre',
 		'edad',
 		'condicion_medica',
