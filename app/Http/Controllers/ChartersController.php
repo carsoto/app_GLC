@@ -129,7 +129,12 @@ class ChartersController extends Controller
         foreach ($charters as $charter) {
             $lista_pasajeros[$charter->embarcacion->tipo_embarcacion->desc_tipo] = Pasajero::where('charters_id',  $charter->id)->get();
         }
+
         return view('admin.charters.editar_charter', ['charters' => $charters, 'codigo' => $codigo, 'parentescos' => $parentescos, 'lista_pasajeros' => $lista_pasajeros]);
+    }
+
+    public function update(Request $request){
+        dd($request);
     }
 
     public function verApa()
