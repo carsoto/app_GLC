@@ -11,6 +11,6 @@ class ChartersSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Charters::class, 100)->create();
+    	
     }
 }

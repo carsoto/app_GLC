@@ -7,10 +7,13 @@ use App\Embarcacion;
 use App\TipoEmbarcacion;
 use App\Intermediario;
 use App\Pasajero;
+use App\TipoCharter;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Input;
 use DB;
+use Redirect;
+
 /**
  * Class TaskController
  * @package App\Http\Controllers
@@ -39,72 +42,101 @@ class ChartersController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $codigo_charter = $_POST["id_charter"];
-        $tipo_charter = $_POST["tipo_charter"];
-        $cliente = $_POST["cliente"];
-        $intermediario = $_POST["intermediario_id"];
-        //$contrato = "contrato.pdf";
+    {        
+        $error = null;
+        DB::beginTransaction();
+        $costo_total = 0;
 
-        for ($i = 0; $i < count($tipo_charter); $i++) { 
-            $charter = new Charter;
-            
-            $tipo_embarcacion = str_replace(" ", "_", $tipo_charter[$i]);
+        try {
 
-            $embarcacion = $_POST[$tipo_embarcacion."_embarcacion"];
-            $c_pasajeros = $_POST[$tipo_embarcacion."_c_pasajeros"];
-            $f_inicio = $_POST[$tipo_embarcacion."_f_inicio"];
-            $f_fin = $_POST[$tipo_embarcacion."_f_fin"];
-            
-            $arr_f_inicio = explode("/", $f_inicio);
-            $f_inicio = $arr_f_inicio[2]."-".$arr_f_inicio[1]."-".$arr_f_inicio[0];
-
-            $arr_f_fin = explode("/", $f_fin);
-            $f_fin = $arr_f_fin[2]."-".$arr_f_fin[1]."-".$arr_f_fin[0];
-
-            if(isset($_POST[$tipo_embarcacion."_deluxe"])){
-                $deluxe = "Si";
-            }else{
-                $deluxe = "No";
-            }
-            
-            $t_contrato = $_POST[$tipo_embarcacion."_t_contrato"];
-            $t_neta = $_POST[$tipo_embarcacion."_t_neta"];
-            $t_interm = $_POST[$tipo_embarcacion."_t_interm"];
-            $t_glc = $_POST[$tipo_embarcacion."_t_glc"];
-
-            $charter->codigo = $codigo_charter;
-            $charter->cliente = $cliente;
-            $charter->intermediarios_id = $intermediario;
-            //$charter->contrato = $contrato;
-            $charter->nro_pax = $c_pasajeros;
-            $charter->f_inicio = $f_inicio;
-            $charter->f_fin = $f_fin;
-            $charter->deluxe = $deluxe;
-            $charter->tarifa_contrato = $t_contrato;
-            $charter->tarifa_neta = $t_neta;
-            $charter->comision_intermediario = $t_interm;
-            $charter->comision_glc = $t_glc;
-            $charter->embarcacion_id = $embarcacion;
+            $t_charters = $request->tipo_charter;
             $contrato = Input::file('archivo_contrato');
             $destinoPath = public_path().'/images/contratos/';
             $name_file = time()."_".$contrato->getClientOriginalName();
             $subirContrato = $contrato->move($destinoPath, $name_file);
+                
+            $charter = new Charter;
+            $charter->intermediarios_id = $request->intermediario_id;
+            $charter->codigo = $request->id_charter;
+            $charter->cliente = $request->cliente;
 
             if($subirContrato){
                 $charter->contrato = $name_file;
+            }else{
+                $charter->contrato = "Sin contrato";
+            }
 
-                if($charter->save()){
-                    return view('admin.charters.dashboard_charters');
+            if(count($t_charters) > 1){
+                $charter->tipo_charter = "Mixto";
+            }else{
+                $charter->tipo_charter = "Normal";
+            }
+            
+            $charter->costo = $costo_total;
+
+            $charter->save();
+
+            for ($i = 0; $i < count($t_charters); $i++) { 
+                
+                $tipo_charter = new TipoCharter;
+
+                $tipo_embarcacion = str_replace(" ", "_", $t_charters[$i]);
+                $request->input($tipo_embarcacion."_f_inicio");
+
+                $embarcacion = $request->input($tipo_embarcacion."_embarcacion");
+                $c_pasajeros = $request->input($tipo_embarcacion."_c_pasajeros");
+                $f_inicio = $request->input($tipo_embarcacion."_f_inicio");
+                $f_fin = $request->input($tipo_embarcacion."_f_fin");
+                
+                $arr_f_inicio = explode("/", $f_inicio);
+                $f_inicio = $arr_f_inicio[2]."-".$arr_f_inicio[1]."-".$arr_f_inicio[0];
+
+                $arr_f_fin = explode("/", $f_fin);
+                $f_fin = $arr_f_fin[2]."-".$arr_f_fin[1]."-".$arr_f_fin[0];
+                $deluxe = $request->input($tipo_embarcacion."_deluxe");
+
+                if($deluxe == 'on'){
+                    $deluxe = "Si";
                 }else{
-                    return "Ocurrió un error registrando el charter";
+                    $deluxe = "No";
                 }
 
-            }else{
-                return "Ocurrió un error cargando el contrato";
+                $tipo_charter->charters_id = $charter->id;
+                $tipo_charter->embarcacion_id = $embarcacion;
+                $tipo_charter->nro_pax = $c_pasajeros;
+                $tipo_charter->f_inicio = $f_inicio;
+                $tipo_charter->f_fin = $f_fin;
+                $tipo_charter->deluxe = $deluxe;
+                $tipo_charter->tarifa_contrato = $request->input($tipo_embarcacion."_t_contrato");
+                $tipo_charter->tarifa_neta = $request->input($tipo_embarcacion."_t_neta");
+                $tipo_charter->comision_intermediario = $request->input($tipo_embarcacion."_t_interm");
+                $tipo_charter->comision_glc = $request->input($tipo_embarcacion."_t_glc");
+
+                $costo_total += $request->input($tipo_embarcacion."_t_contrato");
+                $tipo_charter->save();
             }
-        }        
+
+            Charter::where('id', $charter->id)->update(array('costo' => $costo_total));
+
+            DB::commit();
+            $success = true;
+        } 
+
+        catch (\Exception $e) {
+            $success = false;
+            $error = $e->getMessage();
+            DB::rollback();
+        }
+
+        if ($success) {
+            return Redirect::action('ChartersController@index');
+        }
+
+        else{
+           throw new \Exception('Error en la transaccion');
+        }
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -112,8 +144,9 @@ class ChartersController extends Controller
      */
     public function show($codigo)
     {
-        $charters = Charter::where('codigo',  $codigo)->get();
-        return view('admin.charters.ver_charter', ['charters' => $charters, 'codigo' => $codigo]);
+        $charter = Charter::where('codigo',  $codigo)->get();
+        $tipo_charter = TipoCharter::where('charters_id',  $charter[0]->id)->get();
+        return view('admin.charters.ver_charter', ['charter' => $charter, 'codigo' => $codigo, 'tipo_charter' => $tipo_charter]);
     }
 
     /**
@@ -147,58 +180,14 @@ class ChartersController extends Controller
      */
     public function getCharters()
     {
-        $codigos = array();
-
-        foreach (Charter::all() as $charter)
-        {
-            if(in_array($charter->codigo, $codigos)){
-                foreach ($charters as $key => $value) {
-                    if($value['codigo'] == $charter->codigo){
-                        $charters[$key]['embarcacion_id'] = 'Mixto';
-                    }
-                }
-                   
-            }else{
-                $charters[] = array(
-                                'id' => $charter->id,
-                                'codigo' => $charter->codigo,
-                                'embarcacion_id' => $charter->embarcacion->nombre_embarcacion,
-                                'intermediarios_id' => $charter->intermediario->nombre,
-                                'nro_pax' => $charter->nro_pax,
-                                'f_inicio' => $charter->f_inicio,
-                                'f_fin' => $charter->f_fin,
-                                'deluxe' => $charter->deluxe,
-                                'tarifa_contrato' => $charter->tarifa_contrato
-                            ); 
-                array_push($codigos, $charter->codigo);
-            }
-        }
-
-        if(isset($charters)){
-            json_encode($charters);
-        }
-        
-        else{
-            $charters = array();
-        }
+        $charters = Charter::select(['intermediarios.nombre', 'codigo', 'cliente', 'tipo_charter', 'costo'])
+                            ->join('intermediarios','intermediarios.id','=','intermediarios_id');
 
         return Datatables::of($charters)
             ->addColumn('action', function ($charters) {
                 return '<a href="charters/apa/ver_apa/'.$charters['codigo'].'"><i class="fa fa-money fa-fw" title="APA"></i></a> <a href="charters/ver/'.$charters['codigo'].'"><i class="fa fa-eye fa-fw" title="Ver"></i></a> <a href="charters/editar/'.$charters['codigo'].'"><i class="fa fa-edit fa-fw" title="Editar"></i></a> <a href="'.$charters['codigo'].'"><i class="fa fa-file-pdf-o fa-fw" title="Contrato"></i></a>';
             })
             ->editColumn('codigo', '{{$codigo}}')
-            ->editColumn('f_inicio', function ($charters) {
-                return $charters['f_inicio'] ? with(\Carbon\Carbon::parse($charters['f_inicio']))->format('d/m/Y') : '';
-            })
-            ->editColumn('f_fin', function ($charters) {
-                return $charters['f_fin'] ? with(\Carbon\Carbon::parse($charters['f_fin']))->format('d/m/Y') : '';
-            })
-            ->filterColumn('f_inicio', function ($query, $keyword) {
-                $query->whereRaw("DATE_FORMAT(f_inicio,'%d/%m/%Y') like ?", ["%$keyword%"]);
-            })
-            ->filterColumn('f_fin', function ($query, $keyword) {
-                $query->whereRaw("DATE_FORMAT(f_fin,'%d/%m/%Y') like ?", ["%$keyword%"]);
-            })
             ->make(true);
     }
 }

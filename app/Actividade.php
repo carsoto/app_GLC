@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 20 Mar 2018 20:51:40 +0000.
+ * Date: Wed, 21 Mar 2018 19:04:28 +0000.
  */
 
 namespace App;
@@ -20,7 +20,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property \Carbon\Carbon $updated_at
  * 
  * @property \App\Servicio $servicio
- * @property \Illuminate\Database\Eloquent\Collection $apas
+ * @property \Illuminate\Database\Eloquent\Collection $soporte_apas
  *
  * @package App
  */
@@ -41,8 +41,8 @@ class Actividade extends Eloquent
 		return $this->belongsTo(\App\Servicio::class, 'servicios_id');
 	}
 
-	public function apas()
+	public function soporte_apas()
 	{
-		return $this->hasMany(\App\Apa::class, 'actividades_id');
+		return $this->hasMany(\App\SoporteApa::class, 'actividades_id');
 	}
 }

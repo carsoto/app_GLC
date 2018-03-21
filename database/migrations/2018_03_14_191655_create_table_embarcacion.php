@@ -17,10 +17,10 @@ class CreateTableEmbarcacion extends Migration
             $table->engine = 'InnoDB';
         
             $table->increments('id')->unsigned();
+            $table->integer('tipo_embarcacion_id')->unsigned();
             $table->string('nombre_embarcacion', 150);
             $table->integer('cant_pasajeros');
-            $table->integer('tipo_embarcacion_id')->unsigned();
-        
+
             $table->index('tipo_embarcacion_id','fk_embarcacion_tipo_embarcacion1_idx');
         
             $table->foreign('tipo_embarcacion_id')->references('id')->on('tipo_embarcacion');

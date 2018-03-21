@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 20 Mar 2018 20:51:40 +0000.
+ * Date: Wed, 21 Mar 2018 19:04:29 +0000.
  */
 
 namespace App;
@@ -13,7 +13,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * Class Pasajero
  * 
  * @property int $id
- * @property int $charters_id
+ * @property int $tipo_charter_id
  * @property string $nombre
  * @property int $edad
  * @property string $condicion_medica
@@ -22,19 +22,19 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
- * @property \App\Charter $charter
+ * @property \App\TipoCharter $tipo_charter
  *
  * @package App
  */
 class Pasajero extends Eloquent
 {
 	protected $casts = [
-		'charters_id' => 'int',
+		'tipo_charter_id' => 'int',
 		'edad' => 'int'
 	];
 
 	protected $fillable = [
-		'charters_id',
+		'tipo_charter_id',
 		'nombre',
 		'edad',
 		'condicion_medica',
@@ -42,8 +42,8 @@ class Pasajero extends Eloquent
 		'parentesco_contacto'
 	];
 
-	public function charter()
+	public function tipo_charter()
 	{
-		return $this->belongsTo(\App\Charter::class, 'charters_id');
+		return $this->belongsTo(\App\TipoCharter::class);
 	}
 }

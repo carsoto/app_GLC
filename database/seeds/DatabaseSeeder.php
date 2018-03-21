@@ -13,5 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         //$this->call(ChartersSeeder::class);
         $this->call(TipoEmbarcacionSeeder::class);
+        $this->call(EmbarcacionSeeder::class);
+        $this->call(IntermediariosSeeder::class);
     }
 }

@@ -16,21 +16,21 @@ class CreateTablePasajeros extends Migration
         Schema::create('pasajeros', function(Blueprint $table) {
             $table->engine = 'InnoDB';
         
-            $table->increments('id');
-            $table->integer('charters_id')->unsigned();
+            $table->increments('id')->unsigned();
+            $table->integer('tipo_charter_id')->unsigned();
             $table->string('nombre', 100);
             $table->integer('edad');
-            $table->string('condicion_medica', 150)->default(null);
+            $table->string('condicion_medica', 150);
             $table->string('contacto_emergencia', 45);
             $table->string('parentesco_contacto', 45);
-            
-            $table->index(['charters_id'],'fk_pasajeros_charters1');
-            $table->foreign('charters_id')->references('id')->on('charters');
-
+        
+            $table->index('tipo_charter_id','fk_pasajeros_tipo_charter1_idx');
+        
+            $table->foreign('tipo_charter_id')->references('id')->on('tipo_charter');
+        
             $table->timestamps();
         
         });
-
 
     }
 

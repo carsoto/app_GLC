@@ -41,7 +41,7 @@
 						<label>Intermediario</label>
 						<select name="intermediario_id" class="form-control">
 							@foreach ($intermediarios as $intermediario)
-							<option value="{{ $intermediario->id }}">{{ $intermediario->nombre }}</option>
+								<option value="{{ $intermediario->id }}">{{ $intermediario->nombre }}</option>
 							@endforeach
 							
 						</select>

@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 20 Mar 2018 20:51:40 +0000.
+ * Date: Wed, 21 Mar 2018 19:04:29 +0000.
  */
 
 namespace App;
@@ -17,7 +17,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
- * @property \Illuminate\Database\Eloquent\Collection $apas
+ * @property \Illuminate\Database\Eloquent\Collection $soporte_apas
  *
  * @package App
  */
@@ -29,8 +29,8 @@ class TiposFactura extends Eloquent
 		'descripcion'
 	];
 
-	public function apas()
+	public function soporte_apas()
 	{
-		return $this->hasMany(\App\Apa::class);
+		return $this->hasMany(\App\SoporteApa::class);
 	}
 }

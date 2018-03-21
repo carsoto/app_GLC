@@ -19,8 +19,8 @@ class CreateTableActividades extends Migration
             $table->increments('id')->unsigned();
             $table->integer('servicios_id')->unsigned();
             $table->string('descripcion', 45);
-            $table->enum('categoria', ['Deluxe', 'Extra']);
-        
+            $table->enum('categoria', ['Deluxe',  'Extra']);
+
             $table->index('servicios_id','fk_actividades_servicios1_idx');
         
             $table->foreign('servicios_id')->references('id')->on('servicios');
