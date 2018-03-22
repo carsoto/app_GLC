@@ -1,6 +1,7 @@
 @extends('layouts.plane')
 
 @section('body')
+
 <div id="wrapper">
 
         <!-- Navigation -->

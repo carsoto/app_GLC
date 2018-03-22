@@ -156,12 +156,13 @@ class ChartersController extends Controller
      */
     public function edit($codigo)
     {
-        $charters = Charter::where('codigo',  $codigo)->get();
+        $charter = Charter::where('codigo',  $codigo)->get();
+        $tipo_charter = TipoCharter::where('charters_id',  $charter[0]->id)->get();
         $parentescos = array('Abuelo/a', 'Bisabuelo/a', 'Cuñado/a', 'Hermano/a', 'Hijo/a', 'Nieto/a', 'Padrastro/Madrastra', 'Padre/Madre', 'Primo/a', 'Sobrino/a', 'Suegro/a', 'Tío/a', 'Yerno/Nuera', 'Otro');
 
-        foreach ($charters as $charter) {
+        /*foreach ($charter as $charter) {
             $lista_pasajeros[$charter->embarcacion->tipo_embarcacion->desc_tipo] = Pasajero::where('charters_id',  $charter->id)->get();
-        }
+        }*/
 
         return view('admin.charters.editar_charter', ['charters' => $charters, 'codigo' => $codigo, 'parentescos' => $parentescos, 'lista_pasajeros' => $lista_pasajeros]);
     }
