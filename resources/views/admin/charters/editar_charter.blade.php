@@ -7,7 +7,7 @@
     <form role="form" id="form_actualizar_charter" action="{{ route('admin.charters.actualizar') }}" method="POST" enctype="multipart/form-data">
     	{{ csrf_field() }} 
         <fieldset>
-			@foreach ($charters as $charter)
+			@foreach ($tipo_charter as $charter)
 				<h3>{{ $charter->embarcacion->tipo_embarcacion->desc_tipo }}: {{ $charter->embarcacion->nombre_embarcacion }}</h3>
 				<?php $id_tipo_embarcacion = str_replace(' ','_',$charter->embarcacion->tipo_embarcacion->desc_tipo); ?>
 				<hr> 
@@ -34,19 +34,11 @@
 							</div>
 						</div>
 					</div>
-					<!--<div class="col-md-2">
-						<label>Cant. de pasajeros</label>
-						<div class="form-group">
-							<input name="{{ $id_tipo_embarcacion }}_c_pasajeros" id="{{ $id_tipo_embarcacion }}_c_pasajeros" type="text" onKeyPress="return tipoNumeros(event)" placeholder="0" class="form-control" value="{{ $charter->nro_pax }}">
-						</div>
-					</div>-->
 				</div>
 				<div class="row">
 					<div class="col-lg-12">
 						<label>Lista de Pasajeros</label>
 						<br>
-						<button type="button" onclick="agregar_pasajero('{{ $id_tipo_embarcacion }}');" class="btn btn-sm btn-success"><i class="fa fa-plus fa-fw"></i> Nuevo pasajero</button>
-						<br><br>
 						<table class="table table-bordered" id="{{ $id_tipo_embarcacion }}_detalles_pasajeros">
 							<thead>
 								<tr>
@@ -59,66 +51,62 @@
 								</tr>
 							</thead>
 							<tbody>
-								@for ($i = 0; $i < $charter->nro_pax; $i++)
-									@if(count($lista_pasajeros[$charter->embarcacion->tipo_embarcacion->desc_tipo]) > 0)
-
-										@if (isset($lista_pasajeros[$charter->embarcacion->tipo_embarcacion->desc_tipo][$i]))
-											<tr>
-												<td><input name="nombre_pasajero[]" id="nombre_pasajero[]" class="form-control" placeholder="Nombre y apellido" onKeyPress="return validarTexto(event)" value="{{ $lista_pasajeros[$charter->embarcacion->tipo_embarcacion->desc_tipo][$i]->nombre }}"></td>
-												<td><input name="{{ $id_tipo_embarcacion }}_edad[]" id="{{ $id_tipo_embarcacion }}_edad[]" type="text" onKeyPress="return tipoNumeros(event)" placeholder="0" class="form-control" value="{{ $lista_pasajeros[$charter->embarcacion->tipo_embarcacion->desc_tipo][$i]->edad }}"></td>
-												<td><input name="condicion_medica[]" id="condicion_medica[]" class="form-control" placeholder="Condición médica" onKeyPress="return validarTexto(event)" value="{{ $lista_pasajeros[$charter->embarcacion->tipo_embarcacion->desc_tipo][$i]->condicion_medica }}"></td>
-												<td><input name="{{ $id_tipo_embarcacion }}_nro_emergencia[]" id="{{ $id_tipo_embarcacion }}_nro_emergencia[]" type="text" onKeyPress="return numeroTelefono(event)" placeholder="+59399999999" class="form-control" value="{{ $lista_pasajeros[$charter->embarcacion->tipo_embarcacion->desc_tipo][$i]->contacto_emergcencia }}"></td>
-												<td>
-													<select name="{{ $id_tipo_embarcacion }}_parentesco[]" class="form-control">
-														@foreach ($parentescos as $parentesco)
-															@if ($parentesco == $lista_pasajeros[$charter->embarcacion->tipo_embarcacion->desc_tipo][$i]->parentesco_contacto)
-																<option value="{{ $parentesco }}" selected>{{ $parentesco }}</option>
-															@else
-																<option value="{{ $parentesco }}">{{ $parentesco }}</option>
-															@endif
-														@endforeach
-								                	</select>
-								            	</td>
-												<td style="text-align: center;"><button type="button" onclick="eliminar_pasajero('{{ $id_tipo_embarcacion }}');" class="btn btn-danger btn-circle eliminalinea"><i class="fa fa-minus fa-fw"></i></button></td>
-											</tr>
-										@else
-											<tr>
-								            	<td><input name="nombre_pasajero[]" id="nombre_pasajero[]" class="form-control" placeholder="Nombre y apellido" onKeyPress="return validarTexto(event)"></td>
-												<td><input name="{{ $id_tipo_embarcacion }}_edad[]" id="{{ $id_tipo_embarcacion }}_edad[]" type="text" onKeyPress="return tipoNumeros(event)" placeholder="0" class="form-control"></td>
-												<td><input name="condicion_medica[]" id="condicion_medica[]" class="form-control" placeholder="Condición médica" onKeyPress="return validarTexto(event)"></td>
-												<td><input name="{{ $id_tipo_embarcacion }}_nro_emergencia[]" id="{{ $id_tipo_embarcacion }}_nro_emergencia[]" type="text" onKeyPress="return numeroTelefono(event)" placeholder="+59399999999" class="form-control"></td>
-												<td>
-													<select name="{{ $id_tipo_embarcacion }}_parentesco[]" class="form-control">
-														@foreach ($parentescos as $parentesco)
-															<option value="{{ $parentesco }}">{{ $parentesco }}</option>
-														@endforeach
-								                	</select>
-								            	</td>
-												<td style="text-align: center;"><button type="button" onclick="eliminar_pasajero('{{ $id_tipo_embarcacion }}');" class="btn btn-danger btn-circle eliminalinea"><i class="fa fa-minus fa-fw"></i></button></td>
-											</tr>
-										@endif
-									@else
-										<tr>
-											<td><input name="{{ $id_tipo_embarcacion }}_nombre_pasajero[]" id="nombre_pasajero[]" class="form-control" placeholder="Nombre y apellido" onKeyPress="return validarTexto(event)"></td>
-											<td><input name="{{ $id_tipo_embarcacion }}_edad[]" id="{{ $id_tipo_embarcacion }}_edad[]" type="text" onKeyPress="return tipoNumeros(event)" placeholder="0" class="form-control"></td>
-											<td><input name="{{ $id_tipo_embarcacion }}_condicion_medica[]" id="condicion_medica[]" class="form-control" placeholder="Condición médica" onKeyPress="return validarTexto(event)"></td>
-											<td><input name="{{ $id_tipo_embarcacion }}_nro_emergencia[]" id="{{ $id_tipo_embarcacion }}_nro_emergencia[]" type="text" onKeyPress="return numeroTelefono(event)" placeholder="+59399999999" class="form-control"></td>
+								@if(count($lista_pasajeros[$charter->embarcacion->tipo_embarcacion->desc_tipo]) > 0)
+									@for ($i = 0; $i < count($lista_pasajeros[$charter->embarcacion->tipo_embarcacion->desc_tipo]); $i++)
+										<tr class="tr_clone">
+											<td><input name="{{ $id_tipo_embarcacion }}_nombre_pasajero[]" class="form-control" placeholder="Nombre y apellido" onKeyPress="return validarTexto(event)"></td>
+											<td><input name="{{ $id_tipo_embarcacion }}_edad[]" type="text" onKeyPress="return tipoNumeros(event)" placeholder="0" class="form-control"></td>
 											<td>
-												<select name="{{ $id_tipo_embarcacion }}_parentesco[]" class="form-control">
+											<select name="{{ $id_tipo_embarcacion }}_condicion_medica[]" class="form-control select_condicion_medica" multiple="multiple">
+												<option selected="selected">orange</option>
+												<option>white</option>
+												<option selected="selected">purple</option>
+												</select>
+											</td>
+											<td><input name="{{ $id_tipo_embarcacion }}_nro_emergencia[]" type="text" onKeyPress="return numeroTelefono(event)" placeholder="+59399999999" class="form-control"></td>
+											<td>
+												<select name="{{ $id_tipo_embarcacion }}_parentesco[]" class="form-control select_parentescos">
 													@foreach ($parentescos as $parentesco)
-														<option value="{{ $parentesco }}">{{ $parentesco }}</option>
+														<option value="{{ $parentesco->descripcion }}">{{ $parentesco->descripcion }}</option>
 													@endforeach
-							                	</select>
-							            	</td>
-											<td style="text-align: center;"><button type="button" onclick="eliminar_pasajero('{{ $id_tipo_embarcacion }}');" class="btn btn-danger btn-circle eliminalinea"><i class="fa fa-minus fa-fw"></i></button></td>
+												</select>
+											</td>
+											<td>
+												<button type="button" class="btn btn-success btn-circle tr_clone_add" name="add"><i class="fa fa-plus fa-fw"></i></button>
+												<button type="button" class="btn btn-danger btn-circle tr_remove" name="remove" idtabla="{{ $id_tipo_embarcacion }}_detalles_pasajeros"><i class="fa fa-minus fa-fw"></i></button>
+											</td>
 										</tr>
-									@endif
-									
-								@endfor
+									@endfor
+								@else
+									<tr class="tr_clone">
+										<td><input name="{{ $id_tipo_embarcacion }}_nombre_pasajero[]" class="form-control" placeholder="Nombre y apellido" onKeyPress="return validarTexto(event)"></td>
+										<td><input name="{{ $id_tipo_embarcacion }}_edad[]" type="text" onKeyPress="return tipoNumeros(event)" placeholder="0" class="form-control"></td>
+										<td>
+										<select name="{{ $id_tipo_embarcacion }}_condicion_medica[]" class="form-control select_condicion_medica" multiple="multiple">
+											<option selected="selected">orange</option>
+											<option>white</option>
+											<option selected="selected">purple</option>
+											</select>
+										</td>
+										<td><input name="{{ $id_tipo_embarcacion }}_nro_emergencia[]" type="text" onKeyPress="return numeroTelefono(event)" placeholder="+59399999999" class="form-control"></td>
+										<td>
+											<select name="{{ $id_tipo_embarcacion }}_parentesco[]" class="form-control select_parentescos">
+												@foreach ($parentescos as $parentesco)
+													<option value="{{ $parentesco->descripcion }}">{{ $parentesco->descripcion }}</option>
+												@endforeach
+											</select>
+										</td>
+										<td>
+											<button type="button" class="btn btn-success btn-circle tr_clone_add" name="add"><i class="fa fa-plus fa-fw"></i></button>
+											<button type="button" class="btn btn-danger btn-circle tr_remove" name="remove" idtabla="{{ $id_tipo_embarcacion }}_detalles_pasajeros"><i class="fa fa-minus fa-fw"></i></button>
+										</td>
+									</tr>
+								@endif
 							</tbody>
 						</table>
 					</div>
 				</div>
+
 				<!-- Detalles de Actividades -->
 				<div class="row">
 					<div class="col-lg-12">
@@ -161,20 +149,46 @@
 		showAnim: "clip"
 	});
 	
-	function agregar_pasajero(tipo){
-		var clonarfila= $("#" + tipo + "_detalles_pasajeros").find("tbody tr:last").clone().find("input:text").val("").end();
-		$("#" + tipo + "_detalles_pasajeros tbody").append(clonarfila);
-	}
+	$('.select_parentescos').select2({
+		width: '200px',
+		tags: true
+	});
 
-	function eliminar_pasajero(tipo) {
-		$("#" + tipo + "_detalles_pasajeros").on('click', '.eliminalinea', function () {
-			var numeroFilas = $("#" + tipo + "_detalles_pasajeros tr").length;
-			if(numeroFilas > 2){
-				$(this).closest('tr').remove();
-			}
-		});
-	}
-
+	$('.select_condicion_medica').select2({
+		width: '200px',
+		tags: true,
+		tokenSeparators: [',', ',']
+	});
 	
+	$("table").on('click','.tr_clone_add' ,function() {
+		$('.select_condicion_medica').select2("destroy"); 
+		$('.select_parentescos').select2("destroy"); 
+
+		var $tr = $(this).closest('.tr_clone');
+		var $clone = $tr.clone();
+
+		$tr.after($clone);
+
+		$('.select_condicion_medica').select2({
+			width: '150px',
+			tags: true,
+			tokenSeparators: [',', ',']
+		});
+
+		$('.select_parentescos').select2({
+			width: '200px',
+			tags: true
+		});
+
+		$clone.find('.select_condicion_medica').select2('val', '');
+	});
+
+	$("table").on('click','.tr_remove', function() {
+		var tabla = $(this).attr("idtabla");
+		var numeroFilas = $("#" + tabla + " tr").length;
+		if(numeroFilas > 2){
+			$(this).closest('tr').remove();
+		}
+	});
 </script>
 @stop

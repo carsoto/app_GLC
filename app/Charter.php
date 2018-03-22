@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Wed, 21 Mar 2018 19:04:29 +0000.
+ * Date: Thu, 22 Mar 2018 16:47:34 +0000.
  */
 
 namespace App;
@@ -35,7 +35,6 @@ class Charter extends Eloquent
 	];
 
 	protected $fillable = [
-		'id',
 		'intermediarios_id',
 		'codigo',
 		'cliente',

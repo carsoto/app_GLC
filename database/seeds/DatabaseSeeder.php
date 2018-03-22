@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(TipoEmbarcacionSeeder::class);
         $this->call(EmbarcacionSeeder::class);
         $this->call(IntermediariosSeeder::class);
+        $this->call(ParentescosSeeder::class);
     }
 }

@@ -8,6 +8,7 @@ use App\TipoEmbarcacion;
 use App\Intermediario;
 use App\Pasajero;
 use App\TipoCharter;
+use App\Parentesco;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Input;
@@ -158,13 +159,13 @@ class ChartersController extends Controller
     {
         $charter = Charter::where('codigo',  $codigo)->get();
         $tipo_charter = TipoCharter::where('charters_id',  $charter[0]->id)->get();
-        $parentescos = array('Abuelo/a', 'Bisabuelo/a', 'Cuñado/a', 'Hermano/a', 'Hijo/a', 'Nieto/a', 'Padrastro/Madrastra', 'Padre/Madre', 'Primo/a', 'Sobrino/a', 'Suegro/a', 'Tío/a', 'Yerno/Nuera', 'Otro');
+        $parentescos = Parentesco::all();
 
-        /*foreach ($charter as $charter) {
-            $lista_pasajeros[$charter->embarcacion->tipo_embarcacion->desc_tipo] = Pasajero::where('charters_id',  $charter->id)->get();
-        }*/
+        foreach ($tipo_charter as $t_charter) {
+            $lista_pasajeros[$t_charter->embarcacion->tipo_embarcacion->desc_tipo] = Pasajero::where('tipo_charter_id',  $t_charter->id)->get();
+        }
 
-        return view('admin.charters.editar_charter', ['charters' => $charters, 'codigo' => $codigo, 'parentescos' => $parentescos, 'lista_pasajeros' => $lista_pasajeros]);
+        return view('admin.charters.editar_charter', ['charter' => $charter, 'codigo' => $codigo, 'tipo_charter' => $tipo_charter, 'parentescos' => $parentescos, 'lista_pasajeros' => $lista_pasajeros]);
     }
 
     public function update(Request $request){
