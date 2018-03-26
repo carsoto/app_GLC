@@ -17,16 +17,17 @@ class CreateTableCharters extends Migration
             $table->engine = 'InnoDB';
         
             $table->increments('id')->unsigned();
-            $table->integer('intermediarios_id')->unsigned();
             $table->string('codigo', 191);
             $table->string('cliente', 80);
+            $table->integer('brokers_id')->unsigned();
             $table->string('tipo_charter', 120);
-            $table->string('contrato', 255)->nullable();
-            $table->float('costo', 8, 2)->nullable();
-
-            $table->index('intermediarios_id','fk_charters_intermediarios1_idx');
+            $table->string('contrato', 255)->nullable()->default(null);
+            $table->decimal('costo', 8, 2)->nullable()->default(null);
         
-            $table->foreign('intermediarios_id')->references('id')->on('intermediarios');
+            $table->index('brokers_id','fk_charters_brokers1_idx');
+        
+            $table->foreign('brokers_id')
+                ->references('id')->on('brokers');
         
             $table->timestamps();
         

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableEmbarcacion extends Migration
+class CreateTableActividades extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,18 @@ class CreateTableEmbarcacion extends Migration
      */
     public function up()
     {
-        Schema::create('embarcacion', function(Blueprint $table) {
+        Schema::create('actividades', function(Blueprint $table) {
             $table->engine = 'InnoDB';
         
             $table->increments('id')->unsigned();
-            $table->integer('tipo_embarcacion_id')->unsigned();
-            $table->string('nombre_embarcacion', 150);
-            $table->integer('cant_pasajeros');
-
-            $table->index('tipo_embarcacion_id','fk_embarcacion_tipo_embarcacion1_idx');
+            $table->integer('servicios_id')->unsigned();
+            $table->string('descripcion', 45);
+            $table->enum('categoria', ['Deluxe',  'Extra']);
         
-            $table->foreign('tipo_embarcacion_id')->references('id')->on('tipo_embarcacion');
+            $table->index('servicios_id','fk_actividades_servicios1_idx');
+        
+            $table->foreign('servicios_id')
+                ->references('id')->on('servicios');
         
             $table->timestamps();
         
@@ -39,7 +40,7 @@ class CreateTableEmbarcacion extends Migration
      */
     public function down()
     {
-        Schema::drop('embarcacion');
+        Schema::drop('actividades');
 
     }
 }

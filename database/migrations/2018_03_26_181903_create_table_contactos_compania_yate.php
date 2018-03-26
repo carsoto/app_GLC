@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTablePasajeros extends Migration
+class CreateTableContactosCompaniaYate extends Migration
 {
     /**
      * Run the migrations.
@@ -13,24 +13,24 @@ class CreateTablePasajeros extends Migration
      */
     public function up()
     {
-        Schema::create('pasajeros', function(Blueprint $table) {
+        Schema::create('contactos_compania_yate', function(Blueprint $table) {
             $table->engine = 'InnoDB';
         
             $table->increments('id')->unsigned();
-            $table->integer('tipo_charter_id')->unsigned();
+            $table->integer('compania_yate_id')->unsigned();
             $table->string('nombre', 100);
-            $table->integer('edad');
-            $table->string('condicion_medica', 150);
-            $table->string('contacto_emergencia', 45);
-            $table->string('parentesco_contacto', 45);
+            $table->string('email', 150);
+            $table->string('telefono', 45)->nullable();
         
-            $table->index('tipo_charter_id','fk_pasajeros_tipo_charter1_idx');
+            $table->index('compania_yate_id','fk_contacto_compania_yate_compania_yate1_idx');
         
-            $table->foreign('tipo_charter_id')->references('id')->on('tipo_charter');
+            $table->foreign('compania_yate_id')
+                ->references('id')->on('companias_yate');
         
             $table->timestamps();
         
         });
+
 
     }
 
@@ -41,7 +41,7 @@ class CreateTablePasajeros extends Migration
      */
     public function down()
     {
-        Schema::drop('pasajeros');
+        Schema::drop('contactos_compania_yate');
 
     }
 }

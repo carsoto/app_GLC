@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableParentescos extends Migration
+class CreateTablePuertos extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,18 @@ class CreateTableParentescos extends Migration
      */
     public function up()
     {
-        Schema::create('parentescos', function(Blueprint $table) {
+        Schema::create('puertos', function(Blueprint $table) {
             $table->engine = 'InnoDB';
         
             $table->increments('id')->unsigned();
-            $table->string('descripcion', 80);
+            $table->string('descripcion', 100);
+            $table->string('ubicacion', 250)->nullable();
         
             $table->timestamps();
         
         });
+
+
     }
 
     /**
@@ -31,6 +34,7 @@ class CreateTableParentescos extends Migration
      */
     public function down()
     {
-        Schema::drop('parentescos');
+        Schema::drop('puertos');
+
     }
 }

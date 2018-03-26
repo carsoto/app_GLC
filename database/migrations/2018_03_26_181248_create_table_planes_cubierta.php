@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableTiposFacturas extends Migration
+class CreateTablePlanesCubierta extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTableTiposFacturas extends Migration
      */
     public function up()
     {
-        Schema::create('tipos_factura', function(Blueprint $table) {
+        Schema::create('planes_cubierta', function(Blueprint $table) {
             $table->engine = 'InnoDB';
         
             $table->increments('id')->unsigned();
@@ -22,6 +22,8 @@ class CreateTableTiposFacturas extends Migration
             $table->timestamps();
         
         });
+
+
     }
 
     /**
@@ -31,6 +33,7 @@ class CreateTableTiposFacturas extends Migration
      */
     public function down()
     {
-        Schema::drop('tipos_factura');
+        Schema::drop('planes_cubierta');
+
     }
 }

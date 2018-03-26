@@ -1,0 +1,42 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateTableItinerarios extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('itinerarios', function(Blueprint $table) {
+            $table->engine = 'InnoDB';
+        
+            $table->increments('id')->unsigned();
+            $table->string('nombre', 50);
+            $table->integer('dia');
+            $table->string('am', 100);
+            $table->string('pm', 100);
+        
+            $table->timestamps();
+        
+        });
+
+
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::drop('itinerarios');
+
+    }
+}

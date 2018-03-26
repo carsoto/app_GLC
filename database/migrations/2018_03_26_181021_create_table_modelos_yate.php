@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableApa extends Migration
+class CreateTableModelosYate extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateTableApa extends Migration
      */
     public function up()
     {
-        Schema::create('apa', function(Blueprint $table) {
+        Schema::create('modelos_yate', function(Blueprint $table) {
             $table->engine = 'InnoDB';
         
-            $table->integer('soporte_apa_id')->unsigned();
-            $table->integer('charters_id')->unsigned();
-        
-            $table->index('soporte_apa_id','fk_apa_soporte_apa1_idx');
-            $table->index('charters_id','fk_apa_charters1_idx');
+            $table->increments('id')->unsigned();
+            $table->string('descripcion', 100);
         
             $table->timestamps();
         
@@ -36,7 +33,7 @@ class CreateTableApa extends Migration
      */
     public function down()
     {
-        Schema::drop('apa');
+        Schema::drop('modelos_yate');
 
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableSoporteApa extends Migration
+class CreateTableSoportesApa extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTableSoporteApa extends Migration
      */
     public function up()
     {
-        Schema::create('soporte_apa', function(Blueprint $table) {
+        Schema::create('soportes_apa', function(Blueprint $table) {
             $table->engine = 'InnoDB';
         
             $table->increments('id')->unsigned();
@@ -23,13 +23,15 @@ class CreateTableSoporteApa extends Migration
             $table->string('desc_factura', 255);
             $table->decimal('monto', 8, 2);
             $table->string('soporte', 255);
-            
+        
             $table->index('tipos_factura_id','fk_soporte_apa_tipos_factura1_idx');
             $table->index('actividades_id','fk_soporte_apa_actividades1_idx');
         
-            $table->foreign('tipos_factura_id')->references('id')->on('tipos_factura');
+            $table->foreign('actividades_id')
+                ->references('id')->on('actividades');
         
-            $table->foreign('actividades_id')->references('id')->on('actividades');
+            $table->foreign('tipos_factura_id')
+                ->references('id')->on('tipos_factura');
         
             $table->timestamps();
         
@@ -45,7 +47,7 @@ class CreateTableSoporteApa extends Migration
      */
     public function down()
     {
-        Schema::drop('soporte_apa');
+        Schema::drop('soportes_apa');
 
     }
 }
