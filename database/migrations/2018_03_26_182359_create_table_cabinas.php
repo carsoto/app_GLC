@@ -19,6 +19,7 @@ class CreateTableCabinas extends Migration
             $table->integer('yates_id')->unsigned();
             $table->integer('planes_cubierta_id')->unsigned();
             $table->integer('tipos_cabina_id')->unsigned();
+            $table->integer('cantidad');
         
             $table->index('planes_cubierta_id','fk_cabinas_planes_cubierta1_idx');
             $table->index('tipos_cabina_id','fk_cabinas_tipos_cabina1_idx');
