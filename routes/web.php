@@ -156,4 +156,17 @@ Route::group(['prefix' => 'admin'], function () {
 			Route::get('/ver_apa', 'ChartersController@verApa');
 		});
 	});
+	
+	Route::group(['prefix' => 'yates'], function () {
+
+		Route::get('/', 'YatesController@index');
+ 
+		Route::get('/yates', 'YatesController@getCharters')->name('datatable.yates');
+
+		Route::get('/create', 'YatesController@create');
+
+		Route::post('/store', 'YatesController@store')->name('admin.yates.store');
+
+		Route::get('/yates', 'YatesController@getYates')->name('datatable.yates');
+	});
 });

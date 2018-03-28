@@ -10,27 +10,39 @@ namespace App;
 use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
- * Class TiposFactura
+ * Class Actividade
  * 
  * @property int $id
+ * @property int $servicios_id
  * @property string $descripcion
+ * @property string $categoria
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
+ * @property \App\Servicio $servicio
  * @property \Illuminate\Database\Eloquent\Collection $soportes_apas
  *
  * @package App
  */
-class TiposFactura extends Eloquent
+class Actividade extends Eloquent
 {
-	protected $table = 'tipos_factura';
+	protected $casts = [
+		'servicios_id' => 'int'
+	];
 
 	protected $fillable = [
-		'descripcion'
+		'servicios_id',
+		'descripcion',
+		'categoria'
 	];
+
+	public function servicio()
+	{
+		return $this->belongsTo(\App\Servicio::class, 'servicios_id');
+	}
 
 	public function soportes_apas()
 	{
-		return $this->hasMany(\App\SoportesApa::class);
+		return $this->hasMany(\App\SoportesApa::class, 'actividades_id');
 	}
 }

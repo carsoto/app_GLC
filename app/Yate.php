@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Mon, 26 Mar 2018 20:07:34 +0000.
+ * Date: Tue, 27 Mar 2018 17:49:12 +0000.
  */
 
 namespace App;
@@ -30,7 +30,6 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $anyo_construccion
  * @property string $refit
  * @property string $propietario
- * @property float $tarifa
  * @property int $companias_yate_id
  * @property int $modelos_yate_id
  * @property int $tipos_patente_id
@@ -53,7 +52,6 @@ class Yate extends Eloquent
 		'puerto_registro_id' => 'int',
 		'kayacks' => 'int',
 		'paddle_boards' => 'int',
-		'tarifa' => 'float',
 		'companias_yate_id' => 'int',
 		'modelos_yate_id' => 'int',
 		'tipos_patente_id' => 'int'
@@ -77,7 +75,6 @@ class Yate extends Eloquent
 		'anyo_construccion',
 		'refit',
 		'propietario',
-		'tarifa',
 		'companias_yate_id',
 		'modelos_yate_id',
 		'tipos_patente_id'
@@ -116,6 +113,7 @@ class Yate extends Eloquent
 	public function itinerarios()
 	{
 		return $this->belongsToMany(\App\Itinerario::class, 'yates_itinerarios', 'yates_id', 'itinerarios_id')
+					->withPivot('tarifa')
 					->withTimestamps();
 	}
 }

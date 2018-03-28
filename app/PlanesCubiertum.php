@@ -10,27 +10,25 @@ namespace App;
 use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
- * Class Puerto
+ * Class PlanesCubiertum
  * 
  * @property int $id
  * @property string $descripcion
- * @property string $ubicacion
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
- * @property \Illuminate\Database\Eloquent\Collection $yates
+ * @property \App\Cabina $cabina
  *
  * @package App
  */
-class Puerto extends Eloquent
+class PlanesCubiertum extends Eloquent
 {
 	protected $fillable = [
-		'descripcion',
-		'ubicacion'
+		'descripcion'
 	];
 
-	public function yates()
+	public function cabina()
 	{
-		return $this->hasMany(\App\Yate::class, 'puerto_registro_id');
+		return $this->hasOne(\App\Cabina::class, 'planes_cubierta_id');
 	}
 }

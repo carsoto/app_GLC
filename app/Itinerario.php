@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Mon, 26 Mar 2018 20:07:33 +0000.
+ * Date: Tue, 27 Mar 2018 17:49:12 +0000.
  */
 
 namespace App;
@@ -40,6 +40,7 @@ class Itinerario extends Eloquent
 	public function yates()
 	{
 		return $this->belongsToMany(\App\Yate::class, 'yates_itinerarios', 'itinerarios_id', 'yates_id')
+					->withPivot('tarifa')
 					->withTimestamps();
 	}
 }

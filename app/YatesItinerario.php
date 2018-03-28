@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Mon, 26 Mar 2018 20:07:34 +0000.
+ * Date: Tue, 27 Mar 2018 17:49:12 +0000.
  */
 
 namespace App;
@@ -14,6 +14,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * 
  * @property int $yates_id
  * @property int $itinerarios_id
+ * @property float $tarifa
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
@@ -28,12 +29,14 @@ class YatesItinerario extends Eloquent
 
 	protected $casts = [
 		'yates_id' => 'int',
-		'itinerarios_id' => 'int'
+		'itinerarios_id' => 'int',
+		'tarifa' => 'float'
 	];
 
 	protected $fillable = [
 		'yates_id',
-		'itinerarios_id'
+		'itinerarios_id',
+		'tarifa'
 	];
 
 	public function itinerario()

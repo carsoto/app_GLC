@@ -18,7 +18,8 @@ class CreateTableYatesItinerarios extends Migration
         
             $table->integer('yates_id')->unsigned();
             $table->integer('itinerarios_id')->unsigned();
-        
+            $table->decimal('tarifa', 8, 2);
+            
             $table->index('yates_id','fk_yates_itinerarios_yates1_idx');
             $table->index('itinerarios_id','fk_yates_itinerarios_itinerarios1_idx');
         

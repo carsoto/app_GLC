@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Mon, 26 Mar 2018 20:07:33 +0000.
+ * Date: Tue, 27 Mar 2018 17:49:12 +0000.
  */
 
 namespace App;
@@ -15,6 +15,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $yates_id
  * @property int $planes_cubierta_id
  * @property int $tipos_cabina_id
+ * @property int $cantidad
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
@@ -31,13 +32,15 @@ class Cabina extends Eloquent
 	protected $casts = [
 		'yates_id' => 'int',
 		'planes_cubierta_id' => 'int',
-		'tipos_cabina_id' => 'int'
+		'tipos_cabina_id' => 'int',
+		'cantidad' => 'int'
 	];
 
 	protected $fillable = [
 		'yates_id',
 		'planes_cubierta_id',
-		'tipos_cabina_id'
+		'tipos_cabina_id',
+		'cantidad'
 	];
 
 	public function planes_cubiertum()

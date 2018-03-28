@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Mon, 26 Mar 2018 20:07:33 +0000.
+ * Date: Tue, 27 Mar 2018 17:49:12 +0000.
  */
 
 namespace App;
@@ -51,9 +51,9 @@ class SoportesApa extends Eloquent
 		'soporte'
 	];
 
-	public function actividad()
+	public function actividade()
 	{
-		return $this->belongsTo(\App\Actividad::class, 'actividades_id');
+		return $this->belongsTo(\App\Actividade::class, 'actividades_id');
 	}
 
 	public function tipos_factura()

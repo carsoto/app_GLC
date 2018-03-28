@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Mon, 26 Mar 2018 20:07:33 +0000.
+ * Date: Tue, 27 Mar 2018 17:49:12 +0000.
  */
 
 namespace App;
@@ -29,6 +29,6 @@ class Servicio extends Eloquent
 
 	public function actividades()
 	{
-		return $this->hasMany(\App\Actividad::class, 'servicios_id');
+		return $this->hasMany(\App\Actividade::class, 'servicios_id');
 	}
 }
