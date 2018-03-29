@@ -33,7 +33,9 @@ class YatesController extends Controller
         $modelos = ModelosYate::pluck('descripcion', 'id');
         $tipos_patente = TiposPatente::pluck('descripcion', 'id');
         $puertos = Puerto::pluck('descripcion', 'id');
-        return view('admin.yates.create', array('companias_yate' => $companias_yate, 'modelos' => $modelos, 'tipos_patente' => $tipos_patente, 'puertos' => $puertos));
+        $dias = array('1' => 'Monday', '2' => 'Tuesday', '3' => 'Wednesday', '4' => 'Thursday', '5' => 'Friday', '6' => 'Saturday', '7' => 'Sunday');
+
+        return view('admin.yates.create', array('companias_yate' => $companias_yate, 'modelos' => $modelos, 'tipos_patente' => $tipos_patente, 'puertos' => $puertos, 'dias' => $dias));
     }
 
     /**

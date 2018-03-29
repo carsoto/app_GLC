@@ -12,9 +12,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         //$this->call(ChartersSeeder::class);
-        $this->call(TipoEmbarcacionSeeder::class);
-        $this->call(EmbarcacionSeeder::class);
-        $this->call(IntermediariosSeeder::class);
         $this->call(ParentescosSeeder::class);
+        $this->call(ModelosYateSeeder::class);
+        $this->call(PuertosSeeder::class);
+        $this->call(TiposPatenteSeeder::class);
     }
 }

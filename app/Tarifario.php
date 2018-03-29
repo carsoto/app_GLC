@@ -10,43 +10,40 @@ namespace App;
 use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
- * Class YatesItinerario
+ * Class Tarifario
  * 
+ * @property int $id
  * @property int $yates_id
- * @property int $itinerarios_id
- * @property int $dia
- * @property string $am
- * @property string $pm
+ * @property float $cant_dias
+ * @property float $gross
+ * @property float $neto
+ * @property float $comision_glc
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
- * @property \App\Itinerario $itinerario
  * @property \App\Yate $yate
  *
  * @package App
  */
-class YatesItinerario extends Eloquent
+class Tarifario extends Eloquent
 {
-	public $incrementing = false;
+	protected $table = 'tarifario';
 
 	protected $casts = [
 		'yates_id' => 'int',
-		'itinerarios_id' => 'int',
-		'dia' => 'int'
+		'cant_dias' => 'float',
+		'gross' => 'float',
+		'neto' => 'float',
+		'comision_glc' => 'float'
 	];
 
 	protected $fillable = [
 		'yates_id',
-		'itinerarios_id',
-		'dia',
-		'am',
-		'pm'
+		'cant_dias',
+		'gross',
+		'neto',
+		'comision_glc'
 	];
-
-	public function itinerario()
-	{
-		return $this->belongsTo(\App\Itinerario::class, 'itinerarios_id');
-	}
 
 	public function yate()
 	{

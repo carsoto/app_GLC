@@ -37,7 +37,13 @@ class CreateTableYates extends Migration
             $table->integer('companias_yate_id')->unsigned();
             $table->integer('modelos_yate_id')->unsigned();
             $table->integer('tipos_patente_id')->unsigned();
-        
+            $table->string('incluye', 500);
+            $table->string('no_incluye', 500);
+            $table->string('politicas_pago', 500);
+            $table->string('cancelaciones', 500);
+            $table->string('deck_plan', 1000);
+            $table->decimal('tarifa_temp_alta', 8, 2)->nullable()->default(null);
+
             $table->index('puerto_registro_id','fk_yate_puertos1_idx');
             $table->index('companias_yate_id','fk_yates_companias_yate1_idx');
             $table->index('modelos_yate_id','fk_yates_modelos_yate1_idx');

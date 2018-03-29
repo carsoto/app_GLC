@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 27 Mar 2018 17:49:12 +0000.
+ * Date: Thu, 29 Mar 2018 17:03:36 +0000.
  */
 
 namespace App;
@@ -33,6 +33,12 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $companias_yate_id
  * @property int $modelos_yate_id
  * @property int $tipos_patente_id
+ * @property string $incluye
+ * @property string $no_incluye
+ * @property string $politicas_pago
+ * @property string $cancelaciones
+ * @property string $desck_plan
+ * @property float $tarifa_temp_alta
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
@@ -41,6 +47,8 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property \App\Puerto $puerto
  * @property \App\TiposPatente $tipos_patente
  * @property \App\Cabina $cabina
+ * @property \Illuminate\Database\Eloquent\Collection $tarifarios
+ * @property \Illuminate\Database\Eloquent\Collection $temporadas_altas
  * @property \Illuminate\Database\Eloquent\Collection $tipos_charters
  * @property \Illuminate\Database\Eloquent\Collection $itinerarios
  *
@@ -54,7 +62,8 @@ class Yate extends Eloquent
 		'paddle_boards' => 'int',
 		'companias_yate_id' => 'int',
 		'modelos_yate_id' => 'int',
-		'tipos_patente_id' => 'int'
+		'tipos_patente_id' => 'int',
+		'tarifa_temp_alta' => 'float'
 	];
 
 	protected $fillable = [
@@ -77,7 +86,13 @@ class Yate extends Eloquent
 		'propietario',
 		'companias_yate_id',
 		'modelos_yate_id',
-		'tipos_patente_id'
+		'tipos_patente_id',
+		'incluye',
+		'no_incluye',
+		'politicas_pago',
+		'cancelaciones',
+		'desck_plan',
+		'tarifa_temp_alta'
 	];
 
 	public function companias_yate()
@@ -105,6 +120,16 @@ class Yate extends Eloquent
 		return $this->hasOne(\App\Cabina::class, 'yates_id');
 	}
 
+	public function tarifarios()
+	{
+		return $this->hasMany(\App\Tarifario::class, 'yates_id');
+	}
+
+	public function temporadas_altas()
+	{
+		return $this->hasMany(\App\TemporadasAlta::class, 'yates_id');
+	}
+
 	public function tipos_charters()
 	{
 		return $this->hasMany(\App\TiposCharter::class, 'yates_id');
@@ -113,7 +138,7 @@ class Yate extends Eloquent
 	public function itinerarios()
 	{
 		return $this->belongsToMany(\App\Itinerario::class, 'yates_itinerarios', 'yates_id', 'itinerarios_id')
-					->withPivot('tarifa')
+					->withPivot('dia', 'am', 'pm')
 					->withTimestamps();
 	}
 }

@@ -75,3 +75,14 @@ table {
     line-height: 1.428571429 !important;
     border-radius: 15px !important;
 }
+
+.panel-heading a:after {
+    font-family:'Glyphicons Halflings';
+    content:"\e259";
+    float: right;
+    color: grey;
+    
+}
+.panel-heading a.collapsed:after {
+    content:"\e260";
+}

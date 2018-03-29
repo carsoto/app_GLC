@@ -18,7 +18,7 @@ class CreateTablePuertos extends Migration
         
             $table->increments('id')->unsigned();
             $table->string('descripcion', 100);
-            $table->string('ubicacion', 250)->nullable();
+            $table->string('ubicacion', 100)->nullable();
         
             $table->timestamps();
         

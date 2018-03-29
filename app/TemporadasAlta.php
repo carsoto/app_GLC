@@ -10,43 +10,35 @@ namespace App;
 use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
- * Class YatesItinerario
+ * Class TemporadasAlta
  * 
+ * @property int $id
  * @property int $yates_id
- * @property int $itinerarios_id
- * @property int $dia
- * @property string $am
- * @property string $pm
+ * @property \Carbon\Carbon $desde
+ * @property \Carbon\Carbon $hasta
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
- * @property \App\Itinerario $itinerario
  * @property \App\Yate $yate
  *
  * @package App
  */
-class YatesItinerario extends Eloquent
+class TemporadasAlta extends Eloquent
 {
-	public $incrementing = false;
-
 	protected $casts = [
-		'yates_id' => 'int',
-		'itinerarios_id' => 'int',
-		'dia' => 'int'
+		'yates_id' => 'int'
+	];
+
+	protected $dates = [
+		'desde',
+		'hasta'
 	];
 
 	protected $fillable = [
 		'yates_id',
-		'itinerarios_id',
-		'dia',
-		'am',
-		'pm'
+		'desde',
+		'hasta'
 	];
-
-	public function itinerario()
-	{
-		return $this->belongsTo(\App\Itinerario::class, 'itinerarios_id');
-	}
 
 	public function yate()
 	{

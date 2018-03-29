@@ -18,9 +18,6 @@ class CreateTableItinerarios extends Migration
         
             $table->increments('id')->unsigned();
             $table->string('nombre', 50);
-            $table->integer('dia');
-            $table->string('am', 100);
-            $table->string('pm', 100);
         
             $table->timestamps();
         
