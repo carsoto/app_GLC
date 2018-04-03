@@ -168,5 +168,9 @@ Route::group(['prefix' => 'admin'], function () {
 		Route::post('/store', 'YatesController@store')->name('admin.yates.store');
 
 		Route::get('/yates', 'YatesController@getYates')->name('datatable.yates');
+
+		Route::get('/ver/{id}', 'YatesController@show');
+
+		Route::get('/editar/{id}', 'YatesController@edit');
 	});
 });

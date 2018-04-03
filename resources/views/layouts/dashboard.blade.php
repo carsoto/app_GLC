@@ -121,10 +121,10 @@
                                     <!-- /.nav-third-level -->
                                 </li>
                                 <li>
-                                    <a href="#">Actividades <span class="fa arrow"></span></a>
+                                    <a href="#">Proveedores <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li {{ (Request::is('*') ? 'class="active"' : '') }}>
-                                            <a href="{{ url ('') }}"> Proveedores</a>
+                                            <a href="{{ url ('') }}">Actividades</a>
                                         </li>
                                     </ul>
                                     <!-- /.nav-third-level -->
@@ -145,7 +145,7 @@
                                     <!-- /.nav-third-level -->
                                 </li>
                                 <li {{ (Request::is('*') ? 'class="active"' : '') }}>
-                                    <a href="{{ url ('') }}"> Intermediarios</a>
+                                    <a href="{{ url ('') }}"> Compañías intermediarias</a>
                                 </li>
                                 <li {{ (Request::is('*') ? 'class="active"' : '') }}>
                                     <a href="{{ url ('') }}"> Sitios de visita</a>

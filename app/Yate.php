@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 29 Mar 2018 17:03:36 +0000.
+ * Date: Tue, 03 Apr 2018 20:44:54 +0000.
  */
 
 namespace App;
@@ -37,7 +37,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $no_incluye
  * @property string $politicas_pago
  * @property string $cancelaciones
- * @property string $desck_plan
+ * @property string $deck_plan
  * @property float $tarifa_temp_alta
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
@@ -91,7 +91,7 @@ class Yate extends Eloquent
 		'no_incluye',
 		'politicas_pago',
 		'cancelaciones',
-		'desck_plan',
+		'deck_plan',
 		'tarifa_temp_alta'
 	];
 

@@ -10,25 +10,18 @@ namespace App;
 use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
- * Class Servicio
+ * Class Dia
  * 
  * @property int $id
- * @property string $descripcion
+ * @property string $dia
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * 
- * @property \Illuminate\Database\Eloquent\Collection $actividades
  *
  * @package App
  */
-class Servicio extends Eloquent
+class Dia extends Eloquent
 {
 	protected $fillable = [
-		'descripcion'
+		'dia'
 	];
-
-	public function actividades()
-	{
-		return $this->hasMany(\App\Actividade::class, 'servicios_id');
-	}
 }

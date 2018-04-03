@@ -37,7 +37,7 @@
 	        "columns": [
 	            {data: 'nombre', name: 'nombre'},
 	            {data: 'capacidad', name: 'capacidad'},
-	            {data: 'puerto', name: 'puerto_registro.descripcion'},
+	            {data: 'puerto', name: 'puertos.descripcion'},
 	            {data: 'razon_social', name: 'companias_yate.razon_social'},
 	            {data: 'modelo', name: 'modelos_yate.descripcion'},
 	            {data: 'patente', name: 'tipos_patente.descripcion'},

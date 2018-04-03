@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ModelosYateSeeder::class);
         $this->call(PuertosSeeder::class);
         $this->call(TiposPatenteSeeder::class);
+        $this->call(DiasSeeder::class);
     }
 }
