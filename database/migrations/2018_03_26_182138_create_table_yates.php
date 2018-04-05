@@ -19,9 +19,9 @@ class CreateTableYates extends Migration
             $table->increments('id')->unsigned();
             $table->string('nombre', 150);
             $table->string('capacidad', 45);
-            $table->string('nro_tripulantes', 45);
+            $table->string('nro_tripulantes', 150);
             $table->integer('puerto_registro_id')->unsigned();
-            $table->string('loa', 45);
+            $table->string('draft', 45);
             $table->string('beam', 45);
             $table->string('velocidad_crucero', 45)->nullable();
             $table->enum('estabilizadores', ['Si',  'No']);

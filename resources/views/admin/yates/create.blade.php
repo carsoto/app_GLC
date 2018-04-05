@@ -36,8 +36,8 @@
 							<br>{!! Form::label('refit') !!}
 							<br>{!! Form::text('refit', "", ['class' => 'form-control']) !!}
 
-							<br>{!! Form::label('loa') !!}
-							<br>{!! Form::text('loa', "", ['class' => 'form-control', 'required']) !!}
+							<br>{!! Form::label('draft') !!}
+							<br>{!! Form::text('draft', "", ['class' => 'form-control', 'required']) !!}
 
 							<br>{!! Form::label('beam') !!}
 							<br>{!! Form::text('beam', "", ['class' => 'form-control', 'required']) !!}
@@ -281,7 +281,7 @@
 				if(i > 7){
 					
 					dia_inicio = 1;
-					itinerario += '<tr><td rowspan="2">'+ dias[cont] +'</td><td>am</td><td><input name=am['+ nombre_itinerario +'][] class="form-control" /></td></tr><tr><td>pm</td><td><input name=pm['+ nombre_itinerario +'][] class="form-control" /></td></tr>';	
+					itinerario += '<tr><td rowspan="2">'+ dias[cont] +'<input name=dias['+ nombre_itinerario +'][] class="form-control" value="'+cont+'" type="hidden" /></td><td>am</td><td><input name=am['+ nombre_itinerario +'][] class="form-control" /></td></tr><tr><td>pm</td><td><input name=pm['+ nombre_itinerario +'][] class="form-control" /></td></tr>';	
 					cont++;
 					
 					if(cont > 7){
@@ -289,7 +289,7 @@
 					}
 
 				}else{
-					itinerario += '<tr><td rowspan="2">'+ dias[i] +'</td><td>am</td><td><input name=am['+ nombre_itinerario +'][] class="form-control" /></td></tr><tr><td>pm</td><td><input name=pm['+ nombre_itinerario +'][] class="form-control" /></td></tr>';	
+					itinerario += '<tr><td rowspan="2">'+ dias[i] +'<input name=dias['+ nombre_itinerario +'][] class="form-control" value="'+i+'" type="hidden" /></td><td>am</td><td><input name=am['+ nombre_itinerario +'][] class="form-control" /></td></tr><tr><td>pm</td><td><input name=pm['+ nombre_itinerario +'][] class="form-control" /></td></tr>';	
 				}
 			};
 

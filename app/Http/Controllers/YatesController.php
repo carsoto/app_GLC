@@ -91,7 +91,8 @@ class YatesController extends Controller
                         $itinerario_yate = new YatesItinerario();
                         $itinerario_yate->yates_id = $yate->id;
                         $itinerario_yate->itinerarios_id = $itinerario->id;
-                        $itinerario_yate->dia = $k;
+                        $itinerario_yate->orden = $k;
+                        $itinerario_yate->id_dia = $data['dias'][$key][$k];
                         $itinerario_yate->am = $value[$k];
                         $itinerario_yate->pm = $data['pm'][$key][$k];
                         $itinerario_yate->save();
@@ -113,7 +114,17 @@ class YatesController extends Controller
      */
     public function show($id)
     {
-        return view('admin.yates.ver', array());
+        $yate = Yate::find($id);
+        $itinerarios = array();
+        $dias = Dia::pluck('dia', 'id');
+
+        foreach ($yate->itinerarios as $itinerario) {
+            $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['dia'] = $itinerario->pivot->id_dia;
+            $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['am'] = $itinerario->pivot->am;
+            $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['pm'] = $itinerario->pivot->pm;
+        }
+
+        return view('admin.yates.ver', array('yate' => $yate, 'itinerarios' => $itinerarios, 'dias' => $dias));
     }
 
     /**

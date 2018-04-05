@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 03 Apr 2018 20:44:54 +0000.
+ * Date: Thu, 05 Apr 2018 16:25:45 +0000.
  */
 
 namespace App;
@@ -17,7 +17,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $capacidad
  * @property string $nro_tripulantes
  * @property int $puerto_registro_id
- * @property string $loa
+ * @property string $draft
  * @property string $beam
  * @property string $velocidad_crucero
  * @property string $estabilizadores
@@ -71,7 +71,7 @@ class Yate extends Eloquent
 		'capacidad',
 		'nro_tripulantes',
 		'puerto_registro_id',
-		'loa',
+		'draft',
 		'beam',
 		'velocidad_crucero',
 		'estabilizadores',
@@ -138,7 +138,7 @@ class Yate extends Eloquent
 	public function itinerarios()
 	{
 		return $this->belongsToMany(\App\Itinerario::class, 'yates_itinerarios', 'yates_id', 'itinerarios_id')
-					->withPivot('dia', 'am', 'pm')
+					->withPivot('orden', 'id_dia', 'am', 'pm')
 					->withTimestamps();
 	}
 }

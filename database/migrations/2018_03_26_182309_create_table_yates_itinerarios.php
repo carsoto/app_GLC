@@ -18,7 +18,8 @@ class CreateTableYatesItinerarios extends Migration
         
             $table->integer('yates_id')->unsigned();
             $table->integer('itinerarios_id')->unsigned();
-            $table->integer('dia');
+            $table->integer('orden');
+            $table->integer('id_dia');
             $table->string('am', 100);
             $table->string('pm', 100);
             
