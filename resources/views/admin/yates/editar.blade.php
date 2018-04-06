@@ -1,10 +1,10 @@
 @extends('layouts.dashboard')
-@section('page_heading','Registrar Yate')
+@section('page_heading', $yate->nombre)
 @section('section')
 
 <div class="col-lg-12">
 
-    {!! Form::open(array('url' => route('admin.yates.store'), 'files' => true)) !!}
+    {!! Form::open(array('url' => route('admin.yates.update'), 'method' => 'PUT', 'files' => true)) !!}
 		<div class="panel-group" id="accordion">
 			<div class="panel" id="panel_detalles">
 				<div class="panel-heading">
@@ -14,85 +14,85 @@
 					<div class="panel-body">
 						<div class="col-md-3">
 							{!! Form::label('nombre', "Nombre") !!}
-							<br>{!! Form::text('nombre', "", ['class' => 'form-control', 'required']) !!}
+							<br>{!! Form::text('nombre', $yate->nombre, ['class' => 'form-control', 'required']) !!}
 							
 							<br>{!! Form::label('propietario') !!}
-							<br>{!! Form::text('propietario', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::text('propietario', $yate->propietario, ['class' => 'form-control']) !!}
 
 							<br>{!! Form::label('companias_yate_id', 'Compañía') !!}
-							<br>{!! Form::select('companias_yate_id', $companias_yate, null, ['class' => 'form-control']) !!}
+							<br>{!! Form::select('companias_yate_id', $companias_yate, $yate->companias_yate->id, ['class' => 'form-control']) !!}
 
 							<br>{!! Form::label('modelos_yate_id', 'Modelo') !!}
-							<br>{!! Form::select('modelos_yate_id', $modelos, null, ['class' => 'form-control']) !!}
+							<br>{!! Form::select('modelos_yate_id', $modelos, $yate->modelos_yate->id, ['class' => 'form-control']) !!}
 
 							<br>{!! Form::label('tipos_patente_id', 'Tipo de patente') !!}
-							<br>{!! Form::select('tipos_patente_id', $tipos_patente, null, ['class' => 'form-control']) !!}
+							<br>{!! Form::select('tipos_patente_id', $tipos_patente, $yate->tipos_patente->id, ['class' => 'form-control']) !!}
 						</div>
 						
 						<div class="col-md-3">
 							{!! Form::label('anyo_construccion', 'Año de construcción') !!}
-							<br>{!! Form::text('anyo_construccion', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::text('anyo_construccion', $yate->anyo_construccion, ['class' => 'form-control']) !!}
 
 							<br>{!! Form::label('refit') !!}
-							<br>{!! Form::text('refit', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::text('refit', $yate->refit, ['class' => 'form-control']) !!}
 
-							<br>{!! Form::label('loa') !!}
-							<br>{!! Form::text('loa', "", ['class' => 'form-control', 'required']) !!}
+							<br>{!! Form::label('draft') !!}
+							<br>{!! Form::text('draft', $yate->draft, ['class' => 'form-control', 'required']) !!}
 
 							<br>{!! Form::label('beam') !!}
-							<br>{!! Form::text('beam', "", ['class' => 'form-control', 'required']) !!}
+							<br>{!! Form::text('beam', $yate->beam, ['class' => 'form-control', 'required']) !!}
 
 							<br>{!! Form::label('puerto_registro_id', 'Puerto de registro') !!}
-							<br>{!! Form::select('puerto_registro_id', $puertos, null, ['class' => 'form-control']) !!}
+							<br>{!! Form::select('puerto_registro_id', $puertos, $yate->puerto->id, ['class' => 'form-control']) !!}
 						</div>
 
 						<div class="col-md-3">
 							{!! Form::label('capacidad') !!}
-							<br>{!! Form::text('capacidad', "", ['class' => 'form-control', 'required']) !!}
+							<br>{!! Form::text('capacidad', $yate->capacidad, ['class' => 'form-control', 'required']) !!}
 							
 							<br>{!! Form::label('nro_tripulantes', 'Tripulantes') !!}
-							<br>{!! Form::text('nro_tripulantes', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::text('nro_tripulantes', $yate->nro_tripulantes, ['class' => 'form-control']) !!}
 							
 							<br>{!! Form::label('velocidad_crucero', 'Velocidad de crucero') !!}
-							<br>{!! Form::text('velocidad_crucero', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::text('velocidad_crucero', $yate->velocidad_crucero, ['class' => 'form-control']) !!}
 
 							<br>{!! Form::label('estabilizadores') !!}
-							<br>{!! Form::select('estabilizadores', array('Si' => 'Si', 'No' => 'No'), null, ['class' => 'form-control']) !!}
+							<br>{!! Form::select('estabilizadores', array('Si' => 'Si', 'No' => 'No'), $yate->estabilizadores, ['class' => 'form-control']) !!}
 							
 							<br>{!! Form::label('ameneties') !!}
-							<br>{!! Form::select('ameneties', array('Si' => 'Si', 'No' => 'No'), null, ['class' => 'form-control']) !!}
+							<br>{!! Form::select('ameneties', array('Si' => 'Si', 'No' => 'No'), $yate->ameneties, ['class' => 'form-control']) !!}
 						</div>
 
 						<div class="col-md-3">
 							{!! Form::label('internet') !!}
-							<br>{!! Form::select('internet', array('Si' => 'Si', 'No' => 'No'), null, ['class' => 'form-control']) !!}
+							<br>{!! Form::select('internet', array('Si' => 'Si', 'No' => 'No'), $yate->internet, ['class' => 'form-control']) !!}
 
 							<br>{!! Form::label('trajes_neopreno', 'Trajes de neopreno') !!}
-							<br>{!! Form::select('trajes_neopreno', array('Si' => 'Si', 'No' => 'No'), null, ['class' => 'form-control']) !!}
+							<br>{!! Form::select('trajes_neopreno', array('Si' => 'Si', 'No' => 'No'), $yate->trajes_neopreno, ['class' => 'form-control']) !!}
 
 							<br>{!! Form::label('equipo_snorkel', 'Equipo de snorkel') !!}
-							<br>{!! Form::select('equipo_snorkel', array('Si' => 'Si', 'No' => 'No'), null, ['class' => 'form-control']) !!}
+							<br>{!! Form::select('equipo_snorkel', array('Si' => 'Si', 'No' => 'No'), $yate->equipo_snorkel, ['class' => 'form-control']) !!}
 
 							<br>{!! Form::label('kayacks', 'Cant. de kayacks') !!}
-							<br>{!! Form::text('kayacks', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::text('kayacks', $yate->kayacks, ['class' => 'form-control']) !!}
 
 							<br>{!! Form::label('paddle_boards', 'Cant. de paddle boards') !!}
-							<br>{!! Form::text('paddle_boards', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::text('paddle_boards', $yate->paddle_boards, ['class' => 'form-control']) !!}
 						</div>
 
 						<div class="col-lg-12">
 							<br>{!! Form::label('deck_plan', 'Planes de cubierta') !!}
-							<br>{!! Form::textarea('deck_plan', "", ['class' => 'form-control', 'required', 'size' => '15x15', 'style' => 'resize:none']) !!}
+							<br>{!! Form::textarea('deck_plan', $yate->deck_plan, ['class' => 'form-control', 'required', 'size' => '15x15', 'style' => 'resize:none']) !!}
 						</div>
 
 						<div class="col-md-6">
 							<br>{!! Form::label('incluye', 'Incluye') !!}
-							<br>{!! Form::textarea('incluye', "", ['class' => 'form-control', 'required', 'size' => '15x10', 'style' => 'resize:none']) !!}
+							<br>{!! Form::textarea('incluye', $yate->incluye, ['class' => 'form-control', 'required', 'size' => '15x10', 'style' => 'resize:none']) !!}
 						</div>
 						
 						<div class="col-md-6">
 							<br>{!! Form::label('no_incluye', 'No Incluye') !!}
-							<br>{!! Form::textarea('no_incluye', "", ['class' => 'form-control', 'required', 'size' => '15x10', 'style' => 'resize:none']) !!}
+							<br>{!! Form::textarea('no_incluye', $yate->no_incluye, ['class' => 'form-control', 'required', 'size' => '15x10', 'style' => 'resize:none']) !!}
 						</div>
 					</div>
 				</div>
@@ -124,7 +124,62 @@
 						</div>
 
 						<br><br><br><br>
-						<div id="itinerarios"></div>
+						<div id="itinerarios">
+							@foreach ($itinerarios AS $key => $value)
+								<div class="panel" id="panel_itinerario_{!! $key !!}">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<a data-toggle="collapse" data-target="#detalle_itinerario_{!! $key !!}" href="#detalle_itinerario_{!! $key !!}" class="collapsed">{!! $key !!}</a> <button type="button" class="btn btn-sm btn-danger remove_itinerario" name="remove" onclick="remove_elemento(panel_itinerario_{!! $key !!}, null)"><i class="fa fa-minus fa-fw"></i></button>
+										</h4>
+									</div>
+									<div id="detalle_itinerario_{!! $key !!}" class="panel-collapse collapse">
+										<div class="panel-body">
+											<div class="col-lg-12">
+												<table class="table table-bordered">
+													<tbody>
+														@for ($i = 0; $i < count($value); $i++)
+															<tr>
+																<td rowspan="2">
+																	{!! $dias[$value[$i]['dia']] !!} 
+																	{{ Form::hidden('dias['.$key.'][]', $value[$i]['dia']) }}
+																</td>
+																<td>am</td>
+																<td>{!! Form::text('am['.$key.'][]', $value[$i]['am'], ['class' => 'form-control']) !!}</td>
+															</tr>
+															<tr>
+																<td>pm</td>
+																<td>{!! Form::text('pm['.$key.'][]', $value[$i]['pm'], ['class' => 'form-control']) !!}</td>
+															</tr>
+														@endfor
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+			        			<!--<table class="table table-condensed table-bordered">
+			        				<thead>
+			        					<tr>
+			        						<th colspan="3">{!! $key !!}</th>
+			        					</tr>
+			        				</thead>
+									<tbody>
+										@for ($i = 0; $i < count($value); $i++)
+						        			<tr>
+												<td rowspan="2">{!! $dias[$value[$i]['dia']] !!}</td>
+												<td>am</td>
+												<td>{!! Form::text('am['.$key.'][]', $value[$i]['am'], ['class' => 'form-control']) !!}</td>
+											</tr>
+											<tr>
+												<td>pm</td>
+												<td>{!! Form::text('pm['.$key.'][]', $value[$i]['pm'], ['class' => 'form-control']) !!}</td>
+											</tr>
+					        			@endfor
+					        		</tbody>
+								</table>-->
+			        		@endforeach
+
+						</div>
 		        	</div>
 		    	</div>
 		    </div>
@@ -138,35 +193,38 @@
 		            	<div class="col-lg-12">
 			            	<div class="col-md-3">
 								<br>{!! Form::label('tarifa_temp_alta', 'Tarifa de temporada alta') !!}
-								{!! Form::text('tarifa_temp_alta', "", ['class' => 'form-control', 'size' => '4']) !!}
+								{!! Form::text('tarifa_temp_alta', $yate->tarifa_temp_alta, ['class' => 'form-control', 'size' => '4']) !!}
 							</div>
 						</div>
-						<div class="col-lg-12" id="tarifario_1">
-			            	<div class="col-md-2">
-								<br>{!! Form::label('cant_dias', 'Cantidad de días') !!}
-								<br>{!! Form::selectRange('cant_dias[]', 4, 15, "", ['class' => 'form-control']); !!}
-							</div>
 
-							<div class="col-md-3">
-								<br>{!! Form::label('gross', 'Gross') !!}
-								<br>{!! Form::text('gross[]', "", ['class' => 'form-control']) !!}
-							</div>
+						@for ($i = 0; $i < count($yate->tarifarios); $i++)
+							<div class="col-lg-12" id="tarifario_{{ $i }}">
+				            	<div class="col-md-2">
+									<br>{!! Form::label('cant_dias', 'Cantidad de días') !!}
+									<br>{!! Form::selectRange('cant_dias[]', 4, 15, $yate->tarifarios[$i]->cant_dias, ['class' => 'form-control']); !!}
+								</div>
 
-							<div class="col-md-3">
-								<br>{!! Form::label('neto', 'Neto') !!}
-								<br>{!! Form::text('neto[]', "", ['class' => 'form-control']) !!}
-							</div>
+								<div class="col-md-3">
+									<br>{!! Form::label('gross', 'Gross') !!}
+									<br>{!! Form::text('gross[]', number_format($yate->tarifarios[$i]->gross), ['class' => 'form-control']) !!}
+								</div>
 
-							<div class="col-md-2">
-								<br>{!! Form::label('comision_glc', 'Comisión') !!}
-								<br>{!! Form::text('comision_glc[]', "", ['class' => 'form-control']) !!} 
+								<div class="col-md-3">
+									<br>{!! Form::label('neto', 'Neto') !!}
+									<br>{!! Form::text('neto[]', number_format($yate->tarifarios[$i]->neto), ['class' => 'form-control']) !!}
+								</div>
+
+								<div class="col-md-2">
+									<br>{!! Form::label('comision_glc', 'Comisión') !!}
+									<br>{!! Form::text('comision_glc[]', number_format($yate->tarifarios[$i]->comision_glc), ['class' => 'form-control']) !!} 
+								</div>
+								<div class="col-md-2">
+									<br><br><button type="button" class="btn btn-success btn-circle" name="add" onclick="add_tarifa()"><i class="fa fa-plus fa-fw"></i></button>
+									<button type="button" class="btn btn-danger btn-circle remove_tarifa" name="remove" onclick="remove_elemento(tarifario_{{ $i }}, 'remove_tarifa')"><i class="fa fa-minus fa-fw"></i></button>
+								</div>
 							</div>
-							<div class="col-md-2">
-								<br><br><button type="button" class="btn btn-success btn-circle" name="add" onclick="add_tarifa()"><i class="fa fa-plus fa-fw"></i></button>
-								<button type="button" class="btn btn-danger btn-circle remove_tarifa" name="remove" onclick="remove_elemento(tarifario_1, 'remove_tarifa')"><i class="fa fa-minus fa-fw"></i></button>
-							</div>
-						</div>
-						
+						@endfor
+
 						<div id="tarifario"></div>
 
 						<div class="col-lg-12">
@@ -174,24 +232,27 @@
 							<hr>
 						</div>
 
-						<div class="row" id="fechas_1">
-							<div class="col-lg-12">
-								<div class="col-md-3">
-									{!! Form::label('from', 'Desde') !!} 
-									<br>{!! Form::text('from[]', "", ['class' => 'form-control temp_alta_from', 'id' => 'from_1']) !!}
-								</div>
+						@for ($j = 0; $j < count($yate->temporadas_altas); $j++)
+							<div class="row" id="fechas_{!! $j !!}">
+								<div class="col-lg-12">
+									<div class="col-md-3">
+										{!! Form::label('from', 'Desde') !!} 
+										<br>{!! Form::text('from[]', $yate->temporadas_altas[$j]->desde, ['class' => 'form-control temp_alta_from', 'id' => 'from_1']) !!}
+									</div>
 
-								<div class="col-md-3">
-									{!! Form::label('to', 'Hasta') !!}
-									<br>{!! Form::text('to[]', "", ['class' => 'form-control temp_alta_to', 'id' => 'to_1']) !!}
-								</div>
+									<div class="col-md-3">
+										{!! Form::label('to', 'Hasta') !!}
+										<br>{!! Form::text('to[]', $yate->temporadas_altas[$j]->hasta, ['class' => 'form-control temp_alta_to', 'id' => 'to_1']) !!}
+									</div>
 
-								<div class="col-md-2">
-									<br><button type="button" class="btn btn-success btn-circle" name="add" onclick="add_fecha_temp_alta()"><i class="fa fa-plus fa-fw"></i></button>
-									<button type="button" class="btn btn-danger btn-circle remove_fecha" name="remove" onclick="remove_elemento(fechas_1, 'remove_fecha')"><i class="fa fa-minus fa-fw"></i></button>
+									<div class="col-md-2">
+										<br><button type="button" class="btn btn-success btn-circle" name="add" onclick="add_fecha_temp_alta()"><i class="fa fa-plus fa-fw"></i></button>
+										<button type="button" class="btn btn-danger btn-circle remove_fecha" name="remove" onclick="remove_elemento(fechas_{!! $j !!}, 'remove_fecha')"><i class="fa fa-minus fa-fw"></i></button>
+									</div>
 								</div>
 							</div>
-						</div>
+						@endfor
+
 						<div id="fechas_temp_alta"></div>
 		            </div>
 
@@ -206,12 +267,12 @@
 		            <div class="panel-body">
 		            	<div class="col-md-6">
 							{!! Form::label('politicas_pago', 'Políticas de pago') !!}
-							<br>{!! Form::textarea('politicas_pago', "", ['class' => 'form-control', 'required', 'size' => '15x10', 'style' => 'resize:none']) !!}
+							<br>{!! Form::textarea('politicas_pago', $yate->politicas_pago, ['class' => 'form-control', 'required', 'size' => '15x10', 'style' => 'resize:none']) !!}
 						</div>
 
 						<div class="col-md-6">
 							{!! Form::label('cancelaciones', 'Cancelaciones') !!}
-							<br>{!! Form::textarea('cancelaciones', "", ['class' => 'form-control', 'required', 'size' => '15x10', 'style' => 'resize:none']) !!}
+							<br>{!! Form::textarea('cancelaciones', $yate->cancelaciones, ['class' => 'form-control', 'required', 'size' => '15x10', 'style' => 'resize:none']) !!}
 						</div>
 		            </div>
 		        </div>
@@ -220,7 +281,7 @@
 
 		<br><br>
 		<div class="row" style="text-align: center;">
-			{!! Form::submit('Registrar', ['class' => 'btn btn-success']) !!}
+			{!! Form::submit('Actualizar', ['class' => 'btn btn-info']) !!}
 		</div>
 
 	{!! Form::close() !!}
@@ -281,7 +342,7 @@
 				if(i > 7){
 					
 					dia_inicio = 1;
-					itinerario += '<tr><td rowspan="2">'+ dias[cont] +'</td><td>am</td><td><input name=am['+ nombre_itinerario +'][] class="form-control" /></td></tr><tr><td>pm</td><td><input name=pm['+ nombre_itinerario +'][] class="form-control" /></td></tr>';	
+					itinerario += '<tr><td rowspan="2">'+ dias[cont] +'<input name=dias['+ nombre_itinerario +'][] class="form-control" value="'+cont+'" type="hidden" /></td><td>am</td><td><input name=am['+ nombre_itinerario +'][] class="form-control" /></td></tr><tr><td>pm</td><td><input name=pm['+ nombre_itinerario +'][] class="form-control" /></td></tr>';	
 					cont++;
 					
 					if(cont > 7){
@@ -289,7 +350,7 @@
 					}
 
 				}else{
-					itinerario += '<tr><td rowspan="2">'+ dias[i] +'</td><td>am</td><td><input name=am['+ nombre_itinerario +'][] class="form-control" /></td></tr><tr><td>pm</td><td><input name=pm['+ nombre_itinerario +'][] class="form-control" /></td></tr>';	
+					itinerario += '<tr><td rowspan="2">'+ dias[i] +'<input name=dias['+ nombre_itinerario +'][] class="form-control" value="'+i+'" type="hidden" /></td><td>am</td><td><input name=am['+ nombre_itinerario +'][] class="form-control" /></td></tr><tr><td>pm</td><td><input name=pm['+ nombre_itinerario +'][] class="form-control" /></td></tr>';	
 				}
 			};
 

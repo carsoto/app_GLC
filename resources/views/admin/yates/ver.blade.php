@@ -97,42 +97,7 @@
 			        		</tbody>
 						</table>
 	        		@endforeach
-	        		<!--<table class="table table-condensed table-bordered">
-						<tbody>
-							@foreach ($yate->itinerarios as $itinerario)
-								<tr>
-									<td rowspan="2">{!! $itinerario->nombre !!}</td>
-									<td rowspan="2">{!! $itinerario->pivot->dia !!}</td>
-									<td>am</td>
-									<td>{!! $itinerario->pivot->am !!}</td>
-								</tr>
-								<tr>
-									<td>pm</td>
-									<td>{!! $itinerario->pivot->pm !!}</td>
-								</tr>
-							@endforeach
-						</tbody>
-					</table>-->
 	        	</div>
-	            <!--<div class="panel-body">
-	            	@for ($i = 0; $i < count($yate->itinerarios); $i++)
-	            	<br>{{ $yate->itinerarios[$i]->nombre }}
-
-	            	<table class="table table-condensed table-bordered">
-						<tbody>
-							<tr>
-								<td rowspan="2">{!! $yate->itinerarios[$i]->pivot->dia !!}</td>
-								<td>am</td>
-								<td>{!! $yate->itinerarios[$i]->pivot->am !!}</td>
-							</tr>
-							<tr>
-								<td>pm</td>
-								<td>{!! $yate->itinerarios[$i]->pivot->pm !!}</td>
-							</tr>
-						</tbody>
-					</table>
-	            	@endfor
-	        	</div>-->
 	    	</div>
 	    </div>
 

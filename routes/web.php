@@ -172,5 +172,7 @@ Route::group(['prefix' => 'admin'], function () {
 		Route::get('/ver/{id}', 'YatesController@show');
 
 		Route::get('/editar/{id}', 'YatesController@edit');
+
+		Route::put('/update/{id}', 'YatesController@update');
 	});
 });

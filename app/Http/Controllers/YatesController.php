@@ -135,7 +135,22 @@ class YatesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $yate = Yate::find($id);
+        $itinerarios = array();
+        $dias = Dia::pluck('dia', 'id');
+        $companias_yate = CompaniasYate::pluck('razon_social', 'id');
+        $modelos = ModelosYate::pluck('descripcion', 'id');
+        $tipos_patente = TiposPatente::pluck('descripcion', 'id');
+        $puertos = Puerto::pluck('descripcion', 'id');
+        $dias = Dia::pluck('dia', 'id');
+
+        foreach ($yate->itinerarios as $itinerario) {
+            $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['dia'] = $itinerario->pivot->id_dia;
+            $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['am'] = $itinerario->pivot->am;
+            $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['pm'] = $itinerario->pivot->pm;
+        }
+
+        return view('admin.yates.editar', array('yate' => $yate, 'itinerarios' => $itinerarios, 'companias_yate' => $companias_yate, 'modelos' => $modelos, 'tipos_patente' => $tipos_patente, 'puertos' => $puertos, 'dias' => $dias));
     }
 
     /**
