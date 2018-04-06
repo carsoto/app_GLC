@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 05 Apr 2018 16:25:45 +0000.
+ * Date: Fri, 06 Apr 2018 20:49:41 +0000.
  */
 
 namespace App;
@@ -17,7 +17,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
- * @property \Illuminate\Database\Eloquent\Collection $yates
+ * @property \Illuminate\Database\Eloquent\Collection $embarcacions
  *
  * @package App
  */
@@ -29,8 +29,8 @@ class TiposPatente extends Eloquent
 		'descripcion'
 	];
 
-	public function yates()
+	public function embarcacions()
 	{
-		return $this->hasMany(\App\Yate::class);
+		return $this->hasMany(\App\Embarcacion::class);
 	}
 }

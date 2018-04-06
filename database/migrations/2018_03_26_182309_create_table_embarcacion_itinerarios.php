@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableYatesItinerarios extends Migration
+class CreateTableEmbarcacionItinerarios extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,21 @@ class CreateTableYatesItinerarios extends Migration
      */
     public function up()
     {
-        Schema::create('yates_itinerarios', function(Blueprint $table) {
+        Schema::create('embarcacion_itinerarios', function(Blueprint $table) {
             $table->engine = 'InnoDB';
         
-            $table->integer('yates_id')->unsigned();
+            $table->integer('embarcacion_id')->unsigned();
             $table->integer('itinerarios_id')->unsigned();
             $table->integer('orden');
             $table->integer('id_dia');
             $table->string('am', 100);
             $table->string('pm', 100);
             
-            $table->index('yates_id','fk_yates_itinerarios_yates1_idx');
-            $table->index('itinerarios_id','fk_yates_itinerarios_itinerarios1_idx');
+            $table->index('embarcacion_id','fk_embarcacion_itinerarios_embarcacion1_idx');
+            $table->index('itinerarios_id','fk_embarcacion_itinerarios_itinerarios1_idx');
         
-            $table->foreign('yates_id')
-                ->references('id')->on('yates');
+            $table->foreign('embarcacion_id')
+                ->references('id')->on('embarcacion');
         
             $table->foreign('itinerarios_id')
                 ->references('id')->on('itinerarios');
@@ -46,7 +46,7 @@ class CreateTableYatesItinerarios extends Migration
      */
     public function down()
     {
-        Schema::drop('yates_itinerarios');
+        Schema::drop('embarcacion_itinerarios');
 
     }
 }

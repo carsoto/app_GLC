@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 05 Apr 2018 16:25:45 +0000.
+ * Date: Fri, 06 Apr 2018 20:49:41 +0000.
  */
 
 namespace App;
@@ -13,7 +13,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * Class Tarifario
  * 
  * @property int $id
- * @property int $yates_id
+ * @property int $embarcacion_id
  * @property float $cant_dias
  * @property float $gross
  * @property float $neto
@@ -21,7 +21,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
- * @property \App\Yate $yate
+ * @property \App\Embarcacion $embarcacion
  *
  * @package App
  */
@@ -30,7 +30,7 @@ class Tarifario extends Eloquent
 	protected $table = 'tarifario';
 
 	protected $casts = [
-		'yates_id' => 'int',
+		'embarcacion_id' => 'int',
 		'cant_dias' => 'float',
 		'gross' => 'float',
 		'neto' => 'float',
@@ -38,15 +38,15 @@ class Tarifario extends Eloquent
 	];
 
 	protected $fillable = [
-		'yates_id',
+		'embarcacion_id',
 		'cant_dias',
 		'gross',
 		'neto',
 		'comision_glc'
 	];
 
-	public function yate()
+	public function embarcacion()
 	{
-		return $this->belongsTo(\App\Yate::class, 'yates_id');
+		return $this->belongsTo(\App\Embarcacion::class);
 	}
 }

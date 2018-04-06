@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 05 Apr 2018 16:25:45 +0000.
+ * Date: Fri, 06 Apr 2018 20:49:41 +0000.
  */
 
 namespace App;
@@ -22,12 +22,12 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property float $tarifa_neta
  * @property float $comision_intermediario
  * @property float $comision_glc
- * @property int $yates_id
+ * @property int $embarcacion_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
  * @property \App\Charter $charter
- * @property \App\Yate $yate
+ * @property \App\Embarcacion $embarcacion
  * @property \Illuminate\Database\Eloquent\Collection $pasajeros
  *
  * @package App
@@ -43,7 +43,7 @@ class TiposCharter extends Eloquent
 		'tarifa_neta' => 'float',
 		'comision_intermediario' => 'float',
 		'comision_glc' => 'float',
-		'yates_id' => 'int'
+		'embarcacion_id' => 'int'
 	];
 
 	protected $dates = [
@@ -61,7 +61,7 @@ class TiposCharter extends Eloquent
 		'tarifa_neta',
 		'comision_intermediario',
 		'comision_glc',
-		'yates_id'
+		'embarcacion_id'
 	];
 
 	public function charter()
@@ -69,9 +69,9 @@ class TiposCharter extends Eloquent
 		return $this->belongsTo(\App\Charter::class, 'charters_id');
 	}
 
-	public function yate()
+	public function embarcacion()
 	{
-		return $this->belongsTo(\App\Yate::class, 'yates_id');
+		return $this->belongsTo(\App\Embarcacion::class);
 	}
 
 	public function pasajeros()

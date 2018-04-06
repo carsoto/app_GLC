@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableCompaniasYate extends Migration
+class CreateTableCompaniasEmbarcacion extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTableCompaniasYate extends Migration
      */
     public function up()
     {
-        Schema::create('companias_yate', function(Blueprint $table) {
+        Schema::create('companias_embarcacion', function(Blueprint $table) {
             $table->engine = 'InnoDB';
         
             $table->increments('id')->unsigned();
@@ -40,7 +40,7 @@ class CreateTableCompaniasYate extends Migration
      */
     public function down()
     {
-        Schema::drop('companias_yate');
+        Schema::drop('companias_embarcacion');
 
     }
 }

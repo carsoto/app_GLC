@@ -10,27 +10,27 @@ namespace App;
 use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
- * Class Broker
+ * Class ModelosEmbarcacion
  * 
  * @property int $id
- * @property string $nombre
- * @property string $email
+ * @property string $descripcion
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
- * @property \Illuminate\Database\Eloquent\Collection $charters
+ * @property \Illuminate\Database\Eloquent\Collection $embarcacions
  *
  * @package App
  */
-class Broker extends Eloquent
+class ModelosEmbarcacion extends Eloquent
 {
+	protected $table = 'modelos_embarcacion';
+
 	protected $fillable = [
-		'nombre',
-		'email'
+		'descripcion'
 	];
 
-	public function charters()
+	public function embarcacions()
 	{
-		return $this->hasMany(\App\Charter::class, 'brokers_id');
+		return $this->hasMany(\App\Embarcacion::class);
 	}
 }

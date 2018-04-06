@@ -157,22 +157,20 @@ Route::group(['prefix' => 'admin'], function () {
 		});
 	});
 	
-	Route::group(['prefix' => 'yates'], function () {
+	Route::group(['prefix' => 'embarcacion'], function () {
 
-		Route::get('/', 'YatesController@index');
- 
-		Route::get('/yates', 'YatesController@getCharters')->name('datatable.yates');
+		Route::get('/', 'EmbarcacionController@index');
 
-		Route::get('/create', 'YatesController@create');
+		Route::get('/create', 'EmbarcacionController@create');
 
-		Route::post('/store', 'YatesController@store')->name('admin.yates.store');
+		Route::post('/store', 'EmbarcacionController@store')->name('admin.embarcacion.store');
 
-		Route::get('/yates', 'YatesController@getYates')->name('datatable.yates');
+		Route::get('/embarcacion', 'EmbarcacionController@getEmbarcacion')->name('datatable.embarcacion');
 
-		Route::get('/ver/{id}', 'YatesController@show');
+		Route::get('/ver/{id}', 'EmbarcacionController@show');
 
-		Route::get('/editar/{id}', 'YatesController@edit');
+		Route::get('/editar/{id}', 'EmbarcacionController@edit');
 
-		Route::put('/update/{id}', 'YatesController@update');
+		Route::put('/update/{id}', 'EmbarcacionController@update')->name('admin.embarcacion.update');
 	});
 });

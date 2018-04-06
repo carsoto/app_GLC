@@ -17,16 +17,16 @@ class CreateTableTarifario extends Migration
             $table->engine = 'InnoDB';
         
             $table->increments('id')->unsigned();
-            $table->integer('yates_id')->unsigned();
+            $table->integer('embarcacion_id')->unsigned();
             $table->decimal('cant_dias', 8, 2);
             $table->decimal('gross', 8, 2);
             $table->decimal('neto', 8, 2);
             $table->decimal('comision_glc', 8, 2);
         
-            $table->index('yates_id','fk_tarifario_yates1_idx');
+            $table->index('embarcacion_id','fk_tarifario_embarcacion1_idx');
         
-            $table->foreign('yates_id')
-                ->references('id')->on('yates');
+            $table->foreign('embarcacion_id')
+                ->references('id')->on('embarcacion');
         
             $table->timestamps();
         

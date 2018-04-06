@@ -26,16 +26,16 @@ class CreateTableTiposCharter extends Migration
             $table->decimal('tarifa_neta', 8, 2);
             $table->decimal('comision_intermediario', 8, 2);
             $table->decimal('comision_glc', 8, 2);
-            $table->integer('yates_id')->unsigned();
+            $table->integer('embarcacion_id')->unsigned();
         
             $table->index('charters_id','fk_tipo_charter_charters1_idx');
-            $table->index('yates_id','fk_tipos_charter_yates1_idx');
+            $table->index('embarcacion_id','fk_tipos_charter_embarcacion1_idx');
         
             $table->foreign('charters_id')
                 ->references('id')->on('charters');
         
-            $table->foreign('yates_id')
-                ->references('id')->on('yates');
+            $table->foreign('embarcacion_id')
+                ->references('id')->on('embarcacion');
         
             $table->timestamps();
         

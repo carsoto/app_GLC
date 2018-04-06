@@ -1,71 +1,94 @@
 @extends('layouts.dashboard')
-@section('page_heading','Registrar Yate')
+@section('page_heading','Registrar Embarcación')
 @section('section')
 
 <div class="col-lg-12">
 
-    {!! Form::open(array('url' => route('admin.yates.store'), 'files' => true)) !!}
+    {!! Form::open(array('url' => route('admin.embarcacion.store'), 'files' => true)) !!}
 		<div class="panel-group" id="accordion">
-			<div class="panel" id="panel_detalles">
+			<div class="panel" id="panel_detalles_generales">
 				<div class="panel-heading">
-					<h4 class="panel-title"> <a data-toggle="collapse" data-target="#detalles_yate" href="#detalles_yate">Especificaciones técnicas </a></h4>
+					<h4 class="panel-title"> <a data-toggle="collapse" data-target="#detalles_generales" href="#detalles_generales" class="collapsed">Información General</a></h4>
 				</div>
-				<div id="detalles_yate" class="panel-collapse collapse in">
+				<div id="detalles_generales" class="panel-collapse collapse">
 					<div class="panel-body">
-						<div class="col-md-3">
-							{!! Form::label('nombre', "Nombre") !!}
+						<div class="col-md-6">
+							{!! Form::label('nombre', "Nombre*") !!}
 							<br>{!! Form::text('nombre', "", ['class' => 'form-control', 'required']) !!}
 							
-							<br>{!! Form::label('propietario') !!}
-							<br>{!! Form::text('propietario', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::label('tipo_embarcacion_id', 'Tipo*') !!}
+							<br>{!! Form::select('modelos_embarcacion_id', $modelos, null, ['class' => 'form-control']) !!}
 
-							<br>{!! Form::label('companias_yate_id', 'Compañía') !!}
-							<br>{!! Form::select('companias_yate_id', $companias_yate, null, ['class' => 'form-control']) !!}
-
-							<br>{!! Form::label('modelos_yate_id', 'Modelo') !!}
-							<br>{!! Form::select('modelos_yate_id', $modelos, null, ['class' => 'form-control']) !!}
-
-							<br>{!! Form::label('tipos_patente_id', 'Tipo de patente') !!}
-							<br>{!! Form::select('tipos_patente_id', $tipos_patente, null, ['class' => 'form-control']) !!}
-						</div>
-						
-						<div class="col-md-3">
-							{!! Form::label('anyo_construccion', 'Año de construcción') !!}
+							<br>{!! Form::label('anyo_construccion', 'Año de construcción') !!}
 							<br>{!! Form::text('anyo_construccion', "", ['class' => 'form-control']) !!}
 
 							<br>{!! Form::label('refit') !!}
 							<br>{!! Form::text('refit', "", ['class' => 'form-control']) !!}
+						</div>
+						<div class="col-md-6">
+							{!! Form::label('modelos_embarcacion_id', 'Modelo') !!}
+							<br>{!! Form::select('modelos_embarcacion_id', $modelos, null, ['class' => 'form-control']) !!}
 
-							<br>{!! Form::label('draft') !!}
-							<br>{!! Form::text('draft', "", ['class' => 'form-control', 'required']) !!}
-
-							<br>{!! Form::label('beam') !!}
-							<br>{!! Form::text('beam', "", ['class' => 'form-control', 'required']) !!}
-
-							<br>{!! Form::label('puerto_registro_id', 'Puerto de registro') !!}
+							<br>{!! Form::label('puerto_registro_id', 'Puerto de registro*') !!}
 							<br>{!! Form::select('puerto_registro_id', $puertos, null, ['class' => 'form-control']) !!}
+
+							<br>{!! Form::label('companias_embarcacion_id', 'Operador / Propietario*') !!}
+							<br>{!! Form::select('companias_embarcacion_id', $companias_embarcacion, null, ['class' => 'form-control']) !!}
+
+							<br>{!! Form::label('tipos_patente_id', 'Tipo de patente*') !!}
+							<br>{!! Form::select('tipos_patente_id', $tipos_patente, null, ['class' => 'form-control']) !!}
+						</div>
+						
+						<div class="col-lg-12">
+							<br>{!! Form::label('deck_plan', 'Planos de cubierta') !!}
+							<br>{!! Form::label('deck_plan', 'CARGA DE IMAGENES') !!}
+							<!--<br>{!! Form::textarea('deck_plan', "", ['class' => 'form-control', 'required', 'size' => '15x15', 'style' => 'resize:none']) !!}-->
 						</div>
 
-						<div class="col-md-3">
+					</div>
+				</div>
+			</div>
+
+			<div class="panel" id="panel_detalles_tecnicos">
+				<div class="panel-heading">
+					<h4 class="panel-title"> <a data-toggle="collapse" data-target="#detalles_tecnicos" href="#detalles_tecnicos" class="collapsed">Especificaciones técnicas </a></h4>
+				</div>
+				<div id="detalles_tecnicos" class="panel-collapse collapse">
+					<div class="panel-body">
+						<div class="col-md-4">
 							{!! Form::label('capacidad') !!}
 							<br>{!! Form::text('capacidad', "", ['class' => 'form-control', 'required']) !!}
+
+							<br>{!! Form::label('eslora') !!}
+							<br>{!! Form::text('eslora', "", ['class' => 'form-control', 'required']) !!}
+
+							<br>{!! Form::label('manga') !!}
+							<br>{!! Form::text('manga', "", ['class' => 'form-control', 'required']) !!}
 							
-							<br>{!! Form::label('nro_tripulantes', 'Tripulantes') !!}
-							<br>{!! Form::text('nro_tripulantes', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::label('puntal') !!}
+							<br>{!! Form::text('puntal', "", ['class' => 'form-control', 'required']) !!}
 							
 							<br>{!! Form::label('velocidad_crucero', 'Velocidad de crucero') !!}
 							<br>{!! Form::text('velocidad_crucero', "", ['class' => 'form-control']) !!}
+						</div>
+
+						<div class="col-md-4">
+							{!! Form::label('nro_tripulantes', 'Cant. de Tripulantes') !!}
+							<br>{!! Form::text('nro_tripulantes', "", ['class' => 'form-control']) !!}
 
 							<br>{!! Form::label('estabilizadores') !!}
 							<br>{!! Form::select('estabilizadores', array('Si' => 'Si', 'No' => 'No'), null, ['class' => 'form-control']) !!}
-							
-							<br>{!! Form::label('ameneties') !!}
-							<br>{!! Form::select('ameneties', array('Si' => 'Si', 'No' => 'No'), null, ['class' => 'form-control']) !!}
-						</div>
 
-						<div class="col-md-3">
-							{!! Form::label('internet') !!}
+							<br>{!! Form::label('internet') !!}
 							<br>{!! Form::select('internet', array('Si' => 'Si', 'No' => 'No'), null, ['class' => 'form-control']) !!}
+
+							<br>{!! Form::label('kayacks', 'Cant. de kayacks') !!}
+							<br>{!! Form::text('kayacks', "", ['class' => 'form-control']) !!}
+						</div>
+						
+						<div class="col-md-4">
+							{!! Form::label('paddle_boards', 'Cant. de paddle boards') !!}
+							<br>{!! Form::text('paddle_boards', "", ['class' => 'form-control']) !!}
 
 							<br>{!! Form::label('trajes_neopreno', 'Trajes de neopreno') !!}
 							<br>{!! Form::select('trajes_neopreno', array('Si' => 'Si', 'No' => 'No'), null, ['class' => 'form-control']) !!}
@@ -73,26 +96,8 @@
 							<br>{!! Form::label('equipo_snorkel', 'Equipo de snorkel') !!}
 							<br>{!! Form::select('equipo_snorkel', array('Si' => 'Si', 'No' => 'No'), null, ['class' => 'form-control']) !!}
 
-							<br>{!! Form::label('kayacks', 'Cant. de kayacks') !!}
-							<br>{!! Form::text('kayacks', "", ['class' => 'form-control']) !!}
-
-							<br>{!! Form::label('paddle_boards', 'Cant. de paddle boards') !!}
-							<br>{!! Form::text('paddle_boards', "", ['class' => 'form-control']) !!}
-						</div>
-
-						<div class="col-lg-12">
-							<br>{!! Form::label('deck_plan', 'Planes de cubierta') !!}
-							<br>{!! Form::textarea('deck_plan', "", ['class' => 'form-control', 'required', 'size' => '15x15', 'style' => 'resize:none']) !!}
-						</div>
-
-						<div class="col-md-6">
-							<br>{!! Form::label('incluye', 'Incluye') !!}
-							<br>{!! Form::textarea('incluye', "", ['class' => 'form-control', 'required', 'size' => '15x10', 'style' => 'resize:none']) !!}
-						</div>
-						
-						<div class="col-md-6">
-							<br>{!! Form::label('no_incluye', 'No Incluye') !!}
-							<br>{!! Form::textarea('no_incluye', "", ['class' => 'form-control', 'required', 'size' => '15x10', 'style' => 'resize:none']) !!}
+							<br>{!! Form::label('ameneties') !!}
+							<br>{!! Form::select('ameneties', array('Si' => 'Si', 'No' => 'No'), null, ['class' => 'form-control']) !!}
 						</div>
 					</div>
 				</div>
@@ -135,34 +140,34 @@
 		        </div>
 		        <div id="detalles_tarifario" class="panel-collapse collapse">
 		            <div class="panel-body">
-		            	<div class="col-lg-12">
+		            	<!--<div class="col-lg-12">
 			            	<div class="col-md-3">
 								<br>{!! Form::label('tarifa_temp_alta', 'Tarifa de temporada alta') !!}
 								{!! Form::text('tarifa_temp_alta', "", ['class' => 'form-control', 'size' => '4']) !!}
 							</div>
-						</div>
+						</div>-->
 						<div class="col-lg-12" id="tarifario_1">
 			            	<div class="col-md-2">
-								<br>{!! Form::label('cant_dias', 'Cantidad de días') !!}
+								{!! Form::label('cant_dias', 'Cantidad de días') !!}
 								<br>{!! Form::selectRange('cant_dias[]', 4, 15, "", ['class' => 'form-control']); !!}
 							</div>
 
 							<div class="col-md-3">
-								<br>{!! Form::label('gross', 'Gross') !!}
+								{!! Form::label('gross', 'Gross') !!}
 								<br>{!! Form::text('gross[]', "", ['class' => 'form-control']) !!}
 							</div>
 
 							<div class="col-md-3">
-								<br>{!! Form::label('neto', 'Neto') !!}
+								{!! Form::label('neto', 'Neto') !!}
 								<br>{!! Form::text('neto[]', "", ['class' => 'form-control']) !!}
 							</div>
 
 							<div class="col-md-2">
-								<br>{!! Form::label('comision_glc', 'Comisión') !!}
+								{!! Form::label('comision_glc', 'Comisión') !!}
 								<br>{!! Form::text('comision_glc[]', "", ['class' => 'form-control']) !!} 
 							</div>
 							<div class="col-md-2">
-								<br><br><button type="button" class="btn btn-success btn-circle" name="add" onclick="add_tarifa()"><i class="fa fa-plus fa-fw"></i></button>
+								<br><button type="button" class="btn btn-success btn-circle" name="add" onclick="add_tarifa()"><i class="fa fa-plus fa-fw"></i></button>
 								<button type="button" class="btn btn-danger btn-circle remove_tarifa" name="remove" onclick="remove_elemento(tarifario_1, 'remove_tarifa')"><i class="fa fa-minus fa-fw"></i></button>
 							</div>
 						</div>
@@ -176,18 +181,39 @@
 
 						<div class="row" id="fechas_1">
 							<div class="col-lg-12">
-								<div class="col-md-3">
+								<div class="col-md-6">
 									{!! Form::label('from', 'Desde') !!} 
-									<br>{!! Form::text('from[]', "", ['class' => 'form-control temp_alta_from', 'id' => 'from_1']) !!}
+									<br>{!! Form::text('temp_alta_from[]', "", ['class' => 'form-control temp_alta_from', 'id' => 'from_1']) !!}
+								</div>
+
+								<div class="col-md-6">
+									{!! Form::label('to', 'Hasta') !!}
+									<br>{!! Form::text('temp_alta_to[]', "", ['class' => 'form-control temp_alta_to', 'id' => 'to_1']) !!}
+								</div>
+							</div>
+							<div class="col-lg-12">
+								<div class="col-md-2">
+									<br>{!! Form::label('cant_dias', 'Cantidad de días') !!}
+									<br>{!! Form::selectRange('temp_alta_cant_dias[]', 4, 15, "", ['class' => 'form-control']); !!}
 								</div>
 
 								<div class="col-md-3">
-									{!! Form::label('to', 'Hasta') !!}
-									<br>{!! Form::text('to[]', "", ['class' => 'form-control temp_alta_to', 'id' => 'to_1']) !!}
+									<br>{!! Form::label('gross', 'Gross') !!}
+									<br>{!! Form::text('temp_alta_gross[]', "", ['class' => 'form-control']) !!}
+								</div>
+
+								<div class="col-md-3">
+									<br>{!! Form::label('neto', 'Neto') !!}
+									<br>{!! Form::text('temp_alta_neto[]', "", ['class' => 'form-control']) !!}
 								</div>
 
 								<div class="col-md-2">
-									<br><button type="button" class="btn btn-success btn-circle" name="add" onclick="add_fecha_temp_alta()"><i class="fa fa-plus fa-fw"></i></button>
+									<br>{!! Form::label('comision_glc', 'Comisión') !!}
+									<br>{!! Form::text('temp_alta_comision_glc[]', "", ['class' => 'form-control']) !!} 
+								</div>
+
+								<div class="col-md-2">
+									<br><br><button type="button" class="btn btn-success btn-circle" name="add" onclick="add_fecha_temp_alta()"><i class="fa fa-plus fa-fw"></i></button>
 									<button type="button" class="btn btn-danger btn-circle remove_fecha" name="remove" onclick="remove_elemento(fechas_1, 'remove_fecha')"><i class="fa fa-minus fa-fw"></i></button>
 								</div>
 							</div>
@@ -339,7 +365,7 @@
 		var id_from = "from_"+cont_fechas;
 		var id_to = "to_"+cont_fechas;
 
-		temp_alta += '<div class="row" id="fechas_'+ cont_fechas +'"><div class="col-lg-12">';
+		/*temp_alta += '<div class="row" id="fechas_'+ cont_fechas +'"><div class="col-lg-12">';
 		temp_alta += '<div class="col-md-3">';
 		temp_alta += '<br><label for="from">Desde</label>';
 		temp_alta += '<br><input class="form-control temp_alta_from" name="from[]" type="text" value="" id="'+id_from+'">';
@@ -352,7 +378,39 @@
 		temp_alta += '<br><br><button type="button" class="btn btn-success btn-circle" name="add" onclick="add_fecha_temp_alta()"><i class="fa fa-plus fa-fw"></i></button>';
 		temp_alta += '<button type="button" class="btn btn-danger btn-circle remove_fecha" name="remove"onclick=" remove_elemento(fechas_'+ cont_fechas +', '+ class_item +')"><i class="fa fa-minus fa-fw"></i></button>';
 		temp_alta += '</div>';
-		temp_alta += '</div></div>';
+		temp_alta += '</div></div>';*/
+
+		temp_alta += '<div class="row" id="fechas_'+ cont_fechas +'"><div class="col-lg-12">';
+		temp_alta += '<div class="col-md-6">';
+		temp_alta += '<br><label for="from">Desde</label>';
+		temp_alta += '<br><input class="form-control temp_alta_from" name="from[]" type="text" value="" id="'+id_from+'">';
+		temp_alta += '</div>';
+		temp_alta += '<div class="col-md-6">';
+		temp_alta += '<br><label for="to">Hasta</label>';
+		temp_alta += '<br><input class="form-control temp_alta_to" name="to[]" type="text" value="" id="'+id_to+'">';
+		temp_alta += '</div>';
+		temp_alta += '<div class="col-lg-12">';
+		temp_alta += '<div class="col-md-2">';
+		temp_alta += '<br><label for="temp_alta_cant_dias[]">Cantidad de días</label>';
+		temp_alta += '<br><select class="form-control" name="cant_dias[]"><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option></select>';
+		temp_alta += '</div>';
+		temp_alta += '<div class="col-md-3">';
+		temp_alta += '<br><label for="temp_alta_gross[]">Gross</label>';
+		temp_alta += '<br><input class="form-control" name="gross[]" type="text" value="">';
+		temp_alta += '</div>';
+		temp_alta += '<div class="col-md-3">';
+		temp_alta += '<br><label for="temp_alta_neto[]">Neto</label>';
+		temp_alta += '<br><input class="form-control" name="neto[]" type="text" value="">';
+		temp_alta += '</div>';
+		temp_alta += '<div class="col-md-2">';
+		temp_alta += '<br><label for="temp_alta_comision_glc[]">Comisión</label>';
+		temp_alta += '<br><input class="form-control" name="comision_glc[]" type="text" value=""> ';
+		temp_alta += '</div>';
+		temp_alta += '<div class="col-md-2">';
+		temp_alta += '<br><br><button type="button" class="btn btn-success btn-circle" name="add" onclick="add_fecha_temp_alta()"><i class="fa fa-plus fa-fw"></i></button>';
+		temp_alta += '<button type="button" class="btn btn-danger btn-circle remove_fecha" name="remove"onclick=" remove_elemento(fechas_'+ cont_fechas +', '+ class_item +')"><i class="fa fa-minus fa-fw"></i></button>';
+		temp_alta += '</div>';
+		temp_alta += '</div></div></div>';
 
 		$("#fechas_temp_alta").append(temp_alta);
 		date(id_from, id_to);

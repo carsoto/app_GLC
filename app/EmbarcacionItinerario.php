@@ -10,50 +10,49 @@ namespace App;
 use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
- * Class TemporadasAlta
+ * Class EmbarcacionItinerario
  * 
- * @property int $id
  * @property int $embarcacion_id
- * @property \Carbon\Carbon $desde
- * @property \Carbon\Carbon $hasta
- * @property float $cant_dias
- * @property float $gross
- * @property float $neto
- * @property float $comision_glc
+ * @property int $itinerarios_id
+ * @property int $orden
+ * @property int $id_dia
+ * @property string $am
+ * @property string $pm
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
  * @property \App\Embarcacion $embarcacion
+ * @property \App\Itinerario $itinerario
  *
  * @package App
  */
-class TemporadasAlta extends Eloquent
+class EmbarcacionItinerario extends Eloquent
 {
+	public $incrementing = false;
+
 	protected $casts = [
 		'embarcacion_id' => 'int',
-		'cant_dias' => 'float',
-		'gross' => 'float',
-		'neto' => 'float',
-		'comision_glc' => 'float'
-	];
-
-	protected $dates = [
-		'desde',
-		'hasta'
+		'itinerarios_id' => 'int',
+		'orden' => 'int',
+		'id_dia' => 'int'
 	];
 
 	protected $fillable = [
 		'embarcacion_id',
-		'desde',
-		'hasta',
-		'cant_dias',
-		'gross',
-		'neto',
-		'comision_glc'
+		'itinerarios_id',
+		'orden',
+		'id_dia',
+		'am',
+		'pm'
 	];
 
 	public function embarcacion()
 	{
 		return $this->belongsTo(\App\Embarcacion::class);
+	}
+
+	public function itinerario()
+	{
+		return $this->belongsTo(\App\Itinerario::class, 'itinerarios_id');
 	}
 }

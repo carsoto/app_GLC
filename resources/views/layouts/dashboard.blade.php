@@ -57,8 +57,8 @@
                         <li {{ (Request::is('*admin/charters/') ? 'class="active"' : '') }}>
                             <a href="{{ url ('admin/charters/') }}"><i class="fa fa-anchor fa-fw"></i> Charters</a>
                         </li>
-                        <li {{ (Request::is('*admin/yates/') ? 'class="active"' : '') }}>
-                            <a href="{{ url ('admin/yates/') }}"><i class="fa fa-shield fa-fw"></i> Yates</a>
+                        <li {{ (Request::is('*admin/embarcacion/') ? 'class="active"' : '') }}>
+                            <a href="{{ url ('admin/embarcacion/') }}"><i class="fa fa-shield fa-fw"></i> Embarcación</a>
                         </li>
                         <li {{ (Request::is('*') ? 'class="active"' : '') }}>
                             <a href="{{ url ('') }}"><i class="fa fa-files-o fa-fw"></i> Pedidos</a>

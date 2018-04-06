@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableYates extends Migration
+class CreateTableEmbarcacion extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTableYates extends Migration
      */
     public function up()
     {
-        Schema::create('yates', function(Blueprint $table) {
+        Schema::create('embarcacion', function(Blueprint $table) {
             $table->engine = 'InnoDB';
         
             $table->increments('id')->unsigned();
@@ -21,8 +21,9 @@ class CreateTableYates extends Migration
             $table->string('capacidad', 45);
             $table->string('nro_tripulantes', 150);
             $table->integer('puerto_registro_id')->unsigned();
-            $table->string('draft', 45);
-            $table->string('beam', 45);
+            $table->string('eslora', 45);
+            $table->string('manga', 45);
+            $table->string('puntal', 45);
             $table->string('velocidad_crucero', 45)->nullable();
             $table->enum('estabilizadores', ['Si',  'No']);
             $table->enum('ameneties', ['Si',  'No']);
@@ -33,30 +34,26 @@ class CreateTableYates extends Migration
             $table->integer('paddle_boards')->nullable();
             $table->string('anyo_construccion', 5)->nullable();
             $table->string('refit', 5)->nullable();
-            $table->string('propietario', 45)->nullable();
-            $table->integer('companias_yate_id')->unsigned();
-            $table->integer('modelos_yate_id')->unsigned();
+            $table->integer('companias_embarcacion_id')->unsigned();
+            $table->integer('modelos_embarcacion_id')->unsigned();
             $table->integer('tipos_patente_id')->unsigned();
-            $table->string('incluye', 500);
-            $table->string('no_incluye', 500);
             $table->string('politicas_pago', 500);
             $table->string('cancelaciones', 500);
-            $table->string('deck_plan', 1000);
             $table->decimal('tarifa_temp_alta', 8, 2)->nullable()->default(null);
 
-            $table->index('puerto_registro_id','fk_yate_puertos1_idx');
-            $table->index('companias_yate_id','fk_yates_companias_yate1_idx');
-            $table->index('modelos_yate_id','fk_yates_modelos_yate1_idx');
-            $table->index('tipos_patente_id','fk_yates_tipos_patente1_idx');
+            $table->index('puerto_registro_id','fk_embarcacion_puertos1_idx');
+            $table->index('companias_embarcacion_id','fk_embarcacion_companias_embarcacion1_idx');
+            $table->index('modelos_embarcacion_id','fk_embarcacion_modelos_embarcacion1_idx');
+            $table->index('tipos_patente_id','fk_embarcacion_tipos_patente1_idx');
         
             $table->foreign('puerto_registro_id')
                 ->references('id')->on('puertos');
         
-            $table->foreign('companias_yate_id')
-                ->references('id')->on('companias_yate');
+            $table->foreign('companias_embarcacion_id')
+                ->references('id')->on('companias_embarcacion');
         
-            $table->foreign('modelos_yate_id')
-                ->references('id')->on('modelos_yate');
+            $table->foreign('modelos_embarcacion_id')
+                ->references('id')->on('modelos_embarcacion');
         
             $table->foreign('tipos_patente_id')
                 ->references('id')->on('tipos_patente');
@@ -75,7 +72,7 @@ class CreateTableYates extends Migration
      */
     public function down()
     {
-        Schema::drop('yates');
+        Schema::drop('embarcacion');
 
     }
 }
