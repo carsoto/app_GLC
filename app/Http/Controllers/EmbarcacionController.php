@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Yate;
+use App\Embarcacion;
 use App\CompaniasEmbarcacion;
 use App\ModelosEmbarcacion;
 use App\TiposPatente;
@@ -36,13 +36,13 @@ class EmbarcacionController extends Controller
      */
     public function create()
     {
-        $companias_yate = CompaniasEmbarcacion::pluck('razon_social', 'id');
+        $companias_embarcacion = CompaniasEmbarcacion::pluck('razon_social', 'id');
         $modelos = ModelosEmbarcacion::pluck('descripcion', 'id');
         $tipos_patente = TiposPatente::pluck('descripcion', 'id');
         $puertos = Puerto::pluck('descripcion', 'id');
         $dias = Dia::pluck('dia', 'id');
 
-        return view('admin.embarcacion.create', array('companias_yate' => $companias_yate, 'modelos' => $modelos, 'tipos_patente' => $tipos_patente, 'puertos' => $puertos, 'dias' => $dias));
+        return view('admin.embarcacion.create', array('companias_embarcacion' => $companias_embarcacion, 'modelos' => $modelos, 'tipos_patente' => $tipos_patente, 'puertos' => $puertos, 'dias' => $dias));
     }
 
     /**
@@ -138,7 +138,7 @@ class EmbarcacionController extends Controller
         $yate = Yate::find($id);
         $itinerarios = array();
         $dias = Dia::pluck('dia', 'id');
-        $companias_yate = CompaniasEmbarcacion::pluck('razon_social', 'id');
+        $companias_embarcacion = CompaniasEmbarcacion::pluck('razon_social', 'id');
         $modelos = ModelosEmbarcacion::pluck('descripcion', 'id');
         $tipos_patente = TiposPatente::pluck('descripcion', 'id');
         $puertos = Puerto::pluck('descripcion', 'id');
@@ -150,7 +150,7 @@ class EmbarcacionController extends Controller
             $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['pm'] = $itinerario->pivot->pm;
         }
 
-        return view('admin.embarcacion.editar', array('yate' => $yate, 'itinerarios' => $itinerarios, 'companias_yate' => $companias_yate, 'modelos' => $modelos, 'tipos_patente' => $tipos_patente, 'puertos' => $puertos, 'dias' => $dias));
+        return view('admin.embarcacion.editar', array('yate' => $yate, 'itinerarios' => $itinerarios, 'companias_embarcacion' => $companias_embarcacion, 'modelos' => $modelos, 'tipos_patente' => $tipos_patente, 'puertos' => $puertos, 'dias' => $dias));
     }
 
     /**
@@ -178,10 +178,10 @@ class EmbarcacionController extends Controller
 
     public function getEmbarcacion()
     {
-        $embarcacion = Yate::select(['embarcacion.id', 'nombre', 'capacidad', 'puertos.descripcion AS puerto', 'companias_yate.razon_social AS razon_social', 'modelos_yate.descripcion AS modelo', 'tipos_patente.descripcion AS patente'])
+        $embarcacion = Embarcacion::select(['embarcacion.id', 'nombre', 'capacidad', 'puertos.descripcion AS puerto', 'companias_embarcacion.razon_social AS razon_social', 'modelos_embarcacion.descripcion AS modelo', 'tipos_patente.descripcion AS patente'])
                                 ->join('puertos','puertos.id','=','puerto_registro_id')
-                                ->join('companias_yate','companias_yate.id','=','companias_yate_id')
-                                ->join('modelos_yate','modelos_yate.id','=','modelos_yate_id')
+                                ->join('companias_embarcacion','companias_embarcacion.id','=','companias_embarcacion_id')
+                                ->join('modelos_embarcacion','modelos_embarcacion.id','=','modelos_embarcacion_id')
                                 ->join('tipos_patente','tipos_patente.id','=','tipos_patente_id');
 
         return Datatables::of($embarcacion)
