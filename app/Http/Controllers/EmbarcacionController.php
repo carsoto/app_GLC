@@ -7,6 +7,7 @@ use App\Embarcacion;
 use App\CompaniasEmbarcacion;
 use App\ModelosEmbarcacion;
 use App\TiposPatente;
+use App\TiposEmbarcacion;
 use App\Puerto;
 use App\TemporadasAlta;
 use App\Itinerario;
@@ -16,6 +17,7 @@ use App\Dia;
 use Yajra\Datatables\Datatables;
 use DB;
 use Redirect;
+use Response;
 
 class EmbarcacionController extends Controller
 {
@@ -38,11 +40,12 @@ class EmbarcacionController extends Controller
     {
         $companias_embarcacion = CompaniasEmbarcacion::pluck('razon_social', 'id');
         $modelos = ModelosEmbarcacion::pluck('descripcion', 'id');
+        $tipos_embarcacion = TiposEmbarcacion::pluck('descripcion', 'id');
         $tipos_patente = TiposPatente::pluck('descripcion', 'id');
         $puertos = Puerto::pluck('descripcion', 'id');
         $dias = Dia::pluck('dia', 'id');
 
-        return view('admin.embarcacion.create', array('companias_embarcacion' => $companias_embarcacion, 'modelos' => $modelos, 'tipos_patente' => $tipos_patente, 'puertos' => $puertos, 'dias' => $dias));
+        return view('admin.embarcacion.create', array('companias_embarcacion' => $companias_embarcacion, 'modelos' => $modelos, 'tipos_patente' => $tipos_patente, 'puertos' => $puertos, 'dias' => $dias, 'tipos_embarcacion' => $tipos_embarcacion));
     }
 
     /**
@@ -54,27 +57,39 @@ class EmbarcacionController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $yate = new Yate($data);
+        $files = $request->file('file');
+        dd($data, $files);
+        /*$image = $request->file('file');
+        $imageName = $image->getClientOriginalName();
+        $image->move(public_path('images'),$imageName);
+        return response()->json(['success'=>$imageName]);*/
+
+        /*$data = $request->all();
+        $embarcacion = new Embarcacion($data);
         
-        if($yate->save()){
+        if($embarcacion->save()){
             
-            for ($i=0; $i < count($data['from']); $i++) { 
-                $arr_f_inicio = explode("/", $data['from'][$i]);
+            for ($i=0; $i < count($data['temp_alta_cant_dias']); $i++) { 
+                $arr_f_inicio = explode("/", $data['temp_alta_from'][$i]);
                 $f_inicio = $arr_f_inicio[2]."-".$arr_f_inicio[1]."-".$arr_f_inicio[0];
 
-                $arr_f_fin = explode("/", $data['to'][$i]);
+                $arr_f_fin = explode("/", $data['temp_alta_to'][$i]);
                 $f_fin = $arr_f_fin[2]."-".$arr_f_fin[1]."-".$arr_f_fin[0];
 
                 $temporada_alta = new TemporadasAlta();
-                $temporada_alta->embarcacion_id = $yate->id;
+                $temporada_alta->embarcacion_id = $embarcacion->id;
                 $temporada_alta->desde = $f_inicio;
                 $temporada_alta->hasta = $f_fin;
+                $temporada_alta->cant_dias = $data['temp_alta_cant_dias'][$i];
+                $temporada_alta->gross = $data['temp_alta_gross'][$i];
+                $temporada_alta->neto = $data['temp_alta_neto'][$i];
+                $temporada_alta->comision_glc = $data['temp_alta_comision_glc'][$i];
                 $temporada_alta->save();
             }
 
-            for ($j=0; $j < count($data['gross']); $j++) {
+            for ($j=0; $j < count($data['cant_dias']); $j++) {
                 $tarifario = new Tarifario();
-                $tarifario->embarcacion_id = $yate->id;
+                $tarifario->embarcacion_id = $embarcacion->id;
                 $tarifario->cant_dias = $data['cant_dias'][$j];
                 $tarifario->gross = $data['gross'][$j];
                 $tarifario->neto = $data['neto'][$j];
@@ -88,22 +103,30 @@ class EmbarcacionController extends Controller
 
                 if($itinerario->save()){
                     for ($k=0; $k < count($value); $k++) { 
-                        $itinerario_yate = new EmbarcacionItinerario();
-                        $itinerario_yate->embarcacion_id = $yate->id;
-                        $itinerario_yate->itinerarios_id = $itinerario->id;
-                        $itinerario_yate->orden = $k;
-                        $itinerario_yate->id_dia = $data['dias'][$key][$k];
-                        $itinerario_yate->am = $value[$k];
-                        $itinerario_yate->pm = $data['pm'][$key][$k];
-                        $itinerario_yate->save();
+                        $itinerario_embarcacion = new EmbarcacionItinerario();
+                        $itinerario_embarcacion->embarcacion_id = $embarcacion->id;
+                        $itinerario_embarcacion->itinerarios_id = $itinerario->id;
+                        $itinerario_embarcacion->orden = $k;
+                        $itinerario_embarcacion->id_dia = $data['dias'][$key][$k];
+                        $itinerario_embarcacion->am = $value[$k];
+                        $itinerario_embarcacion->pm = $data['pm'][$key][$k];
+                        $itinerario_embarcacion->save();
                     }
                 }
             }
             
-            /*echo $yate->id;
-            dd($request->all());*/
-            return Redirect::action('embarcacionController@index');
-        }
+            /*echo $embarcacion->id;
+            dd($request->all());*
+            //return Redirect::action('EmbarcacionController@index');
+        }*/
+    }
+
+    public function dropzoneStore(Request $request)
+    {
+        $image = $request->file('file');
+        $imageName = time().$image->getClientOriginalName();
+        $image->move(public_path('images'),$imageName);
+        return response()->json(['success'=>$imageName]);
     }
 
     /**
@@ -114,7 +137,7 @@ class EmbarcacionController extends Controller
      */
     public function show($id)
     {
-        $yate = Yate::find($id);
+        $embarcacion = Yate::find($id);
         $itinerarios = array();
         $dias = Dia::pluck('dia', 'id');
 
@@ -190,5 +213,12 @@ class EmbarcacionController extends Controller
             })
             ->editColumn('id', '{{$id}}')
             ->make(true);
+    }
+
+    public function getModelosEmbarcacion()
+    {
+        $id_tipo_embarcacion = $_GET['id_tipo_embarcacion'];
+        $modelos = ModelosEmbarcacion::where('tipos_embarcacion_id', $id_tipo_embarcacion)->get(['id','descripcion']);
+        return $modelos;
     }
 }

@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Mon, 09 Apr 2018 20:34:16 +0000.
+ * Date: Tue, 10 Apr 2018 16:05:41 +0000.
  */
 
 namespace App;
@@ -14,9 +14,11 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * 
  * @property int $id
  * @property string $descripcion
+ * @property int $tipos_embarcacion_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
+ * @property \App\TiposEmbarcacion $tipos_embarcacion
  * @property \Illuminate\Database\Eloquent\Collection $embarcacions
  *
  * @package App
@@ -25,9 +27,19 @@ class ModelosEmbarcacion extends Eloquent
 {
 	protected $table = 'modelos_embarcacion';
 
-	protected $fillable = [
-		'descripcion'
+	protected $casts = [
+		'tipos_embarcacion_id' => 'int'
 	];
+
+	protected $fillable = [
+		'descripcion',
+		'tipos_embarcacion_id'
+	];
+
+	public function tipos_embarcacion()
+	{
+		return $this->belongsTo(\App\TiposEmbarcacion::class);
+	}
 
 	public function embarcacions()
 	{

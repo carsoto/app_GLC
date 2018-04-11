@@ -18,7 +18,13 @@ class CreateTableModelosEmbarcacion extends Migration
         
             $table->increments('id')->unsigned();
             $table->string('descripcion', 100);
-        
+            $table->integer('tipos_embarcacion_id')->unsigned();
+            
+            $table->index('tipos_embarcacion_id','fk_modelos_embarcacion_tipo_embarcacion1_idx');
+            
+            $table->foreign('tipos_embarcacion_id')
+                ->references('id')->on('tipos_embarcacion');
+            
             $table->timestamps();
         
         });

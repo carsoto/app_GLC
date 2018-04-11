@@ -22,7 +22,6 @@ class CreateTableEmbarcacion extends Migration
             $table->string('refit', 5)->nullable();
             $table->integer('puerto_registro_id')->unsigned();
             $table->integer('companias_embarcacion_id')->unsigned();
-            $table->integer('tipos_embarcacion_id')->unsigned();
             $table->integer('modelos_embarcacion_id')->unsigned();
             $table->integer('tipos_patente_id')->unsigned();
             $table->string('capacidad', 45);
@@ -40,13 +39,11 @@ class CreateTableEmbarcacion extends Migration
             $table->enum('equipo_snorkel', ['Si',  'No']);
             $table->string('politicas_pago', 500);
             $table->string('cancelaciones', 500);
-            
         
             $table->index('puerto_registro_id','fk_embarcacion_puertos1_idx');
             $table->index('companias_embarcacion_id','fk_embarcacion_companias_embarcacion1_idx');
             $table->index('modelos_embarcacion_id','fk_embarcacion_modelos_embarcacion1_idx');
             $table->index('tipos_patente_id','fk_embarcacion_tipos_patente1_idx');
-            $table->index('tipos_embarcacion_id','fk_embarcacion_tipo_embarcacion1_idx');
         
             $table->foreign('companias_embarcacion_id')
                 ->references('id')->on('companias_embarcacion');
@@ -59,10 +56,7 @@ class CreateTableEmbarcacion extends Migration
         
             $table->foreign('tipos_patente_id')
                 ->references('id')->on('tipos_patente');
-        
-            $table->foreign('tipos_embarcacion_id')
-                ->references('id')->on('tipos_embarcacion');
-        
+
             $table->timestamps();
         
         });

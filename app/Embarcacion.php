@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Mon, 09 Apr 2018 20:34:16 +0000.
+ * Date: Tue, 10 Apr 2018 16:05:41 +0000.
  */
 
 namespace App;
@@ -14,28 +14,27 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * 
  * @property int $id
  * @property string $nombre
- * @property string $capacidad
- * @property string $nro_tripulantes
+ * @property string $anyo_construccion
+ * @property string $refit
  * @property int $puerto_registro_id
+ * @property int $companias_embarcacion_id
+ * @property int $modelos_embarcacion_id
+ * @property int $tipos_patente_id
+ * @property string $capacidad
  * @property string $eslora
  * @property string $manga
  * @property string $puntal
  * @property string $velocidad_crucero
+ * @property string $nro_tripulantes
  * @property string $estabilizadores
- * @property string $ameneties
  * @property string $internet
- * @property string $trajes_neopreno
- * @property string $equipo_snorkel
  * @property int $kayacks
  * @property int $paddle_boards
- * @property string $anyo_construccion
- * @property string $refit
- * @property int $companias_embarcacion_id
- * @property int $modelos_embarcacion_id
- * @property int $tipos_patente_id
+ * @property string $ameneties
+ * @property string $trajes_neopreno
+ * @property string $equipo_snorkel
  * @property string $politicas_pago
  * @property string $cancelaciones
- * @property float $tarifa_temp_alta
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
@@ -56,38 +55,36 @@ class Embarcacion extends Eloquent
 
 	protected $casts = [
 		'puerto_registro_id' => 'int',
-		'kayacks' => 'int',
-		'paddle_boards' => 'int',
 		'companias_embarcacion_id' => 'int',
 		'modelos_embarcacion_id' => 'int',
 		'tipos_patente_id' => 'int',
-		'tarifa_temp_alta' => 'float'
+		'kayacks' => 'int',
+		'paddle_boards' => 'int'
 	];
 
 	protected $fillable = [
 		'nombre',
-		'capacidad',
-		'nro_tripulantes',
+		'anyo_construccion',
+		'refit',
 		'puerto_registro_id',
+		'companias_embarcacion_id',
+		'modelos_embarcacion_id',
+		'tipos_patente_id',
+		'capacidad',
 		'eslora',
 		'manga',
 		'puntal',
 		'velocidad_crucero',
+		'nro_tripulantes',
 		'estabilizadores',
-		'ameneties',
 		'internet',
-		'trajes_neopreno',
-		'equipo_snorkel',
 		'kayacks',
 		'paddle_boards',
-		'anyo_construccion',
-		'refit',
-		'companias_embarcacion_id',
-		'modelos_embarcacion_id',
-		'tipos_patente_id',
+		'ameneties',
+		'trajes_neopreno',
+		'equipo_snorkel',
 		'politicas_pago',
-		'cancelaciones',
-		'tarifa_temp_alta'
+		'cancelaciones'
 	];
 
 	public function companias_embarcacion()

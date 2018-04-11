@@ -79,6 +79,9 @@ Route::get('/documentation', function(){
 	return View::make('documentation');
 });
 
+Route::get('/dropzone', 'HomeController@dropzone');
+Route::post('/dropzone/store', ['as'=>'dropzone.store','uses'=>'HomeController@dropzoneStore']);
+
 /*************************************** GLC_APP ***************************************/
 Route::get('/login', function(){
 	return View::make('login');
@@ -167,10 +170,14 @@ Route::group(['prefix' => 'admin'], function () {
 
 		Route::get('/embarcacion', 'EmbarcacionController@getEmbarcacion')->name('datatable.embarcacion');
 
+		Route::get('/modelos_embarcacion', 'EmbarcacionController@getModelosEmbarcacion')->name('admin.embarcacion.modelos');
+
 		Route::get('/ver/{id}', 'EmbarcacionController@show');
 
 		Route::get('/editar/{id}', 'EmbarcacionController@edit');
 
 		Route::put('/update/{id}', 'EmbarcacionController@update')->name('admin.embarcacion.update');
+
+		Route::post('/dropzone/store', ['as'=>'dropzone.store','uses'=>'EmbarcacionController@dropzoneStore']);
 	});
 });

@@ -18,7 +18,7 @@ class CreateTableTarifario extends Migration
         
             $table->increments('id')->unsigned();
             $table->integer('embarcacion_id')->unsigned();
-            $table->decimal('cant_dias', 8, 2);
+            $table->integer('cant_dias');
             $table->decimal('gross', 8, 2);
             $table->decimal('neto', 8, 2);
             $table->decimal('comision_glc', 8, 2);
