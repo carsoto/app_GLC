@@ -10,40 +10,36 @@ namespace App;
 use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
- * Class EmbarcacionItinerario
+ * Class ImagenesEmbarcacion
  * 
+ * @property int $id
  * @property int $embarcacion_id
- * @property int $itinerarios_id
- * @property int $orden
- * @property int $id_dia
- * @property string $am
- * @property string $pm
+ * @property int $tipos_imagen_id
+ * @property string $titulo
+ * @property boolean $imagenes_embarcacion
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
  * @property \App\Embarcacion $embarcacion
- * @property \App\Itinerario $itinerario
+ * @property \App\TiposImagen $tipos_imagen
  *
  * @package App
  */
-class EmbarcacionItinerario extends Eloquent
+class ImagenesEmbarcacion extends Eloquent
 {
-	public $incrementing = false;
+	protected $table = 'imagenes_embarcacion';
 
 	protected $casts = [
 		'embarcacion_id' => 'int',
-		'itinerarios_id' => 'int',
-		'orden' => 'int',
-		'id_dia' => 'int'
+		'tipos_imagen_id' => 'int',
+		'imagenes_embarcacion' => 'boolean'
 	];
 
 	protected $fillable = [
 		'embarcacion_id',
-		'itinerarios_id',
-		'orden',
-		'id_dia',
-		'am',
-		'pm'
+		'tipos_imagen_id',
+		'titulo',
+		'imagenes_embarcacion'
 	];
 
 	public function embarcacion()
@@ -51,8 +47,8 @@ class EmbarcacionItinerario extends Eloquent
 		return $this->belongsTo(\App\Embarcacion::class);
 	}
 
-	public function itinerario()
+	public function tipos_imagen()
 	{
-		return $this->belongsTo(\App\Itinerario::class, 'itinerarios_id');
+		return $this->belongsTo(\App\TiposImagen::class);
 	}
 }

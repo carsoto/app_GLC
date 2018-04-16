@@ -4,7 +4,7 @@
 
 <div class="col-lg-12">
 
-    {!! Form::open(array('url' => route('admin.embarcacion.store'), 'files' => true)) !!}
+    {!! Form::open(array('url' => route('admin.embarcacion.store'), 'files' => true, 'id' => 'registrar_embarcacion_form')) !!}
 		
 		{{ csrf_field() }}
 
@@ -17,7 +17,7 @@
 					<div class="panel-body">
 						<div class="col-md-6">
 							<br>{!! Form::label('nombre', "Nombre*") !!}
-							<br>{!! Form::text('nombre', "", ['class' => 'form-control', 'required']) !!}
+							<br>{!! Form::text('nombre', "", ['class' => 'form-control']) !!}
 
 							<br>{!! Form::label('anyo_construccion', 'Año de construcción') !!}
 							<br>{!! Form::text('anyo_construccion', "", ['class' => 'form-control']) !!}
@@ -63,16 +63,16 @@
 					<div class="panel-body">
 						<div class="col-md-4">
 							{!! Form::label('capacidad') !!}
-							<br>{!! Form::text('capacidad', "", ['class' => 'form-control', 'required']) !!}
+							<br>{!! Form::text('capacidad', "", ['class' => 'form-control']) !!}
 
 							<br>{!! Form::label('eslora') !!}
-							<br>{!! Form::text('eslora', "", ['class' => 'form-control', 'required']) !!}
+							<br>{!! Form::text('eslora', "", ['class' => 'form-control']) !!}
 
 							<br>{!! Form::label('manga') !!}
-							<br>{!! Form::text('manga', "", ['class' => 'form-control', 'required']) !!}
+							<br>{!! Form::text('manga', "", ['class' => 'form-control']) !!}
 							
 							<br>{!! Form::label('puntal') !!}
-							<br>{!! Form::text('puntal', "", ['class' => 'form-control', 'required']) !!}
+							<br>{!! Form::text('puntal', "", ['class' => 'form-control']) !!}
 							
 							<br>{!! Form::label('velocidad_crucero', 'Velocidad de crucero') !!}
 							<br>{!! Form::text('velocidad_crucero', "", ['class' => 'form-control']) !!}
@@ -117,12 +117,12 @@
 		            <div class="panel-body">
 		            	<div class="col-md-4">
 							{!! Form::label('it_nombre', 'Nombre') !!}
-							<br>{!! Form::text('it_nombre', "", ['class' => 'form-control', 'required']) !!}
+							<br>{!! Form::text('it_nombre', "", ['class' => 'form-control']) !!}
 						</div>
 
 						<div class="col-md-3">
 							{!! Form::label('it_cant_dias', 'Cant. de dias') !!}
-							<br>{!! Form::selectRange('it_cant_dias', 4, 15, "", ['class' => 'form-control', 'required']); !!}
+							<br>{!! Form::selectRange('it_cant_dias', 4, 15, "", ['class' => 'form-control']); !!}
 						</div>
 
 						<div class="col-md-3">
@@ -238,12 +238,12 @@
 		            <div class="panel-body">
 		            	<div class="col-md-6">
 							{!! Form::label('politicas_pago', 'Políticas de pago') !!}
-							<br>{!! Form::textarea('politicas_pago', "", ['class' => 'form-control', 'required', 'size' => '15x10', 'style' => 'resize:none']) !!}
+							<br>{!! Form::textarea('politicas_pago', "", ['class' => 'form-control', 'size' => '15x10', 'style' => 'resize:none']) !!}
 						</div>
 
 						<div class="col-md-6">
 							{!! Form::label('cancelaciones', 'Cancelaciones') !!}
-							<br>{!! Form::textarea('cancelaciones', "", ['class' => 'form-control', 'required', 'size' => '15x10', 'style' => 'resize:none']) !!}
+							<br>{!! Form::textarea('cancelaciones', "", ['class' => 'form-control', 'size' => '15x10', 'style' => 'resize:none']) !!}
 						</div>
 		            </div>
 		        </div>
@@ -268,61 +268,44 @@
     		headers: {
 		        'X-CSRF-Token': "{{ csrf_token() }}",
 		    },
+		    
+		    addRemoveLinks: true,
+			autoProcessQueue: false,
+			uploadMultiple: true,
+			parallelUploads: 100,
+			maxFiles: 100,
+			url: "{{ route('admin.embarcacion.store') }}",
 
-	        url: "{{ route('admin.embarcacion.store') }}",
-	        /*addRemoveLinks: true,
-	        maxFilesize: 1,
-            acceptedFiles: ".jpeg,.jpg,.png,.gif,.pdf",
-            autoProcessQueue: false,
+			// The setting up of the dropzone
+			init: function() {
+				var myDropzone = this;
+				var submit_form_embarcacion = document.querySelector("#submit_form_embarcacion");
 
-	        success: function (file, response) {
-	            var imgName = response;
-	            file.previewElement.classList.add("dz-success");
-	            console.log(imgName);
-	        },
+				// First change the button to actually tell Dropzone to process the queue.
+				submit_form_embarcacion.addEventListener("click", function(e) {
+					// Make sure that the form isn't actually being sent.
+					e.preventDefault();
+					e.stopPropagation();
+					myDropzone.processQueue();
+					//document.querySelector("#registrar_embarcacion_form").submit();
+				});
 
-	        error: function (file, response) {
-	            file.previewElement.classList.add("dz-error");
-	        },
-
-			removedfile: function(file) {
-				var name = file.name; 
-				var _ref;
-				return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
-			},*/
-
-				
-				addRemoveLinks: true,
-				autoProcessQueue: false, // this is important as you dont want form to be submitted unless you have clicked the submit button
-				//autoDiscover: false,
-				paramName: 'pic', // this is optional Like this one will get accessed in php by writing $_FILE['pic'] // if you dont specify it then bydefault it taked 'file' as paramName eg: $_FILE['file'] 
-				//previewsContainer: '#dropzonePreview', // we specify on which div id we must show the files
-				//clickable: false, // this tells that the dropzone will not be clickable . we have to do it because v dont want the whole form to be clickable 
-				success: function (file, response) {
-		            var imgName = response;
-		            file.previewElement.classList.add("dz-success");
-		            console.log(imgName);
-		        },
-				error: function (file, response) {
-		            file.previewElement.classList.add("dz-error");
-		        },
-
-		        removedfile: function(file) {
-					var name = file.name; 
-					var _ref;
-					return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
-				},
-
-				init: function() {
-					var myDropzone = this;
-					//now we will submit the form when the button is clicked
-					$("#submit_form_embarcacion").on('click',function(e) {
-						e.preventDefault();
-						myDropzone.processQueue(); // this will submit your form to the specified action path
-						// after this, your whole form will get submitted with all the inputs + your files and the php code will remain as usual 
-						//REMEMBER you DON'T have to call ajax or anything by yourself, dropzone will take care of that
-					});      
-				} // init end
+				// Listen to the sendingmultiple event. In this case, it's the sendingmultiple event instead
+				// of the sending event because uploadMultiple is set to true.
+				this.on("sendingmultiple", function() {
+					// Gets triggered when the form is actually being sent.
+					// Hide the success button or the complete form.
+					document.querySelector("#registrar_embarcacion_form").submit();
+				});
+				this.on("successmultiple", function(files, response) {
+					// Gets triggered when the files have successfully been sent.
+					// Redirect user or notify of success.
+				});
+				this.on("errormultiple", function(files, response) {
+					// Gets triggered when there was an error sending the files.
+					// Maybe show form again, and notify user of error
+				});
+			}
 	    });
 
     });

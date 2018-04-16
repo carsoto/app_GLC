@@ -56,15 +56,15 @@ class EmbarcacionController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
+        /*$data = $request->all();
         $files = $request->file('file');
-        dd($data, $files);
+        dd($data, $files);*/
         /*$image = $request->file('file');
         $imageName = $image->getClientOriginalName();
         $image->move(public_path('images'),$imageName);
         return response()->json(['success'=>$imageName]);*/
 
-        /*$data = $request->all();
+        $data = $request->all();
         $embarcacion = new Embarcacion($data);
         
         if($embarcacion->save()){
@@ -116,9 +116,9 @@ class EmbarcacionController extends Controller
             }
             
             /*echo $embarcacion->id;
-            dd($request->all());*
-            //return Redirect::action('EmbarcacionController@index');
-        }*/
+            dd($request->all());**/
+            return Redirect::action('EmbarcacionController@index');
+        }
     }
 
     public function dropzoneStore(Request $request)
@@ -137,17 +137,17 @@ class EmbarcacionController extends Controller
      */
     public function show($id)
     {
-        $embarcacion = Yate::find($id);
+        $embarcacion = Embarcacion::find($id);
         $itinerarios = array();
         $dias = Dia::pluck('dia', 'id');
-
-        foreach ($yate->itinerarios as $itinerario) {
+        
+        foreach ($embarcacion->itinerarios as $itinerario) {
             $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['dia'] = $itinerario->pivot->id_dia;
             $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['am'] = $itinerario->pivot->am;
             $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['pm'] = $itinerario->pivot->pm;
         }
 
-        return view('admin.embarcacion.ver', array('yate' => $yate, 'itinerarios' => $itinerarios, 'dias' => $dias));
+        return view('admin.embarcacion.ver', array('embarcacion' => $embarcacion, 'itinerarios' => $itinerarios, 'dias' => $dias));
     }
 
     /**

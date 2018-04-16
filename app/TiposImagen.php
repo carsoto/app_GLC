@@ -10,27 +10,27 @@ namespace App;
 use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
- * Class TiposPatente
+ * Class TiposImagen
  * 
  * @property int $id
  * @property string $descripcion
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
- * @property \Illuminate\Database\Eloquent\Collection $embarcacions
+ * @property \Illuminate\Database\Eloquent\Collection $imagenes_embarcacions
  *
  * @package App
  */
-class TiposPatente extends Eloquent
+class TiposImagen extends Eloquent
 {
-	protected $table = 'tipos_patente';
+	protected $table = 'tipos_imagen';
 
 	protected $fillable = [
 		'descripcion'
 	];
 
-	public function embarcacions()
+	public function imagenes_embarcacions()
 	{
-		return $this->hasMany(\App\Embarcacion::class);
+		return $this->hasMany(\App\ImagenesEmbarcacion::class);
 	}
 }
