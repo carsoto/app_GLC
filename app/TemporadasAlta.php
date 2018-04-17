@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Fri, 13 Apr 2018 19:19:52 +0000.
+ * Date: Tue, 17 Apr 2018 02:23:49 +0000.
  */
 
 namespace App;
@@ -16,7 +16,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $embarcacion_id
  * @property \Carbon\Carbon $desde
  * @property \Carbon\Carbon $hasta
- * @property float $cant_dias
+ * @property int $cant_dias
  * @property float $gross
  * @property float $neto
  * @property float $comision_glc
@@ -31,7 +31,7 @@ class TemporadasAlta extends Eloquent
 {
 	protected $casts = [
 		'embarcacion_id' => 'int',
-		'cant_dias' => 'float',
+		'cant_dias' => 'int',
 		'gross' => 'float',
 		'neto' => 'float',
 		'comision_glc' => 'float'

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTablePuertos extends Migration
+class CreateTableSitiosTuristicos extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,19 @@ class CreateTablePuertos extends Migration
      */
     public function up()
     {
-        Schema::create('puertos', function(Blueprint $table) {
+        Schema::create('sitios_turisticos', function(Blueprint $table) {
             $table->engine = 'InnoDB';
         
             $table->increments('id')->unsigned();
-            $table->string('descripcion', 100);
-            $table->string('provincia', 100);
+            $table->string('sitio', 45);
+            $table->integer('actividades_id')->unsigned();
             $table->integer('islas_id')->unsigned();
         
-            $table->index('islas_id','fk_puertos_islas1_idx');
+            $table->index('actividades_id','fk_sitios_turisticos_actividades1_idx');
+            $table->index('islas_id','fk_sitios_turisticos_islas1_idx');
+        
+            $table->foreign('actividades_id')
+                ->references('id')->on('actividades');
         
             $table->foreign('islas_id')
                 ->references('id')->on('islas');
@@ -40,7 +44,7 @@ class CreateTablePuertos extends Migration
      */
     public function down()
     {
-        Schema::drop('puertos');
+        Schema::drop('sitios_turisticos');
 
     }
 }

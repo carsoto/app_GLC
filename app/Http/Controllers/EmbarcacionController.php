@@ -14,6 +14,7 @@ use App\Itinerario;
 use App\Tarifario;
 use App\EmbarcacionItinerario;
 use App\Dia;
+use App\SitiosTuristico;
 use Yajra\Datatables\Datatables;
 use DB;
 use Redirect;
@@ -220,5 +221,12 @@ class EmbarcacionController extends Controller
         $id_tipo_embarcacion = $_GET['id_tipo_embarcacion'];
         $modelos = ModelosEmbarcacion::where('tipos_embarcacion_id', $id_tipo_embarcacion)->get(['id','descripcion']);
         return $modelos;
+    }
+
+    public function getSitiosTuristicos()
+    {
+        $patente = $_GET['patente'];
+        $sitios_turisticos = DB::select(DB::raw("SELECT CONCAT(i.nombre, ': ', st.sitio) AS sitio FROM sitios_turisticos st, islas i, actividades a, tipos_patente tp WHERE i.id = st.islas_id AND a.id = st.actividades_id AND tp.id = a.tipos_patente_id AND tp.id = :patente"), array('patente' => $patente));
+        return $sitios_turisticos;
     }
 }

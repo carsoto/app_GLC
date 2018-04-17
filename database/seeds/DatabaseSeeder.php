@@ -12,13 +12,16 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         //$this->call(ChartersSeeder::class);
-
+        $this->call(IslasSeeder::class);
         $this->call(ParentescosSeeder::class);
         $this->call(TiposEmbarcacionSeeder::class);
         $this->call(ModelosEmbarcacionSeeder::class);
         $this->call(PuertosSeeder::class);
         $this->call(TiposPatenteSeeder::class);
         $this->call(DiasSeeder::class);
+        $this->call(ServiciosSeeder::class);
+        $this->call(ActividadesSeeder::class);
+        $this->call(SitiosTuristicosSeeder::class);
 
     }
 }

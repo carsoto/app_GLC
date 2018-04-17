@@ -39,7 +39,7 @@
 							<br>{!! Form::select('companias_embarcacion_id', $companias_embarcacion, null, ['class' => 'form-control']) !!}
 
 							<br>{!! Form::label('tipos_patente_id', 'Tipo de patente*') !!}
-							<br>{!! Form::select('tipos_patente_id', $tipos_patente, null, ['class' => 'form-control']) !!}
+							<br>{!! Form::select('tipos_patente_id', $tipos_patente, null, ['class' => 'form-control', 'id' => 'tipos_patente']) !!}
 						</div>
 						
 						<div class="col-md-12">
@@ -361,7 +361,7 @@
                 if(i > 7){
                     
                     dia_inicio = 1;
-                    itinerario += '<tr><td rowspan="2">'+ dias[cont] +'<input name=dias['+ nombre_itinerario +'][] class="form-control" value="'+cont+'" type="hidden" /></td><td>am</td><td><input name=am['+ nombre_itinerario +'][] class="form-control" /></td></tr><tr><td>pm</td><td><input name=pm['+ nombre_itinerario +'][] class="form-control" /></td></tr>';    
+                    itinerario += '<tr><td rowspan="2">'+ dias[cont] +'<input name=dias['+ nombre_itinerario +'][] class="form-control" value="'+cont+'" type="hidden" /></td><td>am</td><td><select name=am['+ nombre_itinerario +'][] class="form-control sitios_turisticos" ></select></td></tr><tr><td>pm</td><td><select name=pm['+ nombre_itinerario +'][] class="form-control sitios_turisticos" ></select></td></tr>';    
                     cont++;
                     
                     if(cont > 7){
@@ -369,12 +369,14 @@
                     }
 
                 }else{
-                    itinerario += '<tr><td rowspan="2">'+ dias[i] +'<input name=dias['+ nombre_itinerario +'][] class="form-control" value="'+i+'" type="hidden" /></td><td>am</td><td><input name=am['+ nombre_itinerario +'][] class="form-control" /></td></tr><tr><td>pm</td><td><input name=pm['+ nombre_itinerario +'][] class="form-control" /></td></tr>';  
+                    itinerario += '<tr><td rowspan="2">'+ dias[i] +'<input name=dias['+ nombre_itinerario +'][] class="form-control" value="'+i+'" type="hidden" /></td><td>am</td><td><select name=am['+ nombre_itinerario +'][] class="form-control sitios_turisticos" ></select></td></tr><tr><td>pm</td><td><select name=pm['+ nombre_itinerario +'][] class="form-control sitios_turisticos" ></select></td></tr>';  
                 }
             };
 
             itinerario += '</tbody></table></div></div></div></div>';
-
+            var tipos_patente = document.getElementById("tipos_patente");
+			var patente = tipos_patente.options[tipos_patente.selectedIndex].value;
+            getSitiosTuristicos(patente);
             $("#itinerarios").append(itinerario);
         }else {
             alert("Debe escoger un nombre para el itinerario");
@@ -480,8 +482,25 @@
             });
     }
 
+    function getSitiosTuristicos(patente){
+        $.get("{{ url('admin/embarcacion/sitios_turisticos') }}", 
+            { patente: patente }, 
+            function(data) {
+                var sitios_turisticos = $('.sitios_turisticos');
+                sitios_turisticos.empty();
+
+                $.each(data, function(index, element) {
+                    sitios_turisticos.append("<option value='"+ element.sitio +"'>" + element.sitio + "</option>");
+                });
+            });
+    }
+
     $("#tipo_embarcacion").change(function(){
         getModelosEmbarcacion(this.value);
+    });
+
+    $("#tipos_patente").change(function(){
+        getSitiosTuristicos(this.value);
     });
         
 </script>

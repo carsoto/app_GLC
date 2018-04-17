@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Fri, 13 Apr 2018 19:19:53 +0000.
+ * Date: Tue, 17 Apr 2018 02:23:49 +0000.
  */
 
 namespace App;
@@ -17,6 +17,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
+ * @property \Illuminate\Database\Eloquent\Collection $actividades
  * @property \Illuminate\Database\Eloquent\Collection $embarcacions
  *
  * @package App
@@ -28,6 +29,11 @@ class TiposPatente extends Eloquent
 	protected $fillable = [
 		'descripcion'
 	];
+
+	public function actividades()
+	{
+		return $this->hasMany(\App\Actividade::class);
+	}
 
 	public function embarcacions()
 	{

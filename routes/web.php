@@ -172,6 +172,8 @@ Route::group(['prefix' => 'admin'], function () {
 
 		Route::get('/modelos_embarcacion', 'EmbarcacionController@getModelosEmbarcacion')->name('admin.embarcacion.modelos');
 
+		Route::get('/sitios_turisticos', 'EmbarcacionController@getSitiosTuristicos')->name('admin.embarcacion.sitios_turisticos');
+
 		Route::get('/ver/{id}', 'EmbarcacionController@show');
 
 		Route::get('/editar/{id}', 'EmbarcacionController@edit');
