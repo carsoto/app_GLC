@@ -24,12 +24,12 @@ class CreateTableEmbarcacion extends Migration
             $table->integer('companias_embarcacion_id')->unsigned();
             $table->integer('modelos_embarcacion_id')->unsigned();
             $table->integer('tipos_patente_id')->unsigned();
-            $table->string('capacidad', 45);
-            $table->string('eslora', 45);
-            $table->string('manga', 45);
-            $table->string('puntal', 45);
+            $table->string('capacidad', 45)->nullable();
+            $table->string('eslora', 45)->nullable();
+            $table->string('manga', 45)->nullable();
+            $table->string('puntal', 45)->nullable();
             $table->string('velocidad_crucero', 45)->nullable();
-            $table->string('nro_tripulantes', 150);
+            $table->string('nro_tripulantes', 150)->nullable();
             $table->enum('estabilizadores', ['Si',  'No']);
             $table->enum('internet', ['Si',  'No']);
             $table->integer('kayacks')->nullable();
@@ -37,8 +37,8 @@ class CreateTableEmbarcacion extends Migration
             $table->enum('ameneties', ['Si',  'No']);
             $table->enum('trajes_neopreno', ['Si',  'No']);
             $table->enum('equipo_snorkel', ['Si',  'No']);
-            $table->string('politicas_pago', 500);
-            $table->string('cancelaciones', 500);
+            $table->string('politicas_pago', 500)->nullable();
+            $table->string('cancelaciones', 500)->nullable();
         
             $table->index('puerto_registro_id','fk_embarcacion_puertos1_idx');
             $table->index('companias_embarcacion_id','fk_embarcacion_companias_embarcacion1_idx');

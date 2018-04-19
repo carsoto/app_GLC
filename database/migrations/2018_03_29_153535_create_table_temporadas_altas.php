@@ -18,12 +18,12 @@ class CreateTableTemporadasAltas extends Migration
         
             $table->increments('id')->unsigned();
             $table->integer('embarcacion_id')->unsigned();
-            $table->date('desde');
-            $table->date('hasta');
-            $table->integer('cant_dias');
-            $table->decimal('gross', 8, 2);
-            $table->decimal('neto', 8, 2);
-            $table->decimal('comision_glc', 8, 2);
+            $table->date('desde')->nullable();
+            $table->date('hasta')->nullable();
+            $table->integer('cant_dias')->nullable();
+            $table->decimal('gross', 8, 2)->nullable();
+            $table->decimal('neto', 8, 2)->nullable();
+            $table->decimal('comision_glc', 8, 2)->nullable();
         
             $table->index('embarcacion_id','fk_temporadas_altas_embarcacion1_idx');
         

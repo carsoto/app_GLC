@@ -17,7 +17,7 @@ class CreateTableItinerarios extends Migration
             $table->engine = 'InnoDB';
         
             $table->increments('id')->unsigned();
-            $table->string('nombre', 50);
+            $table->string('nombre', 50)->nullable();
         
             $table->timestamps();
         

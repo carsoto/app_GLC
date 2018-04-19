@@ -178,7 +178,7 @@ Route::group(['prefix' => 'admin'], function () {
 
 		Route::get('/editar/{id}', 'EmbarcacionController@edit');
 
-		Route::put('/update/{id}', 'EmbarcacionController@update')->name('admin.embarcacion.update');
+		Route::post('/update', 'EmbarcacionController@update')->name('admin.embarcacion.update');
 
 		Route::post('/dropzone/store', ['as'=>'dropzone.store','uses'=>'EmbarcacionController@dropzoneStore']);
 	});

@@ -60,32 +60,36 @@ class EmbarcacionController extends Controller
         /*$data = $request->all();
         $files = $request->file('file');
         dd($data, $files);*/
-        /*$image = $request->file('file');
-        $imageName = $image->getClientOriginalName();
-        $image->move(public_path('images'),$imageName);
-        return response()->json(['success'=>$imageName]);*/
+        //dd($_FILES);
+        //$image = $_FILES;
+        /*$imageName = $image->getClientOriginalName();
+        $image->move(public_path('images'),$imageName);*/
+        //dd($request->file('file'));
+        //return response()->json(['success'=>$imageName]);
 
         $data = $request->all();
         $embarcacion = new Embarcacion($data);
-        
+        //dd($request->all());
         if($embarcacion->save()){
             
             for ($i=0; $i < count($data['temp_alta_cant_dias']); $i++) { 
-                $arr_f_inicio = explode("/", $data['temp_alta_from'][$i]);
-                $f_inicio = $arr_f_inicio[2]."-".$arr_f_inicio[1]."-".$arr_f_inicio[0];
+                if($data['temp_alta_from'][$i] != null){
+                    $arr_f_inicio = explode("/", $data['temp_alta_from'][$i]);
+                    $f_inicio = $arr_f_inicio[2]."-".$arr_f_inicio[1]."-".$arr_f_inicio[0];
 
-                $arr_f_fin = explode("/", $data['temp_alta_to'][$i]);
-                $f_fin = $arr_f_fin[2]."-".$arr_f_fin[1]."-".$arr_f_fin[0];
+                    $arr_f_fin = explode("/", $data['temp_alta_to'][$i]);
+                    $f_fin = $arr_f_fin[2]."-".$arr_f_fin[1]."-".$arr_f_fin[0];
 
-                $temporada_alta = new TemporadasAlta();
-                $temporada_alta->embarcacion_id = $embarcacion->id;
-                $temporada_alta->desde = $f_inicio;
-                $temporada_alta->hasta = $f_fin;
-                $temporada_alta->cant_dias = $data['temp_alta_cant_dias'][$i];
-                $temporada_alta->gross = $data['temp_alta_gross'][$i];
-                $temporada_alta->neto = $data['temp_alta_neto'][$i];
-                $temporada_alta->comision_glc = $data['temp_alta_comision_glc'][$i];
-                $temporada_alta->save();
+                    $temporada_alta = new TemporadasAlta();
+                    $temporada_alta->embarcacion_id = $embarcacion->id;
+                    $temporada_alta->desde = $f_inicio;
+                    $temporada_alta->hasta = $f_fin;
+                    $temporada_alta->cant_dias = $data['temp_alta_cant_dias'][$i];
+                    $temporada_alta->gross = $data['temp_alta_gross'][$i];
+                    $temporada_alta->neto = $data['temp_alta_neto'][$i];
+                    $temporada_alta->comision_glc = $data['temp_alta_comision_glc'][$i];
+                    $temporada_alta->save();    
+                }
             }
 
             for ($j=0; $j < count($data['cant_dias']); $j++) {
@@ -98,23 +102,26 @@ class EmbarcacionController extends Controller
                 $tarifario->save();
             }
 
-            foreach ($data['am'] as $key => $value) {
-                $itinerario = new Itinerario();
-                $itinerario->nombre = $key;
+            if(isset($data['am'])){
+                foreach ($data['am'] as $key => $value) {
+                    $itinerario = new Itinerario();
+                    $itinerario->nombre = $key;
 
-                if($itinerario->save()){
-                    for ($k=0; $k < count($value); $k++) { 
-                        $itinerario_embarcacion = new EmbarcacionItinerario();
-                        $itinerario_embarcacion->embarcacion_id = $embarcacion->id;
-                        $itinerario_embarcacion->itinerarios_id = $itinerario->id;
-                        $itinerario_embarcacion->orden = $k;
-                        $itinerario_embarcacion->id_dia = $data['dias'][$key][$k];
-                        $itinerario_embarcacion->am = $value[$k];
-                        $itinerario_embarcacion->pm = $data['pm'][$key][$k];
-                        $itinerario_embarcacion->save();
+                    if($itinerario->save()){
+                        for ($k=0; $k < count($value); $k++) { 
+                            $itinerario_embarcacion = new EmbarcacionItinerario();
+                            $itinerario_embarcacion->embarcacion_id = $embarcacion->id;
+                            $itinerario_embarcacion->itinerarios_id = $itinerario->id;
+                            $itinerario_embarcacion->orden = $k;
+                            $itinerario_embarcacion->id_dia = $data['dias'][$key][$k];
+                            $itinerario_embarcacion->am = $value[$k];
+                            $itinerario_embarcacion->pm = $data['pm'][$key][$k];
+                            $itinerario_embarcacion->save();
+                        }
                     }
-                }
+                }    
             }
+            
             
             /*echo $embarcacion->id;
             dd($request->all());**/
@@ -159,22 +166,27 @@ class EmbarcacionController extends Controller
      */
     public function edit($id)
     {
-        $yate = Yate::find($id);
+        $embarcacion = Embarcacion::find($id);
         $itinerarios = array();
-        $dias = Dia::pluck('dia', 'id');
         $companias_embarcacion = CompaniasEmbarcacion::pluck('razon_social', 'id');
         $modelos = ModelosEmbarcacion::pluck('descripcion', 'id');
+        $tipos_embarcacion = TiposEmbarcacion::pluck('descripcion', 'id');
         $tipos_patente = TiposPatente::pluck('descripcion', 'id');
         $puertos = Puerto::pluck('descripcion', 'id');
         $dias = Dia::pluck('dia', 'id');
+        $sitio_turistico = DB::select(DB::raw("SELECT CONCAT(i.nombre, ': ', st.sitio) AS sitio FROM sitios_turisticos st, islas i, actividades a, tipos_patente tp WHERE i.id = st.islas_id AND a.id = st.actividades_id AND tp.id = a.tipos_patente_id AND tp.id = :patente"), array('patente' => $embarcacion->tipos_patente_id));
+        
+        foreach ($sitio_turistico as $key => $value) {
+            $sitios_turisticos[$value->sitio] = $value->sitio;
+        }
 
-        foreach ($yate->itinerarios as $itinerario) {
+        foreach ($embarcacion->itinerarios as $itinerario) {
             $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['dia'] = $itinerario->pivot->id_dia;
             $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['am'] = $itinerario->pivot->am;
             $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['pm'] = $itinerario->pivot->pm;
         }
 
-        return view('admin.embarcacion.editar', array('yate' => $yate, 'itinerarios' => $itinerarios, 'companias_embarcacion' => $companias_embarcacion, 'modelos' => $modelos, 'tipos_patente' => $tipos_patente, 'puertos' => $puertos, 'dias' => $dias));
+        return view('admin.embarcacion.editar', array('embarcacion' => $embarcacion, 'itinerarios' => $itinerarios, 'companias_embarcacion' => $companias_embarcacion, 'modelos' => $modelos, 'tipos_embarcacion' => $tipos_embarcacion, 'tipos_patente' => $tipos_patente, 'puertos' => $puertos, 'dias' => $dias, 'sitios_turisticos' => $sitios_turisticos));
     }
 
     /**
@@ -184,9 +196,9 @@ class EmbarcacionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**

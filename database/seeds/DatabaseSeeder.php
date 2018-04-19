@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ServiciosSeeder::class);
         $this->call(ActividadesSeeder::class);
         $this->call(SitiosTuristicosSeeder::class);
+        $this->call(CompaniasEmbarcacionSeeder::class);
 
     }
 }

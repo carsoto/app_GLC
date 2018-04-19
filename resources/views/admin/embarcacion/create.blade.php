@@ -10,20 +10,25 @@
 
 		<div class="panel-group" id="accordion">
 			<div class="panel" id="panel_detalles_generales">
+				<div class="alert alert-danger alert-dismissible" role="alert" id="div_detalles_generales_error" hidden>
+					<!--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+					<button type="button" class="close" onclick="$('#div_detalles_generales_error').hide();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<strong>Warning!</strong> <span id="detalles_generales_error"></span>
+				</div>
 				<div class="panel-heading">
-					<h4 class="panel-title"> <a data-toggle="collapse" data-target="#detalles_generales" href="#detalles_generales" class="collapsed">Información General</a></h4>
+					<h4 class="panel-title"> <a data-toggle="collapse" data-target="#detalles_generales" href="#detalles_generales" class="collapsed">Información general <span id="detalles_generales_falta_info" style="color: red;"></span></a></h4>
 				</div>
 				<div id="detalles_generales" class="panel-collapse collapse">
 					<div class="panel-body">
 						<div class="col-md-6">
 							<br>{!! Form::label('nombre', "Nombre*") !!}
-							<br>{!! Form::text('nombre', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::text('nombre', "", ['class' => 'form-control detalles_generales_fields', 'id' => 'nombre_embarcacion', 'onkeypress' => "contar_fields();", 'onkeydown' => "contar_fields();"]) !!}
 
 							<br>{!! Form::label('anyo_construccion', 'Año de construcción') !!}
-							<br>{!! Form::text('anyo_construccion', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::text('anyo_construccion', "", ['class' => 'form-control detalles_generales_fields', 'onkeypress' => "contar_fields();", 'onkeydown' => "contar_fields();"]) !!}
 
 							<br>{!! Form::label('refit') !!}
-							<br>{!! Form::text('refit', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::text('refit', "", ['class' => 'form-control detalles_generales_fields', 'onkeypress' => "contar_fields();", 'onkeydown' => "contar_fields();"]) !!}
 
 							<br>{!! Form::label('puerto_registro_id', 'Puerto de registro*') !!}
 							<br>{!! Form::select('puerto_registro_id', $puertos, null, ['class' => 'form-control']) !!}
@@ -45,10 +50,7 @@
 						<div class="col-md-12">
 
 			                <br>{!! Form::label('deck_plan', 'Planos de cubierta') !!}
-							<div id="dZDeckPlan" class="dropzone">
-							    <div></div>
-							</div>
-		                
+							<div id="dZDeckPlan" class="dropzone"></div>
 		            	</div>
 
 					</div>
@@ -57,30 +59,30 @@
 
 			<div class="panel" id="panel_detalles_tecnicos">
 				<div class="panel-heading">
-					<h4 class="panel-title"> <a data-toggle="collapse" data-target="#detalles_tecnicos" href="#detalles_tecnicos" class="collapsed">Especificaciones técnicas </a></h4>
+					<h4 class="panel-title"> <a data-toggle="collapse" data-target="#detalles_tecnicos" href="#detalles_tecnicos" class="collapsed">Especificaciones técnicas <span id="detalles_tecnicos_falta_info" style="color: red;"></span></a></h4>
 				</div>
 				<div id="detalles_tecnicos" class="panel-collapse collapse">
 					<div class="panel-body">
 						<div class="col-md-4">
 							{!! Form::label('capacidad') !!}
-							<br>{!! Form::text('capacidad', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::text('capacidad', "", ['class' => 'form-control detalles_tecnicos_fields', 'onkeypress' => "contar_fields();", 'onkeydown' => "contar_fields();"]) !!}
 
 							<br>{!! Form::label('eslora') !!}
-							<br>{!! Form::text('eslora', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::text('eslora', "", ['class' => 'form-control detalles_tecnicos_fields', 'onkeypress' => "contar_fields();", 'onkeydown' => "contar_fields();"]) !!}
 
 							<br>{!! Form::label('manga') !!}
-							<br>{!! Form::text('manga', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::text('manga', "", ['class' => 'form-control detalles_tecnicos_fields', 'onkeypress' => "contar_fields();", 'onkeydown' => "contar_fields();"]) !!}
 							
 							<br>{!! Form::label('puntal') !!}
-							<br>{!! Form::text('puntal', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::text('puntal', "", ['class' => 'form-control detalles_tecnicos_fields', 'onkeypress' => "contar_fields();", 'onkeydown' => "contar_fields();"]) !!}
 							
 							<br>{!! Form::label('velocidad_crucero', 'Velocidad de crucero') !!}
-							<br>{!! Form::text('velocidad_crucero', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::text('velocidad_crucero', "", ['class' => 'form-control detalles_tecnicos_fields', 'onkeypress' => "contar_fields();", 'onkeydown' => "contar_fields();"]) !!}
 						</div>
 
 						<div class="col-md-4">
 							{!! Form::label('nro_tripulantes', 'Cant. de Tripulantes') !!}
-							<br>{!! Form::text('nro_tripulantes', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::text('nro_tripulantes', "", ['class' => 'form-control detalles_tecnicos_fields', 'onkeypress' => "contar_fields();", 'onkeydown' => "contar_fields();"]) !!}
 
 							<br>{!! Form::label('estabilizadores') !!}
 							<br>{!! Form::select('estabilizadores', array('Si' => 'Si', 'No' => 'No'), null, ['class' => 'form-control']) !!}
@@ -89,12 +91,12 @@
 							<br>{!! Form::select('internet', array('Si' => 'Si', 'No' => 'No'), null, ['class' => 'form-control']) !!}
 
 							<br>{!! Form::label('kayacks', 'Cant. de kayacks') !!}
-							<br>{!! Form::text('kayacks', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::text('kayacks', "", ['class' => 'form-control detalles_tecnicos_fields', 'onkeypress' => "contar_fields();", 'onkeydown' => "contar_fields();"]) !!}
 						</div>
 						
 						<div class="col-md-4">
 							{!! Form::label('paddle_boards', 'Cant. de paddle boards') !!}
-							<br>{!! Form::text('paddle_boards', "", ['class' => 'form-control']) !!}
+							<br>{!! Form::text('paddle_boards', "", ['class' => 'form-control detalles_tecnicos_fields', 'onkeypress' => "contar_fields();", 'onkeydown' => "contar_fields();"]) !!}
 
 							<br>{!! Form::label('trajes_neopreno', 'Trajes de neopreno') !!}
 							<br>{!! Form::select('trajes_neopreno', array('Si' => 'Si', 'No' => 'No'), null, ['class' => 'form-control']) !!}
@@ -146,12 +148,6 @@
 		        </div>
 		        <div id="detalles_tarifario" class="panel-collapse collapse">
 		            <div class="panel-body">
-		            	<!--<div class="col-lg-12">
-			            	<div class="col-md-3">
-								<br>{!! Form::label('tarifa_temp_alta', 'Tarifa de temporada alta') !!}
-								{!! Form::text('tarifa_temp_alta', "", ['class' => 'form-control', 'size' => '4']) !!}
-							</div>
-						</div>-->
 						<div class="col-lg-12" id="tarifario_1">
 			            	<div class="col-md-2">
 								{!! Form::label('cant_dias', 'Cantidad de días') !!}
@@ -232,18 +228,18 @@
 
 		    <div class="panel" id="panel_politicas">
 		        <div class="panel-heading">
-					<h4 class="panel-title"><a data-toggle="collapse" data-target="#detalles_politicas" href="#detalles_politicas" class="collapsed"> Políticas </a></h4>
+					<h4 class="panel-title"><a data-toggle="collapse" data-target="#detalles_politicas" href="#detalles_politicas" class="collapsed"> Políticas <span id="politicas_falta_info" style="color: red;"></span></a></h4>
 		        </div>
 		        <div id="detalles_politicas" class="panel-collapse collapse">
 		            <div class="panel-body">
 		            	<div class="col-md-6">
 							{!! Form::label('politicas_pago', 'Políticas de pago') !!}
-							<br>{!! Form::textarea('politicas_pago', "", ['class' => 'form-control', 'size' => '15x10', 'style' => 'resize:none']) !!}
+							<br>{!! Form::textarea('politicas_pago', "", ['class' => 'form-control politicas_fields', 'size' => '15x10', 'style' => 'resize:none', 'onkeypress' => "contar_fields();", 'onkeydown' => "contar_fields();"]) !!}
 						</div>
 
 						<div class="col-md-6">
 							{!! Form::label('cancelaciones', 'Cancelaciones') !!}
-							<br>{!! Form::textarea('cancelaciones', "", ['class' => 'form-control', 'size' => '15x10', 'style' => 'resize:none']) !!}
+							<br>{!! Form::textarea('cancelaciones', "", ['class' => 'form-control politicas_fields', 'size' => '15x10', 'style' => 'resize:none', 'onkeypress' => "contar_fields();", 'onkeydown' => "contar_fields();"]) !!}
 						</div>
 		            </div>
 		        </div>
@@ -252,7 +248,7 @@
 
 		<br><br>
 		<div class="row" style="text-align: center;">
-			{!! Form::submit('Registrar', ['class' => 'btn btn-success', 'id' => 'submit_form_embarcacion']) !!}
+			{!! Form::button('Registrar', ['class' => 'btn btn-success', 'id' => 'submit_form_embarcacion']) !!}
 		</div>
 
 	{!! Form::close() !!}
@@ -262,13 +258,66 @@
 @section('scripts')
 
 <script type="text/javascript">
+    var cont_tarifas = 1;
+    var cont_fechas = 1;
+    date('from_1', 'to_1');
+    getModelosEmbarcacion(1);
+    var count_politicas_falta_info = 0;
+
+	contar_fields();
+
+	function contar_fields(){
+		var count_detalles_generales_falta_info = 0;
+		var count_detalles_tecnicos_falta_info = 0;
+		var count_politicas_falta_info = 0;
+
+		$('.detalles_generales_fields').filter(function(input){
+			if($(this).val() == ""){
+				count_detalles_generales_falta_info++;
+			}
+        });
+
+		$('.detalles_tecnicos_fields').filter(function(input){
+			if($(this).val() == ""){
+				count_detalles_tecnicos_falta_info++;
+			}
+        });
+
+        $('.politicas_fields').filter(function(input){
+			if($(this).val() == ""){
+				count_politicas_falta_info++;
+			}
+        });
+
+		if(count_detalles_generales_falta_info > 0){
+			$("#detalles_generales_falta_info").html('(' +count_detalles_generales_falta_info+')');
+		}else{
+			$("#detalles_generales_falta_info").html('<i class="fa fa-check" style="color:green;"></i>');
+		}
+
+		if(count_detalles_tecnicos_falta_info > 0){
+			$("#detalles_tecnicos_falta_info").html('(' +count_detalles_tecnicos_falta_info+')');
+		}else{
+			$("#detalles_tecnicos_falta_info").html('<i class="fa fa-check" style="color:green;"></i>');
+		}
+
+		if(count_politicas_falta_info > 0){
+			$("#politicas_falta_info").html('(' +count_politicas_falta_info+')');
+		}else{
+			$("#politicas_falta_info").html('<i class="fa fa-check" style="color:green;"></i>');
+		}
+	}
+
     $(function() {
+
     	Dropzone.autoDiscover = false;
+
     	var dZDeckPlan = $("#dZDeckPlan").dropzone({
     		headers: {
 		        'X-CSRF-Token': "{{ csrf_token() }}",
 		    },
 		    
+
 		    addRemoveLinks: true,
 			autoProcessQueue: false,
 			uploadMultiple: true,
@@ -286,8 +335,14 @@
 					// Make sure that the form isn't actually being sent.
 					e.preventDefault();
 					e.stopPropagation();
-					myDropzone.processQueue();
-					//document.querySelector("#registrar_embarcacion_form").submit();
+					var nombre_embarcacion = document.getElementById("nombre_embarcacion").value;
+					if((nombre_embarcacion == "") || (nombre_embarcacion == undefined)){
+						$("#div_detalles_generales_error").show();
+						$("#detalles_generales_error").html("<ul><li>El nombre de la embarcación no puede estar vacío</li></ul>");
+					}else{
+						$("#registrar_embarcacion_form").submit();	
+						//myDropzone.processQueue();
+					}
 				});
 
 				// Listen to the sendingmultiple event. In this case, it's the sendingmultiple event instead
@@ -295,12 +350,13 @@
 				this.on("sendingmultiple", function() {
 					// Gets triggered when the form is actually being sent.
 					// Hide the success button or the complete form.
-					document.querySelector("#registrar_embarcacion_form").submit();
 				});
+
 				this.on("successmultiple", function(files, response) {
 					// Gets triggered when the files have successfully been sent.
 					// Redirect user or notify of success.
 				});
+
 				this.on("errormultiple", function(files, response) {
 					// Gets triggered when there was an error sending the files.
 					// Maybe show form again, and notify user of error
@@ -309,11 +365,6 @@
 	    });
 
     });
-
-    var cont_tarifas = 1;
-    var cont_fechas = 1;
-    date('from_1', 'to_1');
-    getModelosEmbarcacion(1);
 
     function getDate(element) {
         var date;
@@ -331,6 +382,7 @@
         temp_alta_from = $("#"+from).datepicker({
             defaultDate: "+1w",
             changeMonth: true,
+            changeYear: true,
             format: 'dd-mm-yy',
         }).on( "change", function() {
             temp_alta_to.datepicker( "option", "minDate", getDate(this));
@@ -339,6 +391,7 @@
         temp_alta_to = $("#"+to).datepicker({
             defaultDate: "+1w",
             changeMonth: true,
+            changeYear: true,
             format: 'dd-mm-yy',
         }).on( "change", function() {
             temp_alta_from.datepicker( "option", "maxDate", getDate(this));
@@ -347,13 +400,15 @@
 
     $("#add_itinerario").click(function(){
         var nombre_itinerario = document.getElementById("it_nombre").value.toUpperCase();
+        var nombre_itinerario_original = nombre_itinerario;
+        nombre_itinerario = nombre_itinerario.split(" ").join("_");
         var cant_dias = document.getElementById("it_cant_dias").value;
         var dia_inicio = document.getElementById("it_dia_inicio").value;
         var dias = {!! json_encode($dias) !!};
         var cantd_dias = parseInt(cant_dias) + parseInt(dia_inicio);
 
         if((nombre_itinerario != "") && (nombre_itinerario != undefined)){
-            var itinerario = '<div class="panel" id="panel_itinerario_'+ nombre_itinerario +'"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-target="#detalle_itinerario_'+ nombre_itinerario +'" href="#detalle_itinerario_'+ nombre_itinerario +'" class="collapsed"> '+ nombre_itinerario +' </a> <button type="button" class="btn btn-sm btn-danger remove_itinerario" name="remove" onclick="remove_elemento(panel_itinerario_'+ nombre_itinerario +', null)"><i class="fa fa-minus fa-fw"></i></button></h4></div><div id="detalle_itinerario_'+ nombre_itinerario +'" class="panel-collapse collapse"><div class="panel-body"><div class="col-lg-12"><table class="table table-bordered"><tbody>';
+            var itinerario = '<div class="panel" id="panel_itinerario_'+ nombre_itinerario +'"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-target="#detalle_itinerario_'+ nombre_itinerario +'" href="#detalle_itinerario_'+ nombre_itinerario +'" class="collapsed"> '+ nombre_itinerario_original +' </a> <button type="button" class="btn btn-sm btn-danger remove_itinerario" name="remove" onclick="remove_elemento(panel_itinerario_'+ nombre_itinerario +', null)"><i class="fa fa-minus fa-fw"></i></button></h4></div><div id="detalle_itinerario_'+ nombre_itinerario +'" class="panel-collapse collapse"><div class="panel-body"><div class="col-lg-12"><table class="table table-bordered"><tbody>';
             var cont = 1;
 
             for (var i = dia_inicio; i < cantd_dias; i++) {
