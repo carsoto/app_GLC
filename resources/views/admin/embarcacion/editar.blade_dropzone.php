@@ -34,7 +34,6 @@
 							<br>{!! Form::label('puerto_registro_id', 'Puerto de registro*') !!}
 							<br>{!! Form::select('puerto_registro_id', $puertos, $embarcacion->puerto->id, ['class' => 'form-control']) !!}
 						</div>
-
 						<div class="col-md-6">
 							<br>{!! Form::label('tipo_embarcacion_id', 'Tipo*') !!}
 							<br>{!! Form::select('tipo_embarcacion_id', $tipos_embarcacion, $embarcacion->modelos_embarcacion->tipos_embarcacion->id, ['class' => 'form-control', 'id' => 'tipo_embarcacion']) !!}
@@ -48,22 +47,13 @@
 							<br>{!! Form::label('tipos_patente_id', 'Tipo de patente*') !!}
 							<br>{!! Form::select('tipos_patente_id', $tipos_patente, $embarcacion->tipos_patente->id, ['class' => 'form-control', 'id' => 'tipos_patente']) !!}
 						</div>
-
-						<div class="col-md-12">
-			                <br>{!! Form::label('planos_cubierta', 'Planos de cubierta') !!}
-			                <ul class="list-inline gallery">    
-								<li><img id="planos_cubierta_img" class="img-responsive thumbnail zoom" src="{{URL::asset('images/'.$embarcacion->nombre.'/'.$embarcacion->planos_cubierta)}}" alt="Planos de cubierta" height="250" width="250"></li>
-							</ul>
-			                <br>{!! Form::file('planos_cubierta', ['class' => 'form-control', 'id' => 'cambiar_im_planos_cubierta', 'accept' => 'image/*']) !!}
-		            	</div>
 						
 						<div class="col-md-12">
-			                <br>{!! Form::label('imagen_general', 'Imagen general') !!}
-							<ul class="list-inline gallery">    
-								<li><img id="imagen_gral_img" class="img-responsive thumbnail zoom" src="{{URL::asset('images/'.$embarcacion->nombre.'/'.$embarcacion->imagen_general)}}" alt="Planos de cubierta" height="250" width="250"></li>
-							</ul>
-			                <br>{!! Form::file('imagen_general', ['class' => 'form-control', 'id' => 'cambiar_im_gral', 'accept' => 'image/*']) !!}
+
+			                <br>{!! Form::label('deck_plan', 'Planos de cubierta') !!}
+							<div id="dZDeckPlan" class="dropzone"></div>
 		            	</div>
+
 					</div>
 				</div>
 			</div>
@@ -159,11 +149,6 @@
 									<div id="detalle_itinerario_{!! $key !!}" class="panel-collapse collapse">
 										<div class="panel-body">
 											<div class="col-lg-12">
-												<ul class="list-inline gallery">    
-													<li><img id="imagen_it_{{$key}}" class="img-responsive thumbnail zoom" src="{{URL::asset('images/'.$embarcacion->nombre.'/'.$itinerarios[$key][0]['imagen'])}}" alt="Planos de cubierta" height="300" width="350"></li>
-												</ul>
-												{!! Form::label('cambiar_im_it', 'Cambiar imagen del itinerario') !!}
-												{!! Form::file('imagen_itinerario['.$key.']', ['class' => 'form-control', 'accept' => 'image/*', 'onchange' => 'javascript:readURL(this, \'imagen_it_'.$key.'\');']) !!}
 												<table class="table table-bordered">
 													<tbody>
 														@for ($i = 0; $i < count($value); $i++)
@@ -353,28 +338,6 @@
 @section('scripts')
 
 <script type="text/javascript">
-	function readURL(input, id) {
-	    if (input.files && input.files[0]) {
-	        var reader = new FileReader();
-
-	        reader.onload = function (e) {
-	            $('#'+id).attr('src', e.target.result);
-	        }
-
-	        reader.readAsDataURL(input.files[0]);
-	    }else{
-	    	$('#'+id).attr('src', '{{URL::asset('images/app/preview-image-icon.png')}}');
-	    }
-	}
-
-	$("#cambiar_im_planos_cubierta").change(function(){
-	    readURL(this, 'planos_cubierta_img');
-	});
-
-	$("#cambiar_im_gral").change(function(){
-	    readURL(this, 'imagen_gral_img');
-	});
-
     var cont_tarifas = 1;
     var cont_fechas = 1;
     date('from_1', 'to_1');
@@ -431,6 +394,7 @@
     		headers: {
 		        'X-CSRF-Token': "{{ csrf_token() }}",
 		    },
+		    
 
 		    addRemoveLinks: true,
 			autoProcessQueue: false,
@@ -522,7 +486,7 @@
         var cantd_dias = parseInt(cant_dias) + parseInt(dia_inicio);
 
         if((nombre_itinerario != "") && (nombre_itinerario != undefined)){
-            var itinerario = '<div class="panel" id="panel_itinerario_'+ nombre_itinerario +'"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-target="#detalle_itinerario_'+ nombre_itinerario +'" href="#detalle_itinerario_'+ nombre_itinerario +'" class="collapsed"> '+ nombre_itinerario_original +' </a> <button type="button" class="btn btn-sm btn-danger remove_itinerario" name="remove" onclick="remove_elemento(panel_itinerario_'+ nombre_itinerario +', null)"><i class="fa fa-minus fa-fw"></i></button></h4></div><div id="detalle_itinerario_'+ nombre_itinerario +'" class="panel-collapse collapse"><div class="panel-body"><div class="col-lg-12"><ul class="list-inline gallery"><li><img id="imagen_it_'+ nombre_itinerario +'" class="img-responsive thumbnail zoom" src="{{URL::asset('images/app/preview-image-icon.png')}}" alt="Itinerario '+ nombre_itinerario +'" height="250" width="250"></li></ul><br><input name="imagen_itinerario['+ nombre_itinerario +']" type="file" class="form-control" accept="image/*" onchange="javascript:readURL(this, \'imagen_it_'+ nombre_itinerario +'\');" ></div><div class="col-lg-12"><table class="table table-bordered"><tbody>';
+            var itinerario = '<div class="panel" id="panel_itinerario_'+ nombre_itinerario +'"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-target="#detalle_itinerario_'+ nombre_itinerario +'" href="#detalle_itinerario_'+ nombre_itinerario +'" class="collapsed"> '+ nombre_itinerario_original +' </a> <button type="button" class="btn btn-sm btn-danger remove_itinerario" name="remove" onclick="remove_elemento(panel_itinerario_'+ nombre_itinerario +', null)"><i class="fa fa-minus fa-fw"></i></button></h4></div><div id="detalle_itinerario_'+ nombre_itinerario +'" class="panel-collapse collapse"><div class="panel-body"><div class="col-lg-12"><table class="table table-bordered"><tbody>';
             var cont = 1;
 
             for (var i = dia_inicio; i < cantd_dias; i++) {

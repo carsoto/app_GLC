@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 17 Apr 2018 02:23:49 +0000.
+ * Date: Mon, 23 Apr 2018 19:19:10 +0000.
  */
 
 namespace App;
@@ -14,6 +14,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * 
  * @property int $id
  * @property string $nombre
+ * @property string $url_imagen
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
@@ -24,7 +25,8 @@ use Reliese\Database\Eloquent\Model as Eloquent;
 class Itinerario extends Eloquent
 {
 	protected $fillable = [
-		'nombre'
+		'nombre',
+		'url_imagen'
 	];
 
 	public function embarcacions()

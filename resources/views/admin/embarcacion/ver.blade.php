@@ -6,7 +6,7 @@
 	<div class="panel-group" id="accordion">
 		<div class="panel" id="panel_detalles_generales">
 			<div class="panel-heading">
-				<h4 class="panel-title"> <a data-toggle="collapse" data-target="#detalles_generales" href="#detalles_generales" class="collapsed">Información General</a></h4>
+				<h4 class="panel-title"> <a data-toggle="collapse" data-target="#detalles_generales" href="#detalles_generales" class="collapsed">Información general</a></h4>
 			</div>
 			<div id="detalles_generales" class="panel-collapse collapse">
 				<div class="panel-body">
@@ -16,6 +16,14 @@
 					<br>{!! Form::label('companias_embarcacion_id', 'Operador / Propietario') !!}: {!! $embarcacion->companias_embarcacion->razon_social !!}
 					<br>{!! Form::label('modelos_embarcacion_id', 'Modelo') !!}: {!! $embarcacion->modelos_embarcacion->descripcion !!}
 					<br>{!! Form::label('tipos_patente_id', 'Tipo de patente') !!}: {!! $embarcacion->tipos_patente->descripcion !!}
+					<br>{!! Form::label('img_gral', 'Fotos') !!}:
+					<ul class="list-inline gallery">    
+						<li><img class="img-responsive thumbnail zoom" src="{{URL::asset('images/'.$embarcacion->nombre.'/'.$embarcacion->imagen_general)}}" alt="Planos de cubierta" height="250" width="250"></li>
+					</ul>
+					<br>{!! Form::label('planos_cubierta', 'Planos de Cubierta') !!}:
+					<ul class="list-inline gallery">    
+						<li><img class="img-responsive thumbnail zoom" src="{{URL::asset('images/'.$embarcacion->nombre.'/'.$embarcacion->planos_cubierta)}}" alt="Planos de cubierta" height="250" width="250"></li>
+					</ul>
 				</div>
 			</div>
 		</div>
@@ -58,10 +66,15 @@
 	        <div id="detalles_itinerarios" class="panel-collapse collapse">
 	            <div class="panel-body">
 	            	@foreach ($itinerarios AS $key => $value)
+	            		<ul class="list-inline gallery">    
+							<li><img class="img-responsive thumbnail zoom" src="{{URL::asset('images/'.$embarcacion->nombre.'/'.$itinerarios[$key][0]['imagen'])}}" alt="Planos de cubierta" height="300" width="350"></li>
+						</ul>
 	        			<table class="table table-condensed table-bordered">
 	        				<thead>
 	        					<tr>
-	        						<th colspan="3">{!! $key !!}</th>
+	        						<th colspan="3">
+	        							{!! $key !!}
+	        						</th>
 	        					</tr>
 	        				</thead>
 							<tbody>

@@ -4,7 +4,7 @@
 
 <div class="col-lg-12">
 
-    {!! Form::open(array('url' => route('admin.embarcacion.store'), 'files' => true, 'id' => 'registrar_embarcacion_form')) !!}
+    {!! Form::open(array('url' => route('admin.embarcacion.store'), 'files' => true, 'id' => 'registrar_embarcacion_form', 'runat' => 'server')) !!}
 		
 		{{ csrf_field() }}
 
@@ -48,9 +48,19 @@
 						</div>
 						
 						<div class="col-md-12">
-
-			                <br>{!! Form::label('deck_plan', 'Planos de cubierta') !!}
-							<div id="dZDeckPlan" class="dropzone"></div>
+			                <br>{!! Form::label('planos_cubierta', 'Planos de cubierta') !!}
+			                <ul class="list-inline gallery">    
+								<li><img id="planos_cubierta_img" class="img-responsive thumbnail zoom" src="{{URL::asset('images/app/preview-image-icon.png')}}" alt="Planos de cubierta" height="250" width="250"></li>
+							</ul>
+			                <br>{!! Form::file('planos_cubierta', ['class' => 'form-control', 'id' => 'cambiar_im_planos_cubierta', 'accept' => 'image/*']) !!}
+		            	</div>
+						
+						<div class="col-md-12">
+			                <br>{!! Form::label('imagen_general', 'Imagen general') !!}
+							<ul class="list-inline gallery">    
+								<li><img id="imagen_gral_img" class="img-responsive thumbnail zoom" src="{{URL::asset('images/app/preview-image-icon.png')}}" alt="Planos de cubierta" height="250" width="250"></li>
+							</ul>
+			                <br>{!! Form::file('imagen_general', ['class' => 'form-control', 'id' => 'cambiar_im_gral', 'accept' => 'image/*']) !!}
 		            	</div>
 
 					</div>
@@ -121,7 +131,7 @@
 							{!! Form::label('it_nombre', 'Nombre') !!}
 							<br>{!! Form::text('it_nombre', "", ['class' => 'form-control']) !!}
 						</div>
-
+						
 						<div class="col-md-3">
 							{!! Form::label('it_cant_dias', 'Cant. de dias') !!}
 							<br>{!! Form::selectRange('it_cant_dias', 4, 15, "", ['class' => 'form-control']); !!}
@@ -258,6 +268,29 @@
 @section('scripts')
 
 <script type="text/javascript">
+
+	function readURL(input, id) {
+	    if (input.files && input.files[0]) {
+	        var reader = new FileReader();
+
+	        reader.onload = function (e) {
+	            $('#'+id).attr('src', e.target.result);
+	        }
+
+	        reader.readAsDataURL(input.files[0]);
+	    }else{
+	    	$('#'+id).attr('src', '{{URL::asset('images/app/preview-image-icon.png')}}');
+	    }
+	}
+
+	$("#cambiar_im_planos_cubierta").change(function(){
+	    readURL(this, 'planos_cubierta_img');
+	});
+
+	$("#cambiar_im_gral").change(function(){
+	    readURL(this, 'imagen_gral_img');
+	});
+
     var cont_tarifas = 1;
     var cont_fechas = 1;
     date('from_1', 'to_1');
@@ -310,59 +343,22 @@
 
     $(function() {
 
-    	Dropzone.autoDiscover = false;
+    	var submit_form_embarcacion = document.querySelector("#submit_form_embarcacion");
 
-    	var dZDeckPlan = $("#dZDeckPlan").dropzone({
-    		headers: {
-		        'X-CSRF-Token': "{{ csrf_token() }}",
-		    },
-		    
-
-		    addRemoveLinks: true,
-			autoProcessQueue: false,
-			uploadMultiple: true,
-			parallelUploads: 100,
-			maxFiles: 100,
-			url: "{{ route('admin.embarcacion.store') }}",
-
-			// The setting up of the dropzone
-			init: function() {
-				var myDropzone = this;
-				var submit_form_embarcacion = document.querySelector("#submit_form_embarcacion");
-
-				// First change the button to actually tell Dropzone to process the queue.
-				submit_form_embarcacion.addEventListener("click", function(e) {
-					// Make sure that the form isn't actually being sent.
-					e.preventDefault();
-					e.stopPropagation();
-					var nombre_embarcacion = document.getElementById("nombre_embarcacion").value;
-					if((nombre_embarcacion == "") || (nombre_embarcacion == undefined)){
-						$("#div_detalles_generales_error").show();
-						$("#detalles_generales_error").html("<ul><li>El nombre de la embarcación no puede estar vacío</li></ul>");
-					}else{
-						$("#registrar_embarcacion_form").submit();	
-						//myDropzone.processQueue();
-					}
-				});
-
-				// Listen to the sendingmultiple event. In this case, it's the sendingmultiple event instead
-				// of the sending event because uploadMultiple is set to true.
-				this.on("sendingmultiple", function() {
-					// Gets triggered when the form is actually being sent.
-					// Hide the success button or the complete form.
-				});
-
-				this.on("successmultiple", function(files, response) {
-					// Gets triggered when the files have successfully been sent.
-					// Redirect user or notify of success.
-				});
-
-				this.on("errormultiple", function(files, response) {
-					// Gets triggered when there was an error sending the files.
-					// Maybe show form again, and notify user of error
-				});
+		// First change the button to actually tell Dropzone to process the queue.
+		submit_form_embarcacion.addEventListener("click", function(e) {
+			// Make sure that the form isn't actually being sent.
+			e.preventDefault();
+			e.stopPropagation();
+			var nombre_embarcacion = document.getElementById("nombre_embarcacion").value;
+			if((nombre_embarcacion == "") || (nombre_embarcacion == undefined)){
+				$("#div_detalles_generales_error").show();
+				$("#detalles_generales_error").html("<ul><li>El nombre de la embarcación no puede estar vacío</li></ul>");
+			}else{
+				$("#registrar_embarcacion_form").submit();	
+				//myDropzone.processQueue();
 			}
-	    });
+		});
 
     });
 
@@ -408,7 +404,8 @@
         var cantd_dias = parseInt(cant_dias) + parseInt(dia_inicio);
 
         if((nombre_itinerario != "") && (nombre_itinerario != undefined)){
-            var itinerario = '<div class="panel" id="panel_itinerario_'+ nombre_itinerario +'"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-target="#detalle_itinerario_'+ nombre_itinerario +'" href="#detalle_itinerario_'+ nombre_itinerario +'" class="collapsed"> '+ nombre_itinerario_original +' </a> <button type="button" class="btn btn-sm btn-danger remove_itinerario" name="remove" onclick="remove_elemento(panel_itinerario_'+ nombre_itinerario +', null)"><i class="fa fa-minus fa-fw"></i></button></h4></div><div id="detalle_itinerario_'+ nombre_itinerario +'" class="panel-collapse collapse"><div class="panel-body"><div class="col-lg-12"><table class="table table-bordered"><tbody>';
+        	
+            var itinerario = '<div class="panel" id="panel_itinerario_'+ nombre_itinerario +'"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-target="#detalle_itinerario_'+ nombre_itinerario +'" href="#detalle_itinerario_'+ nombre_itinerario +'" class="collapsed"> '+ nombre_itinerario_original +' </a> <button type="button" class="btn btn-sm btn-danger remove_itinerario" name="remove" onclick="remove_elemento(panel_itinerario_'+ nombre_itinerario +', null)"><i class="fa fa-minus fa-fw"></i></button></h4></div><div id="detalle_itinerario_'+ nombre_itinerario +'" class="panel-collapse collapse"><div class="panel-body"><div class="col-lg-12"><ul class="list-inline gallery"><li><img id="imagen_it_'+ nombre_itinerario +'" class="img-responsive thumbnail zoom" src="{{URL::asset('images/app/preview-image-icon.png')}}" alt="Itinerario '+ nombre_itinerario +'" height="250" width="250"></li></ul><br><input name="imagen_itinerario['+ nombre_itinerario +']" type="file" class="form-control" accept="image/*" onchange="javascript:readURL(this, \'imagen_it_'+ nombre_itinerario +'\');" ></div><div class="col-lg-12"><table class="table table-bordered"><tbody>';
             var cont = 1;
 
             for (var i = dia_inicio; i < cantd_dias; i++) {

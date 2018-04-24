@@ -19,6 +19,7 @@ use Yajra\Datatables\Datatables;
 use DB;
 use Redirect;
 use Response;
+use File;
 
 class EmbarcacionController extends Controller
 {
@@ -49,6 +50,20 @@ class EmbarcacionController extends Controller
         return view('admin.embarcacion.create', array('companias_embarcacion' => $companias_embarcacion, 'modelos' => $modelos, 'tipos_patente' => $tipos_patente, 'puertos' => $puertos, 'dias' => $dias, 'tipos_embarcacion' => $tipos_embarcacion));
     }
 
+    public function guardarImagen($archivo, $directorio)
+    {
+        if($archivo != null){
+            $image = $archivo;
+            $imageName = $image->getClientOriginalName();
+            $image->move($directorio, $imageName);
+            $name = $imageName;
+        }else{
+            $name = null;
+        }
+
+        return $name;
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -57,21 +72,22 @@ class EmbarcacionController extends Controller
      */
     public function store(Request $request)
     {
-        /*$data = $request->all();
-        $files = $request->file('file');
-        dd($data, $files);*/
-        //dd($_FILES);
-        //$image = $_FILES;
-        /*$imageName = $image->getClientOriginalName();
-        $image->move(public_path('images'),$imageName);*/
-        //dd($request->file('file'));
-        //return response()->json(['success'=>$imageName]);
-
         $data = $request->all();
+        $directorio_images = 'images/'.$data['nombre'];
+
+        if(!File::exists(public_path($directorio_images))) {
+            File::makeDirectory(public_path($directorio_images));
+            $data['imagen_general'] = $this->guardarImagen($request->file('imagen_general'), public_path($directorio_images));
+            $data['planos_cubierta'] = $this->guardarImagen($request->file('planos_cubierta'), public_path($directorio_images));
+
+        }else{
+            $data['imagen_general'] = $this->guardarImagen($request->file('imagen_general'), public_path($directorio_images));
+            $data['planos_cubierta'] = $this->guardarImagen($request->file('planos_cubierta'), public_path($directorio_images));
+        }
+
         $embarcacion = new Embarcacion($data);
-        //dd($request->all());
+
         if($embarcacion->save()){
-            
             for ($i=0; $i < count($data['temp_alta_cant_dias']); $i++) { 
                 if($data['temp_alta_from'][$i] != null){
                     $arr_f_inicio = explode("/", $data['temp_alta_from'][$i]);
@@ -106,9 +122,11 @@ class EmbarcacionController extends Controller
                 foreach ($data['am'] as $key => $value) {
                     $itinerario = new Itinerario();
                     $itinerario->nombre = $key;
+                    $itinerario->url_imagen = $this->guardarImagen($request->file('imagen_itinerario')[$key], public_path($directorio_images));
 
                     if($itinerario->save()){
                         for ($k=0; $k < count($value); $k++) { 
+
                             $itinerario_embarcacion = new EmbarcacionItinerario();
                             $itinerario_embarcacion->embarcacion_id = $embarcacion->id;
                             $itinerario_embarcacion->itinerarios_id = $itinerario->id;
@@ -122,19 +140,8 @@ class EmbarcacionController extends Controller
                 }    
             }
             
-            
-            /*echo $embarcacion->id;
-            dd($request->all());**/
             return Redirect::action('EmbarcacionController@index');
         }
-    }
-
-    public function dropzoneStore(Request $request)
-    {
-        $image = $request->file('file');
-        $imageName = time().$image->getClientOriginalName();
-        $image->move(public_path('images'),$imageName);
-        return response()->json(['success'=>$imageName]);
     }
 
     /**
@@ -150,11 +157,11 @@ class EmbarcacionController extends Controller
         $dias = Dia::pluck('dia', 'id');
         
         foreach ($embarcacion->itinerarios as $itinerario) {
+            $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['imagen'] = $itinerario->url_imagen;
             $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['dia'] = $itinerario->pivot->id_dia;
             $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['am'] = $itinerario->pivot->am;
             $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['pm'] = $itinerario->pivot->pm;
         }
-
         return view('admin.embarcacion.ver', array('embarcacion' => $embarcacion, 'itinerarios' => $itinerarios, 'dias' => $dias));
     }
 
@@ -181,6 +188,7 @@ class EmbarcacionController extends Controller
         }
 
         foreach ($embarcacion->itinerarios as $itinerario) {
+            $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['imagen'] = $itinerario->url_imagen;
             $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['dia'] = $itinerario->pivot->id_dia;
             $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['am'] = $itinerario->pivot->am;
             $itinerarios[$itinerario->nombre][$itinerario->pivot->orden]['pm'] = $itinerario->pivot->pm;
@@ -198,7 +206,8 @@ class EmbarcacionController extends Controller
      */
     public function update(Request $request)
     {
-        dd($request);
+        //dd($request);
+        return array('success'=>true);
     }
 
     /**

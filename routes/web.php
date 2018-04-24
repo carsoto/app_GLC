@@ -180,6 +180,5 @@ Route::group(['prefix' => 'admin'], function () {
 
 		Route::post('/update', 'EmbarcacionController@update')->name('admin.embarcacion.update');
 
-		Route::post('/dropzone/store', ['as'=>'dropzone.store','uses'=>'EmbarcacionController@dropzoneStore']);
 	});
 });

@@ -18,6 +18,7 @@ class CreateTableItinerarios extends Migration
         
             $table->increments('id')->unsigned();
             $table->string('nombre', 50)->nullable();
+            $table->string('url_imagen')->nullable();
         
             $table->timestamps();
         
