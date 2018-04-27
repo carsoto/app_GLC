@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Mon, 23 Apr 2018 19:19:10 +0000.
+ * Date: Fri, 27 Apr 2018 16:07:15 +0000.
  */
 
 namespace App;
@@ -14,14 +14,13 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * 
  * @property int $id
  * @property int $embarcacion_id
- * @property int $tipos_imagen_id
+ * @property string $tipo_imagen
  * @property string $titulo
  * @property boolean $imagenes_embarcacion
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
  * @property \App\Embarcacion $embarcacion
- * @property \App\TiposImagen $tipos_imagen
  *
  * @package App
  */
@@ -31,13 +30,12 @@ class ImagenesEmbarcacion extends Eloquent
 
 	protected $casts = [
 		'embarcacion_id' => 'int',
-		'tipos_imagen_id' => 'int',
 		'imagenes_embarcacion' => 'boolean'
 	];
 
 	protected $fillable = [
 		'embarcacion_id',
-		'tipos_imagen_id',
+		'tipo_imagen',
 		'titulo',
 		'imagenes_embarcacion'
 	];
@@ -45,10 +43,5 @@ class ImagenesEmbarcacion extends Eloquent
 	public function embarcacion()
 	{
 		return $this->belongsTo(\App\Embarcacion::class);
-	}
-
-	public function tipos_imagen()
-	{
-		return $this->belongsTo(\App\TiposImagen::class);
 	}
 }

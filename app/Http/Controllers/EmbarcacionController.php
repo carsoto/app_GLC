@@ -15,11 +15,13 @@ use App\Tarifario;
 use App\EmbarcacionItinerario;
 use App\Dia;
 use App\SitiosTuristico;
+use App\ImagenesEmbarcacion;
 use Yajra\Datatables\Datatables;
 use DB;
 use Redirect;
 use Response;
 use File;
+use Storage;
 
 class EmbarcacionController extends Controller
 {
@@ -64,6 +66,13 @@ class EmbarcacionController extends Controller
         return $name;
     }
 
+    public function eliminarImagen($archivo)
+    {
+        if(!File::exists(public_path($archivo))) {
+            File::delete($archivo);
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -73,21 +82,38 @@ class EmbarcacionController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+
         $directorio_images = 'images/'.$data['nombre'];
 
         if(!File::exists(public_path($directorio_images))) {
             File::makeDirectory(public_path($directorio_images));
-            $data['imagen_general'] = $this->guardarImagen($request->file('imagen_general'), public_path($directorio_images));
-            $data['planos_cubierta'] = $this->guardarImagen($request->file('planos_cubierta'), public_path($directorio_images));
-
-        }else{
-            $data['imagen_general'] = $this->guardarImagen($request->file('imagen_general'), public_path($directorio_images));
-            $data['planos_cubierta'] = $this->guardarImagen($request->file('planos_cubierta'), public_path($directorio_images));
         }
 
         $embarcacion = new Embarcacion($data);
 
         if($embarcacion->save()){
+            if(isset($data['planos_cubierta'])){
+                for ($i = 0; $i < count($data['planos_cubierta']); $i++){
+                    $archivo = $this->guardarImagen($data['planos_cubierta'][$i], public_path($directorio_images));
+                    $imagenes_embarcacion = new ImagenesEmbarcacion();
+                    $imagenes_embarcacion->embarcacion_id = $embarcacion->id;
+                    $imagenes_embarcacion->tipo_imagen = 'Planos de cubierta';
+                    $imagenes_embarcacion->titulo = $archivo;
+                    $imagenes_embarcacion->save();
+                }
+            }
+
+            if(isset($data['imagen_general'])){
+                for ($i = 0; $i < count($data['imagen_general']); $i++){
+                    $archivo = $this->guardarImagen($data['imagen_general'][$i], public_path($directorio_images));
+                    $imagenes_embarcacion = new ImagenesEmbarcacion();
+                    $imagenes_embarcacion->embarcacion_id = $embarcacion->id;
+                    $imagenes_embarcacion->tipo_imagen = 'General';
+                    $imagenes_embarcacion->titulo = $archivo;
+                    $imagenes_embarcacion->save();
+                }
+            }
+
             for ($i=0; $i < count($data['temp_alta_cant_dias']); $i++) { 
                 if($data['temp_alta_from'][$i] != null){
                     $arr_f_inicio = explode("/", $data['temp_alta_from'][$i]);
@@ -206,8 +232,56 @@ class EmbarcacionController extends Controller
      */
     public function update(Request $request)
     {
-        //dd($request);
-        return array('success'=>true);
+        dd($request);
+        $embarcacion = Embarcacion::find($request->id_embarcacion);
+
+        $embarcacion->nombre = $request->nombre;
+        $embarcacion->anyo_construccion = $request->anyo_construccion;
+        $embarcacion->refit = $request->refit;
+        $embarcacion->puerto_registro_id = $request->puerto_registro_id;
+        $embarcacion->companias_embarcacion_id = $request->companias_embarcacion_id;
+        $embarcacion->modelos_embarcacion_id = $request->modelos_embarcacion_id;
+        $embarcacion->tipos_patente_id = $request->tipos_patente_id;
+        $embarcacion->capacidad = $request->capacidad;
+        $embarcacion->eslora = $request->eslora;
+        $embarcacion->manga = $request->manga;
+        $embarcacion->puntal = $request->puntal;
+        $embarcacion->velocidad_crucero = $request->velocidad_crucero;
+        $embarcacion->nro_tripulantes = $request->nro_tripulantes;
+        $embarcacion->estabilizadores = $request->estabilizadores;
+        $embarcacion->internet = $request->internet;
+        $embarcacion->kayacks = $request->kayacks;
+        $embarcacion->paddle_boards = $request->paddle_boards;
+        $embarcacion->ameneties = $request->ameneties;
+        $embarcacion->trajes_neopreno = $request->trajes_neopreno;
+        $embarcacion->equipo_snorkel = $request->equipo_snorkel;
+        $embarcacion->politicas_pago = $request->politicas_pago;
+        $embarcacion->cancelaciones = $request->cancelaciones;
+        $embarcacion->save();
+
+        /*if(isset($request->planos_cubierta)){
+            for ($i = 0; $i < count($request->planos_cubierta); $i++){
+                $archivo = $this->guardarImagen($request->planos_cubierta[$i], public_path($directorio_images));
+                $imagenes_embarcacion = new ImagenesEmbarcacion();
+                $imagenes_embarcacion->embarcacion_id = $embarcacion->id;
+                $imagenes_embarcacion->tipo_imagen = 'Planos de cubierta';
+                $imagenes_embarcacion->titulo = $archivo;
+                $imagenes_embarcacion->save();
+            }
+        }
+
+        if(isset($request->imagen_general)){
+            for ($i = 0; $i < count($request->imagen_general); $i++){
+                $archivo = $this->guardarImagen($request->imagen_general[$i], public_path($directorio_images));
+                $imagenes_embarcacion = new ImagenesEmbarcacion();
+                $imagenes_embarcacion->embarcacion_id = $embarcacion->id;
+                $imagenes_embarcacion->tipo_imagen = 'General';
+                $imagenes_embarcacion->titulo = $archivo;
+                $imagenes_embarcacion->save();
+            }
+        }*/
+
+        return Redirect::action('EmbarcacionController@index');
     }
 
     /**

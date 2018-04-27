@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Mon, 23 Apr 2018 19:19:10 +0000.
+ * Date: Fri, 27 Apr 2018 15:28:16 +0000.
  */
 
 namespace App;
@@ -16,8 +16,6 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $descripcion
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * 
- * @property \Illuminate\Database\Eloquent\Collection $imagenes_embarcacions
  *
  * @package App
  */
@@ -28,9 +26,4 @@ class TiposImagen extends Eloquent
 	protected $fillable = [
 		'descripcion'
 	];
-
-	public function imagenes_embarcacions()
-	{
-		return $this->hasMany(\App\ImagenesEmbarcacion::class);
-	}
 }

@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Mon, 23 Apr 2018 19:19:10 +0000.
+ * Date: Fri, 27 Apr 2018 16:07:15 +0000.
  */
 
 namespace App;
@@ -20,7 +20,6 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $companias_embarcacion_id
  * @property int $modelos_embarcacion_id
  * @property int $tipos_patente_id
- * @property string $planos_cubierta
  * @property string $capacidad
  * @property string $eslora
  * @property string $manga
@@ -36,7 +35,6 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $equipo_snorkel
  * @property string $politicas_pago
  * @property string $cancelaciones
- * @property string $imagen_general
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
@@ -73,7 +71,6 @@ class Embarcacion extends Eloquent
 		'companias_embarcacion_id',
 		'modelos_embarcacion_id',
 		'tipos_patente_id',
-		'planos_cubierta',
 		'capacidad',
 		'eslora',
 		'manga',
@@ -88,8 +85,7 @@ class Embarcacion extends Eloquent
 		'trajes_neopreno',
 		'equipo_snorkel',
 		'politicas_pago',
-		'cancelaciones',
-		'imagen_general'
+		'cancelaciones'
 	];
 
 	public function companias_embarcacion()

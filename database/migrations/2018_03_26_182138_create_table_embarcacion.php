@@ -24,7 +24,6 @@ class CreateTableEmbarcacion extends Migration
             $table->integer('companias_embarcacion_id')->unsigned();
             $table->integer('modelos_embarcacion_id')->unsigned();
             $table->integer('tipos_patente_id')->unsigned();
-            $table->string('planos_cubierta')->nullable();
             $table->string('capacidad', 45)->nullable();
             $table->string('eslora', 45)->nullable();
             $table->string('manga', 45)->nullable();
@@ -40,7 +39,6 @@ class CreateTableEmbarcacion extends Migration
             $table->enum('equipo_snorkel', ['Si',  'No']);
             $table->string('politicas_pago', 500)->nullable();
             $table->string('cancelaciones', 500)->nullable();
-            $table->string('imagen_general')->nullable();
 
             $table->index('puerto_registro_id','fk_embarcacion_puertos1_idx');
             $table->index('companias_embarcacion_id','fk_embarcacion_companias_embarcacion1_idx');

@@ -48,6 +48,20 @@
 						</div>
 						
 						<div class="col-md-12">
+							<br>{!! Form::label('planos_cubierta', 'Planos de cubierta') !!}
+							<br>{!! Form::file('planos_cubierta[]', ['id' => 'cambiar_im_planos_cubierta', 'accept' => 'image/*', 'multiple' => true]) !!}
+							<!--<input type="file" id="files" name="files[]" multiple />-->
+							<output id="list_im_planos_cubierta"></output>
+						</div>
+
+						<div class="col-md-12">
+							<br>{!! Form::label('imagen_general', 'Imagen general') !!}
+							<br>{!! Form::file('imagen_general[]', ['id' => 'cambiar_im_gral', 'accept' => 'image/*', 'multiple' => true]) !!}
+							<!--<input type="file" id="files" name="files[]" multiple />-->
+							<output id="list_im_gral"></output>
+						</div>
+
+						<!--<div class="col-md-12">
 			                <br>{!! Form::label('planos_cubierta', 'Planos de cubierta') !!}
 			                <ul class="list-inline gallery">    
 								<li><img id="planos_cubierta_img" class="img-responsive thumbnail zoom" src="{{URL::asset('images/app/preview-image-icon.png')}}" alt="Planos de cubierta" height="250" width="250"></li>
@@ -61,7 +75,7 @@
 								<li><img id="imagen_gral_img" class="img-responsive thumbnail zoom" src="{{URL::asset('images/app/preview-image-icon.png')}}" alt="Planos de cubierta" height="250" width="250"></li>
 							</ul>
 			                <br>{!! Form::file('imagen_general', ['class' => 'form-control', 'id' => 'cambiar_im_gral', 'accept' => 'image/*']) !!}
-		            	</div>
+		            	</div>-->
 
 					</div>
 				</div>
@@ -404,8 +418,7 @@
         var cantd_dias = parseInt(cant_dias) + parseInt(dia_inicio);
 
         if((nombre_itinerario != "") && (nombre_itinerario != undefined)){
-        	
-            var itinerario = '<div class="panel" id="panel_itinerario_'+ nombre_itinerario +'"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-target="#detalle_itinerario_'+ nombre_itinerario +'" href="#detalle_itinerario_'+ nombre_itinerario +'" class="collapsed"> '+ nombre_itinerario_original +' </a> <button type="button" class="btn btn-sm btn-danger remove_itinerario" name="remove" onclick="remove_elemento(panel_itinerario_'+ nombre_itinerario +', null)"><i class="fa fa-minus fa-fw"></i></button></h4></div><div id="detalle_itinerario_'+ nombre_itinerario +'" class="panel-collapse collapse"><div class="panel-body"><div class="col-lg-12"><ul class="list-inline gallery"><li><img id="imagen_it_'+ nombre_itinerario +'" class="img-responsive thumbnail zoom" src="{{URL::asset('images/app/preview-image-icon.png')}}" alt="Itinerario '+ nombre_itinerario +'" height="250" width="250"></li></ul><br><input name="imagen_itinerario['+ nombre_itinerario +']" type="file" class="form-control" accept="image/*" onchange="javascript:readURL(this, \'imagen_it_'+ nombre_itinerario +'\');" ></div><div class="col-lg-12"><table class="table table-bordered"><tbody>';
+        	var itinerario = '<div class="panel" id="panel_itinerario_'+ nombre_itinerario +'"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-target="#detalle_itinerario_'+ nombre_itinerario +'" href="#detalle_itinerario_'+ nombre_itinerario +'" class="collapsed"> '+ nombre_itinerario_original +' </a> <button type="button" class="btn btn-sm btn-danger remove_itinerario" name="remove" onclick="remove_elemento(panel_itinerario_'+ nombre_itinerario +', null)"><i class="fa fa-minus fa-fw"></i></button></h4></div><div id="detalle_itinerario_'+ nombre_itinerario +'" class="panel-collapse collapse"><div class="panel-body"><div class="col-lg-12"><ul class="list-inline gallery"><li><img id="imagen_it_'+ nombre_itinerario +'" class="img-responsive thumb gallery zoom" src="{{URL::asset('images/app/preview-image-icon.png')}}" alt="Itinerario '+ nombre_itinerario +'" height="250" width="250"></li></ul><br><input name="imagen_itinerario['+ nombre_itinerario +']" type="file" class="form-control" accept="image/*" onchange="javascript:readURL(this, \'imagen_it_'+ nombre_itinerario +'\');" ></div><div class="col-lg-12"><table class="table table-bordered"><tbody>';
             var cont = 1;
 
             for (var i = dia_inicio; i < cantd_dias; i++) {
@@ -554,7 +567,106 @@
     $("#tipos_patente").change(function(){
         getSitiosTuristicos(this.value);
     });
-        
+
+    function getCount(parent, getChildrensChildren){
+	    var relevantChildren = 0;
+	    var children = parent.childNodes.length;
+	    for(var i=0; i < children; i++){
+	        if(parent.childNodes[i].nodeType != 3){
+	            if(getChildrensChildren)
+	                relevantChildren += getCount(parent.childNodes[i],true);
+	            relevantChildren++;
+	        }
+	    }
+	    return relevantChildren;
+	}
+
+	function fileSelectPlanos(evt) {
+
+		var element = document.getElementById("list_im_planos_cubierta");
+
+		if(getCount(element, false) < 5){
+			var files = evt.target.files; // FileList object
+			var cantidad_archivos = files.length + getCount(element, false);
+
+			if(cantidad_archivos <= 5){
+				// Loop through the FileList and render image files as thumbnails.
+				for (var i = 0, f; f = files[i]; i++) {
+
+					// Only process image files.
+					if (!f.type.match('image.*')) {
+						continue;
+					}
+
+					var reader = new FileReader();
+
+					// Closure to capture the file information.
+					reader.onload = (function(theFile) {
+						return function(e) {
+							// Render thumbnail.
+							var span = document.createElement('span');
+							//<button style="position: absolute; margin-top: 10px; z-index: 100;" type="button" class="close" onclick="" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							span.innerHTML = ['<img class="thumb zoom" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
+							document.getElementById('list_im_planos_cubierta').insertBefore(span, null);
+						};
+					})(f);
+
+					// Read in the image file as a data URL.
+					reader.readAsDataURL(f);
+				}
+			}else{
+				alert("Solo puede agregar 5 fotos máximo");
+			}
+			
+		}else{
+			alert("Solo puede agregar 5 fotos máximo");
+		}
+	}
+
+	function fileSelectGral(evt) {
+
+		var element = document.getElementById("list_im_gral");
+
+		if(getCount(element, false) < 10){
+			var files = evt.target.files; // FileList object
+			var cantidad_archivos = files.length + getCount(element, false);
+
+			if(cantidad_archivos <= 10){
+				// Loop through the FileList and render image files as thumbnails.
+				for (var i = 0, f; f = files[i]; i++) {
+
+					// Only process image files.
+					if (!f.type.match('image.*')) {
+						continue;
+					}
+
+					var reader = new FileReader();
+
+					// Closure to capture the file information.
+					reader.onload = (function(theFile) {
+						return function(e) {
+							// Render thumbnail.
+							var span = document.createElement('span');
+							//<button style="position: absolute; margin-top: 10px; z-index: 100;" type="button" class="close" onclick="" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							span.innerHTML = ['<img class="thumb zoom" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
+							document.getElementById('list_im_gral').insertBefore(span, null);
+						};
+					})(f);
+
+					// Read in the image file as a data URL.
+					reader.readAsDataURL(f);
+				}
+			}else{
+				alert("Solo puede agregar 10 fotos máximo");
+			}
+			
+		}else{
+			alert("Solo puede agregar 10 fotos máximo");
+		}
+	}
+
+	document.getElementById('cambiar_im_planos_cubierta').addEventListener('change', fileSelectPlanos, false);
+	document.getElementById('cambiar_im_gral').addEventListener('change', fileSelectGral, false);
 </script>
 @stop
 

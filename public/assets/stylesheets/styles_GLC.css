@@ -88,7 +88,7 @@ table {
 }
 
 /********************** ZOOM IMAGENES **************************/
-ul.gallery{    
+img.gallery{    
     margin-left: 23vw;     
     margin-right: 3vw;  
 }    
@@ -99,7 +99,7 @@ ul.gallery{
     transition: all 0.35s ease-in-out;     
     cursor: -webkit-zoom-in;      
     cursor: -moz-zoom-in;      
-    cursor: zoom-in;  
+    cursor: zoom-in;   
 }     
 
 .zoom:hover, .zoom:active, .zoom:focus {
@@ -111,14 +111,20 @@ ul.gallery{
     -o-transform: scale(2.5);  
     transform: scale(2.5);    
     position:relative;      
-    z-index:100;  
+    z-index: 100;
 }
 
 /**To keep upscaled images visible on mobile, 
 increase left & right margins a bit**/  
 @media only screen and (max-width: 768px) {   
-    ul.gallery {      
+    img.gallery {      
         margin-left: 15vw;       
         margin-right: 15vw;
     }
+}
+
+.thumb {
+    height: 75px;
+    border: 1px solid #000;
+    margin: 10px 5px 0 0;
 }
