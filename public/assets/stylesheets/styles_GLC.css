@@ -111,7 +111,7 @@ img.gallery{
     -o-transform: scale(2.5);  
     transform: scale(2.5);    
     position:relative;      
-    z-index: 100;
+    z-index: 10000;
 }
 
 /**To keep upscaled images visible on mobile, 

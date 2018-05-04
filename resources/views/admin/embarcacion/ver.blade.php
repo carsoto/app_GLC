@@ -16,14 +16,22 @@
 					<br>{!! Form::label('companias_embarcacion_id', 'Operador / Propietario') !!}: {!! $embarcacion->companias_embarcacion->razon_social !!}
 					<br>{!! Form::label('modelos_embarcacion_id', 'Modelo') !!}: {!! $embarcacion->modelos_embarcacion->descripcion !!}
 					<br>{!! Form::label('tipos_patente_id', 'Tipo de patente') !!}: {!! $embarcacion->tipos_patente->descripcion !!}
-					<br>{!! Form::label('img_gral', 'Fotos') !!}:
-					<ul class="list-inline gallery">    
-						<li><img class="img-responsive thumbnail zoom" src="{{URL::asset('images/'.$embarcacion->nombre.'/'.$embarcacion->imagen_general)}}" alt="Planos de cubierta" height="250" width="250"></li>
-					</ul>
-					<br>{!! Form::label('planos_cubierta', 'Planos de Cubierta') !!}:
-					<ul class="list-inline gallery">    
-						<li><img class="img-responsive thumbnail zoom" src="{{URL::asset('images/'.$embarcacion->nombre.'/'.$embarcacion->planos_cubierta)}}" alt="Planos de cubierta" height="250" width="250"></li>
-					</ul>
+					<br>{!! Form::label('planos_cubierta', 'Planos de cubierta') !!}
+					<output id="list_im_planos_cubierta">
+						@foreach ($embarcacion->imagenes_embarcacions AS $key => $imagen)
+							@if($imagen->tipo_imagen == "Planos de cubierta")
+								<span><img class="thumb zoom" src="{{URL::asset('images/'.$embarcacion->nombre.'/'.$imagen->titulo)}}" title="{{ $imagen->titulo }}"></span>
+							@endif
+						@endforeach
+					</output>
+					<br>{!! Form::label('imagen_general', 'Imagen general') !!}
+					<output id="list_im_gral">
+						@foreach ($embarcacion->imagenes_embarcacions AS $key => $imagen)
+							@if($imagen->tipo_imagen == "General")
+								<span><img class="thumb zoom" src="{{URL::asset('images/'.$embarcacion->nombre.'/'.$imagen->titulo)}}" title="{{ $imagen->titulo }}"></span>
+							@endif
+						@endforeach
+					</output>
 				</div>
 			</div>
 		</div>
@@ -67,7 +75,7 @@
 	            <div class="panel-body">
 	            	@foreach ($itinerarios AS $key => $value)
 	            		<ul class="list-inline gallery">    
-							<li><img class="img-responsive thumbnail zoom" src="{{URL::asset('images/'.$embarcacion->nombre.'/'.$itinerarios[$key][0]['imagen'])}}" alt="Planos de cubierta" height="300" width="350"></li>
+							<li><img class="img-responsive thumb zoom" src="{{URL::asset('images/'.$embarcacion->nombre.'/'.$itinerarios[$key][0]['imagen'])}}" alt="Planos de cubierta" height="300" width="350"></li>
 						</ul>
 	        			<table class="table table-condensed table-bordered">
 	        				<thead>

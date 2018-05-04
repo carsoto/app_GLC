@@ -20,7 +20,6 @@ class CreateTableTemporadasAltas extends Migration
             $table->integer('embarcacion_id')->unsigned();
             $table->date('desde')->nullable();
             $table->date('hasta')->nullable();
-            $table->integer('cant_dias')->nullable();
             $table->decimal('gross', 8, 2)->nullable();
             $table->decimal('neto', 8, 2)->nullable();
             $table->decimal('comision_glc', 8, 2)->nullable();

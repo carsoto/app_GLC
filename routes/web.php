@@ -180,5 +180,7 @@ Route::group(['prefix' => 'admin'], function () {
 
 		Route::post('/update', 'EmbarcacionController@update')->name('admin.embarcacion.update');
 
+		Route::post('/eliminar_itinerario', 'EmbarcacionController@eliminarItinerario')->name('admin.embarcacion.eliminar_itinerario');
+
 	});
 });

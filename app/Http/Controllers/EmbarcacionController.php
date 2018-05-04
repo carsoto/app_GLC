@@ -114,7 +114,7 @@ class EmbarcacionController extends Controller
                 }
             }
 
-            for ($i=0; $i < count($data['temp_alta_cant_dias']); $i++) { 
+            for ($i=0; $i < count($data['temp_alta_from']); $i++) { 
                 if($data['temp_alta_from'][$i] != null){
                     $arr_f_inicio = explode("/", $data['temp_alta_from'][$i]);
                     $f_inicio = $arr_f_inicio[2]."-".$arr_f_inicio[1]."-".$arr_f_inicio[0];
@@ -126,7 +126,6 @@ class EmbarcacionController extends Controller
                     $temporada_alta->embarcacion_id = $embarcacion->id;
                     $temporada_alta->desde = $f_inicio;
                     $temporada_alta->hasta = $f_fin;
-                    $temporada_alta->cant_dias = $data['temp_alta_cant_dias'][$i];
                     $temporada_alta->gross = $data['temp_alta_gross'][$i];
                     $temporada_alta->neto = $data['temp_alta_neto'][$i];
                     $temporada_alta->comision_glc = $data['temp_alta_comision_glc'][$i];
@@ -232,9 +231,8 @@ class EmbarcacionController extends Controller
      */
     public function update(Request $request)
     {
-        dd($request);
+        //dd($request);
         $embarcacion = Embarcacion::find($request->id_embarcacion);
-
         $embarcacion->nombre = $request->nombre;
         $embarcacion->anyo_construccion = $request->anyo_construccion;
         $embarcacion->refit = $request->refit;
@@ -257,31 +255,165 @@ class EmbarcacionController extends Controller
         $embarcacion->equipo_snorkel = $request->equipo_snorkel;
         $embarcacion->politicas_pago = $request->politicas_pago;
         $embarcacion->cancelaciones = $request->cancelaciones;
-        $embarcacion->save();
+        $id_temporadas_altas = array();
+        $id_tarifarios = array();
+        
+        /*foreach ($embarcacion->temporadas_altas as $key => $value) {
+            array_push($id_temporadas_altas, $value['id']);
+        }
 
-        /*if(isset($request->planos_cubierta)){
-            for ($i = 0; $i < count($request->planos_cubierta); $i++){
-                $archivo = $this->guardarImagen($request->planos_cubierta[$i], public_path($directorio_images));
-                $imagenes_embarcacion = new ImagenesEmbarcacion();
-                $imagenes_embarcacion->embarcacion_id = $embarcacion->id;
-                $imagenes_embarcacion->tipo_imagen = 'Planos de cubierta';
-                $imagenes_embarcacion->titulo = $archivo;
-                $imagenes_embarcacion->save();
+        foreach ($embarcacion->tarifarios as $key => $value) {
+            array_push($id_tarifarios, $value['id']);
+        }*/
+
+        
+        /*dd($request);
+        exit;*/
+        if($embarcacion->save()){
+
+            $directorio_images = 'images/'.$request->nombre;
+
+            if(!File::exists(public_path($directorio_images))) {
+                File::makeDirectory(public_path($directorio_images));
+            }
+
+            if(isset($request->planos_cubierta)){
+                for ($i = 0; $i < count($request->planos_cubierta); $i++){
+                    $archivo = $this->guardarImagen($request->planos_cubierta[$i], public_path($directorio_images));
+                    $imagenes_embarcacion = new ImagenesEmbarcacion();
+                    $imagenes_embarcacion->embarcacion_id = $embarcacion->id;
+                    $imagenes_embarcacion->tipo_imagen = 'Planos de cubierta';
+                    $imagenes_embarcacion->titulo = $archivo;
+                    $imagenes_embarcacion->save();
+                }
+            }
+
+            if(isset($request->imagen_general)){
+                for ($i = 0; $i < count($request->imagen_general); $i++){
+                    $archivo = $this->guardarImagen($request->imagen_general[$i], public_path($directorio_images));
+                    $imagenes_embarcacion = new ImagenesEmbarcacion();
+                    $imagenes_embarcacion->embarcacion_id = $embarcacion->id;
+                    $imagenes_embarcacion->tipo_imagen = 'General';
+                    $imagenes_embarcacion->titulo = $archivo;
+                    $imagenes_embarcacion->save();
+                }
+            }
+
+            $tarifario = Tarifario::where('embarcacion_id', $embarcacion->id);
+            $tarifario->delete();
+            
+            foreach ($request->cant_dias as $key => $tarifa) {
+                $tarifario = new Tarifario();
+                $tarifario->embarcacion_id = $embarcacion->id;
+                $tarifario->cant_dias = $request->cant_dias[$key];
+                $tarifario->gross = $request->gross[$key];
+                $tarifario->neto = $request->neto[$key];
+                $tarifario->comision_glc = $request->comision_glc[$key];
+                $tarifario->save();
+            }
+
+            $temp_altas = TemporadasAlta::where('embarcacion_id', $embarcacion->id);
+            $temp_altas->delete();
+
+            foreach ($request->temp_alta_from as $key => $temporada) {
+                if($request->temp_alta_from[$key] != null){
+                    $arr_f_inicio = explode("-", $request->temp_alta_from[$key]);
+                    $f_inicio = $arr_f_inicio[2]."-".$arr_f_inicio[1]."-".$arr_f_inicio[0];
+
+                    $arr_f_fin = explode("-", $request->temp_alta_to[$key]);
+                    $f_fin = $arr_f_fin[2]."-".$arr_f_fin[1]."-".$arr_f_fin[0];
+
+                    $temporada_alta = new TemporadasAlta();
+                    $temporada_alta->embarcacion_id = $embarcacion->id;
+                    $temporada_alta->desde = $f_inicio;
+                    $temporada_alta->hasta = $f_fin;
+                    $temporada_alta->gross = $request->temp_alta_gross[$key];
+                    $temporada_alta->neto = $request->temp_alta_neto[$key];
+                    $temporada_alta->comision_glc = $request->temp_alta_comision_glc[$key];
+                    $temporada_alta->save();
+                }
+            }
+
+            if(isset($request->am)){
+                foreach ($request->am as $key => $value) {
+                    $it_registrado = Itinerario::where('nombre', $key)->get();
+                    
+                    /*echo "<pre>";
+                    print_r(count($it_registrado));
+                    echo "</pre>";*/
+
+                    if(count($it_registrado) > 0){
+                        $arr_id = array();
+
+                        foreach ($it_registrado as $key => $value) {
+                            if(!in_array($value['id'], $arr_id)){
+                                array_push($arr_id, $value['id']);
+                            }
+                        }
+
+                        $emb_it = EmbarcacionItinerario::where('embarcacion_id', $request->id_embarcacion)->whereIn('itinerarios_id', $arr_id)->get();
+                        foreach ($emb_it as $key => $value) {
+                            echo "<br>".$value['embarcacion_id']." - ".$value['itinerarios_id'];
+                        }
+                        /*echo "<pre>";
+                        print_r($emb_it);
+                        echo "</pre>";*/
+
+                    }else{
+                        $itinerario = new Itinerario();
+                        $itinerario->nombre = $key;
+                        $itinerario->url_imagen = $this->guardarImagen($request->file('imagen_itinerario')[$key], public_path($directorio_images));
+
+                        if($itinerario->save()){
+                            for ($k=0; $k < count($value); $k++) { 
+                                $itinerario_embarcacion = new EmbarcacionItinerario();
+                                $itinerario_embarcacion->embarcacion_id = $embarcacion->id;
+                                $itinerario_embarcacion->itinerarios_id = $itinerario->id;
+                                $itinerario_embarcacion->orden = $k;
+                                $itinerario_embarcacion->id_dia = $request->dias[$key][$k];
+                                $itinerario_embarcacion->am = $value[$k];
+                                $itinerario_embarcacion->pm = $request->pm[$key][$k];
+                                $itinerario_embarcacion->save();
+                            }
+                        }
+                    }
+                }   
+                exit; 
+            }
+
+        }
+        return Redirect::action('EmbarcacionController@index');
+    }
+
+
+    public function eliminarItinerario(Request $request) {
+        $nombre_itinerario = substr($request->itinerario, 17);
+
+        $itinerarios_embarcacion = EmbarcacionItinerario::where('embarcacion_id', $request->id_embarcacion)->get();
+        $arr_id = array();
+
+        foreach ($itinerarios_embarcacion as $key => $value) {
+            if(!in_array($value['itinerarios_id'], $arr_id)){
+                array_push($arr_id, $value['itinerarios_id']);
             }
         }
 
-        if(isset($request->imagen_general)){
-            for ($i = 0; $i < count($request->imagen_general); $i++){
-                $archivo = $this->guardarImagen($request->imagen_general[$i], public_path($directorio_images));
-                $imagenes_embarcacion = new ImagenesEmbarcacion();
-                $imagenes_embarcacion->embarcacion_id = $embarcacion->id;
-                $imagenes_embarcacion->tipo_imagen = 'General';
-                $imagenes_embarcacion->titulo = $archivo;
-                $imagenes_embarcacion->save();
-            }
-        }*/
+        $it = Itinerario::whereIn('id', $arr_id)->get();
+        foreach ($it as $key => $value) {
+            if($nombre_itinerario == $value['nombre']){
+                $emb_it = EmbarcacionItinerario::where('embarcacion_id', $request->id_embarcacion)->where('itinerarios_id', $value['id']);
+                $itinerario = Itinerario::findOrFail($value['id']);
+                $directorio_images = 'images/'.$request->nombre_embarcacion;
 
-        return Redirect::action('EmbarcacionController@index');
+                if($emb_it->delete() && $itinerario->delete()){
+                    if(File::exists(public_path($directorio_images."/".$itinerario->url_imagen))) {
+                        unlink(public_path($directorio_images."/".$itinerario->url_imagen));
+                    } 
+                    return response(['msg' => 'Itinerario eliminado', 'status' => 'success']);
+                }
+            }
+        }
+        return response(['status' => 'success']);
     }
 
     /**
