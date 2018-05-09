@@ -21,7 +21,6 @@ use DB;
 use Redirect;
 use Response;
 use File;
-use Storage;
 
 class EmbarcacionController extends Controller
 {
@@ -231,7 +230,7 @@ class EmbarcacionController extends Controller
      */
     public function update(Request $request)
     {
-        //dd($request);
+        dd($request);
         $embarcacion = Embarcacion::find($request->id_embarcacion);
         $embarcacion->nombre = $request->nombre;
         $embarcacion->anyo_construccion = $request->anyo_construccion;
@@ -255,22 +254,8 @@ class EmbarcacionController extends Controller
         $embarcacion->equipo_snorkel = $request->equipo_snorkel;
         $embarcacion->politicas_pago = $request->politicas_pago;
         $embarcacion->cancelaciones = $request->cancelaciones;
-        $id_temporadas_altas = array();
-        $id_tarifarios = array();
-        
-        /*foreach ($embarcacion->temporadas_altas as $key => $value) {
-            array_push($id_temporadas_altas, $value['id']);
-        }
 
-        foreach ($embarcacion->tarifarios as $key => $value) {
-            array_push($id_tarifarios, $value['id']);
-        }*/
-
-        
-        /*dd($request);
-        exit;*/
         if($embarcacion->save()){
-
             $directorio_images = 'images/'.$request->nombre;
 
             if(!File::exists(public_path($directorio_images))) {
@@ -338,28 +323,33 @@ class EmbarcacionController extends Controller
                 foreach ($request->am as $key => $value) {
                     $it_registrado = Itinerario::where('nombre', $key)->get();
                     
-                    /*echo "<pre>";
-                    print_r(count($it_registrado));
-                    echo "</pre>";*/
-
                     if(count($it_registrado) > 0){
-                        $arr_id = array();
+                        foreach ($it_registrado as $itinerario => $data) {
+                            
+                            if((isset($request->imagen_itinerario)) && (array_key_exists($key, $request->file('imagen_itinerario')))){
+                                $directorio_images = 'images/'.$request->nombre;
 
-                        foreach ($it_registrado as $key => $value) {
-                            if(!in_array($value['id'], $arr_id)){
-                                array_push($arr_id, $value['id']);
+                                if(File::exists(public_path($directorio_images."/".$data->url_imagen))) {
+                                    unlink(public_path($directorio_images."/".$data->url_imagen));
+                                    $data->url_imagen = $this->guardarImagen($request->file('imagen_itinerario')[$key], public_path($directorio_images));
+                                    $data->save();
+                                }
+                            }else{
+                                $itinerario++;
+                            }
+
+                            $emb_it = EmbarcacionItinerario::where('embarcacion_id', $request->id_embarcacion)->where('itinerarios_id', $data->id)->get();
+
+                            foreach ($emb_it as $embarcacion_it) {
+                                $embarcacion_it->embarcacion_id = $request->id_embarcacion;
+                                $embarcacion_it->itinerarios_id = $data['id'];
+                                $embarcacion_it->am = $value[$embarcacion_it->orden];
+                                $embarcacion_it->pm = $request->pm[$key][$embarcacion_it->orden];
+                                $embarcacion_it->save();
                             }
                         }
 
-                        $emb_it = EmbarcacionItinerario::where('embarcacion_id', $request->id_embarcacion)->whereIn('itinerarios_id', $arr_id)->get();
-                        foreach ($emb_it as $key => $value) {
-                            echo "<br>".$value['embarcacion_id']." - ".$value['itinerarios_id'];
-                        }
-                        /*echo "<pre>";
-                        print_r($emb_it);
-                        echo "</pre>";*/
-
-                    }else{
+                    } else{
                         $itinerario = new Itinerario();
                         $itinerario->nombre = $key;
                         $itinerario->url_imagen = $this->guardarImagen($request->file('imagen_itinerario')[$key], public_path($directorio_images));
@@ -377,10 +367,8 @@ class EmbarcacionController extends Controller
                             }
                         }
                     }
-                }   
-                exit; 
+                }
             }
-
         }
         return Redirect::action('EmbarcacionController@index');
     }

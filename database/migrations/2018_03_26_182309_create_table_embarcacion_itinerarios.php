@@ -15,7 +15,8 @@ class CreateTableEmbarcacionItinerarios extends Migration
     {
         Schema::create('embarcacion_itinerarios', function(Blueprint $table) {
             $table->engine = 'InnoDB';
-        
+            
+            $table->increments('id')->unsigned();
             $table->integer('embarcacion_id')->unsigned();
             $table->integer('itinerarios_id')->unsigned();
             $table->integer('orden');

@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Fri, 27 Apr 2018 16:07:15 +0000.
+ * Date: Mon, 07 May 2018 17:55:03 +0000.
  */
 
 namespace App;
@@ -111,7 +111,7 @@ class Embarcacion extends Eloquent
 	public function itinerarios()
 	{
 		return $this->belongsToMany(\App\Itinerario::class, 'embarcacion_itinerarios', 'embarcacion_id', 'itinerarios_id')
-					->withPivot('orden', 'id_dia', 'am', 'pm')
+					->withPivot('id', 'orden', 'id_dia', 'am', 'pm')
 					->withTimestamps();
 	}
 

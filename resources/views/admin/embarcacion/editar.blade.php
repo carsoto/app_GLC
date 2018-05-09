@@ -47,7 +47,6 @@
 							<br>{!! Form::label('tipos_patente_id', 'Tipo de patente*') !!}
 							<br>{!! Form::select('tipos_patente_id', $tipos_patente, $embarcacion->tipos_patente->id, ['class' => 'form-control', 'id' => 'tipos_patente']) !!}
 						</div>
-
 						<div class="col-md-12">
 							<br>{!! Form::label('planos_cubierta', 'Planos de cubierta') !!}
 							<br>{!! Form::file('planos_cubierta[]', ['id' => 'cambiar_im_planos_cubierta', 'accept' => 'image/*', 'multiple' => true]) !!}
@@ -461,12 +460,33 @@
 				$("#div_detalles_generales_error").show();
 				$("#detalles_generales_error").html("<ul><li>El nombre de la embarcación no puede estar vacío</li></ul>");
 			}else{
-				/*var $fileUpload = $("input[type='file']");
-				if (parseInt($fileUpload.get(0).files.length) > 3){
-					alert("You are only allowed to upload a maximum of 3 files");
+				
+				/*var imagenes_list = new Object();
+				var cont1 = $("input[type='file']").get(0).files.length;
+				var cont2 = $("input[type='file']").get(1).files.length;
+
+				<?php foreach($embarcacion->imagenes_embarcacions as $c=>$v) {  ?>
+					
+					<?php if($v->tipo_imagen == "Planos de cubierta"){ ?>
+						cont1 = cont1 + 1;
+						imagenes_list["<?php echo $v->tipo_imagen; ?>"] = cont1;
+
+					<?php } else if($v->tipo_imagen == "General") { ?>
+						cont2 = cont2 + 1;
+						imagenes_list["<?php echo $v->tipo_imagen; ?>"] = cont2;
+
+					<?php } ?>
+
+				<?php }?>
+
+				for(var clave in imagenes_list) {
+					if((clave == 'Planos de cubierta') && (imagenes_list[clave] > 5)){
+						console.log("No puede cargar mas de 5 imágenes de planos");
+					}else if((clave == 'General') && (imagenes_list[clave] > 10)){
+						console.log("No puede cargar mas de 10 imágenes generales");
+					}
 				}*/
 				$("#editar_embarcacion_form").submit();	
-				//myDropzone.processQueue();
 			}
 		});
 
@@ -556,6 +576,7 @@
             var tipos_patente = document.getElementById("tipos_patente");
 			var patente = tipos_patente.options[tipos_patente.selectedIndex].value;
             getSitiosTuristicos(patente);
+
             $("#itinerarios").append(itinerario);
         }else {
             alert("Debe escoger un nombre para el itinerario");

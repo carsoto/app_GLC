@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Fri, 27 Apr 2018 16:07:15 +0000.
+ * Date: Mon, 07 May 2018 17:55:03 +0000.
  */
 
 namespace App;
@@ -12,6 +12,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
 /**
  * Class EmbarcacionItinerario
  * 
+ * @property int $id
  * @property int $embarcacion_id
  * @property int $itinerarios_id
  * @property int $orden
@@ -28,8 +29,6 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class EmbarcacionItinerario extends Eloquent
 {
-	public $incrementing = false;
-
 	protected $casts = [
 		'embarcacion_id' => 'int',
 		'itinerarios_id' => 'int',
